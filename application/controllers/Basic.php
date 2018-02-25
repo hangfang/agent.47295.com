@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @name BasicController
  * @author root
@@ -33,7 +33,7 @@ class BasicController extends Yaf_Controller_Abstract {
             }
 
             if($moduleName==='index' || ($moduleName==='exh' && $controllerName==='sty' && $actionName==='getrichdescriptionpage')){
-                $viewpath = APPLICATION_PATH.'/template/'.$moduleName.'/';
+                $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
                 $this->setViewpath($viewpath);
                 $this->_view->assign('viewPath', $viewpath);
                 $this->_view->assign('staticDir', '/static_files/'.$moduleName .'/');
@@ -133,15 +133,15 @@ class BasicController extends Yaf_Controller_Abstract {
         $fileMd5Name = md5_file($_FILES['img']['tmp_name']);
         $filePath = '/upload/headimg/'. substr($fileMd5Name, 0, 2) .'/'. substr($fileMd5Name, -2) .'/';
 
-        if(!file_exists(APPLICATION_PATH . $filePath)){
-            $rt = mkdir(APPLICATION_PATH . $filePath, 0777, true);
+        if(!file_exists(BASE_PATH . $filePath)){
+            $rt = mkdir(BASE_PATH . $filePath, 0777, true);
             if(!$rt){
                 lExit($this->_error[1105]);
                 return false;
             }
         }
 
-        if(!move_uploaded_file($_FILES['img']['tmp_name'], APPLICATION_PATH . $filePath . $fileMd5Name . $fileType)){
+        if(!move_uploaded_file($_FILES['img']['tmp_name'], BASE_PATH . $filePath . $fileMd5Name . $fileType)){
             lExit($this->_error[1104]);
             return false;
         }
@@ -207,7 +207,7 @@ class BasicController extends Yaf_Controller_Abstract {
 
         $fileMd5Name = md5_file($_FILES['img']['tmp_name']);
         //判断服务器上是否存在此目录,将图片也在服务器上存一份
-        $localfilePath = APPLICATION_PATH . '/upload/'. $biz .'/'. date('Y-m-d') .'/';
+        $localfilePath = BASE_PATH . '/upload/'. $biz .'/'. date('Y-m-d') .'/';
         if(!file_exists($localfilePath)){
             $rt = mkdir($localfilePath, 0777, true);
             if(!$rt){
@@ -321,15 +321,15 @@ class BasicController extends Yaf_Controller_Abstract {
         $fileMd5Name = md5_file($fileInfo['tmp_name']);
         $filePath = '/upload/excel/'. substr($fileMd5Name, 0, 2) .'/'. substr($fileMd5Name, -2) .'/';
 
-        if(!file_exists(APPLICATION_PATH . $filePath)){
-            $rt = mkdir(APPLICATION_PATH . $filePath, 0777, true);
+        if(!file_exists(BASE_PATH . $filePath)){
+            $rt = mkdir(BASE_PATH . $filePath, 0777, true);
             if(!$rt){
                 lExit($this->_error[210]);
             }
         }
         
         $extName = array_pop(explode('.', $fileInfo['name']));
-        $file = APPLICATION_PATH . $filePath . $fileMd5Name . '.'. ($extName ? $extName : 'xlsx');
+        $file = BASE_PATH . $filePath . $fileMd5Name . '.'. ($extName ? $extName : 'xlsx');
         if(!move_uploaded_file($fileInfo['tmp_name'], $file)){
             lExit($this->_error[209]);
         }

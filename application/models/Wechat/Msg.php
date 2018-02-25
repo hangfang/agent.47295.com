@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Wechat_MsgModel extends BaseModel{
     public static function initDomain(){

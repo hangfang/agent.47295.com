@@ -1,9 +1,9 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
-require APPLICATION_PATH . '/application/library/MNS/GuzzleHttp/functions.php';
-require APPLICATION_PATH . '/application/library/MNS/GuzzleHttp/Psr7/functions.php';
-require APPLICATION_PATH . '/application/library/MNS/GuzzleHttp/Promise/functions.php';
+require BASE_PATH . '/application/library/MNS/GuzzleHttp/functions.php';
+require BASE_PATH . '/application/library/MNS/GuzzleHttp/Psr7/functions.php';
+require BASE_PATH . '/application/library/MNS/GuzzleHttp/Promise/functions.php';
 
 use MNS\AliyunMNS\Client;
 use MNS\AliyunMNS\Topic;

@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /*
  * 诸葛到店自己配置的消息回复
  */

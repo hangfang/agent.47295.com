@@ -14,7 +14,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         //把配置保存起来
         $arrConfig = Yaf_Application::app()->getConfig();
         Yaf_Registry::set('config', $arrConfig);
-        Yaf_Loader::import( APPLICATION_PATH .'/conf/constants.php' );
+        Yaf_Loader::import( BASE_PATH .'/conf/constants.php' );
         ini_set('session.name', $arrConfig['application']['session']['name']);
         ini_set('session.save_handler', $arrConfig['application']['session']['save_handler']);
         ini_set('session.save_path', $arrConfig['application']['session']['save_path']);
@@ -23,8 +23,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     }
 
     public function _initHelpers(){
-        Yaf_Loader::import( APPLICATION_PATH .'/application/helper/function.php' );
-        Yaf_Loader::import( APPLICATION_PATH .'/application/helper/file.php' );
+        Yaf_Loader::import( BASE_PATH .'/application/helper/function.php' );
+        Yaf_Loader::import( BASE_PATH .'/application/helper/file.php' );
                 
         set_error_handler(function($errno, $errstr, $errfile, $errline){
             if(Yaf_Registry::get('ping_error')){
@@ -40,6 +40,8 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         });
         
         $tmp = function($e){
+            $tmp = $e->getPrevious();
+            !empty($tmp) && $e = $tmp;
             log_message('error', $e->getMessage() .'('. $e->getCode() .') at file: '. $e->getFile() .' in line: '. $e->getLine() ."\n");
             lExit(json_encode(array('rtn'=>$e->getCode()+10000, 'error_msg'=>$e->getMessage())));
         };
@@ -53,13 +55,13 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
                 
                 $tpl = <<<EOF
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class {$_className}Model extends BaseModel {
 public static \$_table = '{$_table}';
 }
 EOF;
-                $path = realpath(APPLICATION_PATH).DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'models';
+                $path = realpath(BASE_PATH).DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'models';
                 if(!file_exists($path)){
                     mkdir($path, '0744', true);
                 }

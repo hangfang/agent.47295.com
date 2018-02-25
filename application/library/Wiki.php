@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Wiki{
     /**
@@ -10,7 +10,7 @@ class Wiki{
     public function getModuleList($moduleName=''){
         $module = array();
         
-        $dirs = scandir(APPLICATION_PATH.'/application/modules/');
+        $dirs = scandir(BASE_PATH.'/application/modules/');
         foreach($dirs as $_dir){
             if(preg_match('/^[\.]+$/', $_dir) || preg_match('/^index\.html$/', $_dir)){
                 continue;
@@ -50,10 +50,10 @@ class Wiki{
         $module = ucfirst($module);
         $controllers = array();
 
-        $dirs = scandir(APPLICATION_PATH.'/application/modules/'. $module .'/controllers/');
+        $dirs = scandir(BASE_PATH.'/application/modules/'. $module .'/controllers/');
         foreach($dirs as $_dir){
             if($module.'Module'===$_dir){//模块基类不出现在接口列表
-                $classPath = APPLICATION_PATH.'/application/modules/'. $module .'/controllers/'. $_dir;
+                $classPath = BASE_PATH.'/application/modules/'. $module .'/controllers/'. $_dir;
                 if(!file_exists($classPath)){
                     lExit(4, '模块控制器不存在, controller: '. $_dir);
                 }else{
@@ -66,7 +66,7 @@ class Wiki{
                 continue;
             }
             
-            $classPath = APPLICATION_PATH.'/application/modules/'. $module .'/controllers/'. $_dir;
+            $classPath = BASE_PATH.'/application/modules/'. $module .'/controllers/'. $_dir;
             if(is_dir($classPath)){
                 $subDirs = scandir($classPath);
                 foreach($subDirs as $_subDir){
@@ -148,7 +148,7 @@ class Wiki{
      */
     private function getReflectionModuleClass($module){
         
-        $class = APPLICATION_PATH .'/application/modules/'. ucfirst($module) .'/'. ucfirst($module) .'Module.php';
+        $class = BASE_PATH .'/application/modules/'. ucfirst($module) .'/'. ucfirst($module) .'Module.php';
         if(!file_exists($class)){
             lExit(4, '缺少模块定义文件. filename: '. $class);
         }else{

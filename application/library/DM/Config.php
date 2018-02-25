@@ -18,7 +18,7 @@
  * under the License.
  */
 //include_once 'Autoloader/Autoloader.php';
-require APPLICATION_PATH.'/application/library/DM/Regions/EndpointConfig.php';
+require BASE_PATH.'/application/library/DM/Regions/EndpointConfig.php';
 
 
 //config sdk auto load path.

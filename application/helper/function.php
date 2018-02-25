@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 if ( ! function_exists('dump'))
 {
@@ -369,7 +369,7 @@ if(!function_exists('ip_address')){
 }
 
 if(!function_exists('get_var_from_conf')){
-    function get_var_from_conf($filename, $filepath=APPLICATION_PATH .'/conf/'){
+    function get_var_from_conf($filename, $filepath=BASE_PATH .'/conf/'){
         $filename = basename($filename, '.php');
         $var = Yaf_Registry::get($filename);
 		if(!$var){

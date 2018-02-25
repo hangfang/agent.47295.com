@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @demo $cache = Cache::getInstance();
  * @author fangh@me.com
@@ -20,7 +20,7 @@ class Cache {
      * @return boolean
      */
     public static function getInstance($prefix=''){
-        $config = new Yaf_Config_Ini(APPLICATION_PATH . '/conf/cache.ini', ini_get('yaf.environ'));
+        $config = new Yaf_Config_Ini(BASE_PATH . '/conf/cache.ini', ini_get('yaf.environ'));
         $config = $config->toArray();
         
         if(empty($prefix)){

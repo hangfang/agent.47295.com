@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 Class MailModel{
     
@@ -117,7 +117,7 @@ Class MailModel{
      * @author fanghagn@fujiacaifu.com
      */
     private function Aliyun($title, $body, $to){
-        require APPLICATION_PATH.'/application/library/DM/Config.php';
+        require BASE_PATH.'/application/library/DM/Config.php';
         
         $iClientProfile = DM_Profile_DefaultProfile::getProfile("cn-hongkong", ALIYUN_MAIL_ACCESS_KEY_ID, ALIYUN_MAIL_ACCESS_KEY);        
         $client = new DM_DefaultAcsClient($iClientProfile);    

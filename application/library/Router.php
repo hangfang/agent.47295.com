@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * Yaf 自定义路由协议 Demo
  * 自定义继承 Yaf\Request_Abstract，为的是修改protected params参数

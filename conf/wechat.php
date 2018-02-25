@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 $wechat = array(
     'gold'=> array('conent'=>array('银行','黄金', '理财')),

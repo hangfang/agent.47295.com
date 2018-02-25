@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @todo 微信素材管理
  */
@@ -198,14 +198,14 @@ class Manage_MaterialController extends BasicController {
         }
 
         $filePath = '/upload/material/'. $type .'/';
-        if(!file_exists(APPLICATION_PATH . $filePath)){
-            $rt = mkdir(APPLICATION_PATH . $filePath, 0777, true);
+        if(!file_exists(BASE_PATH . $filePath)){
+            $rt = mkdir(BASE_PATH . $filePath, 0777, true);
             if(!$rt){
                 lExit(214, '创建文件保存目录失败');
             }
         }
 
-        $filePath = APPLICATION_PATH . $filePath . $_FILES['media']['name'];
+        $filePath = BASE_PATH . $filePath . $_FILES['media']['name'];
         if(!move_uploaded_file($_FILES['media']['tmp_name'], $filePath)){
             lExit(215, '移动文件至保存目录失败');
         }
@@ -289,14 +289,14 @@ class Manage_MaterialController extends BasicController {
         }
 
         $filePath = '/upload/material/image/';
-        if(!file_exists(APPLICATION_PATH . $filePath)){
-            $rt = mkdir(APPLICATION_PATH . $filePath, 0777, true);
+        if(!file_exists(BASE_PATH . $filePath)){
+            $rt = mkdir(BASE_PATH . $filePath, 0777, true);
             if(!$rt){
                 lExit(214, '创建文件保存目录失败');
             }
         }
 
-        $filePath = APPLICATION_PATH . $filePath . $_FILES['media']['name'];
+        $filePath = BASE_PATH . $filePath . $_FILES['media']['name'];
         if(!move_uploaded_file($_FILES['media']['tmp_name'], $filePath)){
             lExit(215, '移动文件至保存目录失败');
         }
@@ -334,14 +334,14 @@ class Manage_MaterialController extends BasicController {
         }
 
         $filePath = '/upload/material/'. $type .'/';
-        if(!file_exists(APPLICATION_PATH . $filePath)){
-            $rt = mkdir(APPLICATION_PATH . $filePath, 0777, true);
+        if(!file_exists(BASE_PATH . $filePath)){
+            $rt = mkdir(BASE_PATH . $filePath, 0777, true);
             if(!$rt){
                 lExit(214, '创建文件保存目录失败');
             }
         }
 
-        $filePath = APPLICATION_PATH . $filePath . $_FILES['media']['name'];
+        $filePath = BASE_PATH . $filePath . $_FILES['media']['name'];
         if(!move_uploaded_file($_FILES['media']['tmp_name'], $filePath)){
             lExit(215, '移动文件至保存目录失败');
         }

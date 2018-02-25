@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Captcha_Elephant {
     private $word = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ23456789';//随机因子
@@ -19,7 +19,7 @@ class Captcha_Elephant {
         isset($conf['height']) && $this->height = $conf['height'];
         isset($conf['fontsize']) && $this->fontsize = $conf['fontsize'];
         isset($conf['fontcolor']) && $this->fontcolor = $conf['fontcolor'];
-        $this->font = APPLICATION_PATH .'/application/library/Captcha/Elephant.ttf';//注意字体路径要写对，否则显示不了图片
+        $this->font = BASE_PATH .'/application/library/Captcha/Elephant.ttf';//注意字体路径要写对，否则显示不了图片
     }
     //生成随机码
     private function createCode() {

@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 $mediamsgformat = [
     '介绍'  =>  ['content'=>'想了解更多信息，请<a href="https://www.zhugedaodian.com">点击这里</a>。', 'type'=>'text'],

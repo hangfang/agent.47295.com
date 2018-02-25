@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Captcha_Twist{
     private $word = 'abcdefghkmnprstuvwxyzABCDEFGHKMNPRSTUVWXYZ23456789';
@@ -33,7 +33,7 @@ class Captcha_Twist{
         $buttum_c = ImageColorAllocate($this->img,$tmpC0,$tmpC1,$tmpC2);
         imagefill($this->img, 16, 13, $buttum_c);
 
-        $font = APPLICATION_PATH .'/application/library/Captcha/Twist.ttf';
+        $font = BASE_PATH .'/application/library/Captcha/Twist.ttf';
 
         for ($i=0;$i<strlen($this->code);$i++)
         {

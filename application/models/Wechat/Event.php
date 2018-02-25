@@ -1,5 +1,5 @@
 <?php
-defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+defined('BASE_PATH') OR exit('No direct script access allowed');
 /*
  * 微信事件处理
  */
@@ -60,12 +60,12 @@ class Wechat_EventModel extends BaseModel{
         
         $staff_file_format = <<<EOF
 <?php
-    defined('APPLICATION_PATH') OR exit('No direct script access allowed');
+    defined('BASE_PATH') OR exit('No direct script access allowed');
     return \$staff = %s; 
 EOF;
         if(abs($msgXml['Latitude']-22.538925) < 0.005 && abs($msgXml['Longitude']-113.947526)<0.005 && date('H')-0<12){
-            if(file_exists(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php')){
-                $staff = include(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php');
+            if(file_exists(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php')){
+                $staff = include(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php');
                 if(!isset($staff['on'])){
                     $staff['on'] = array();
                 }
@@ -74,13 +74,13 @@ EOF;
                     return false;
                 }
                 $staff['on'][$msgXml['FromUserName']] = $msgXml['FromUserName'] .'@'. date('Y-m-d H:i:s');
-                write_file(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
+                write_file(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
             }else{
                 $staff = array();
                 $staff['on'] = array();
                 
                 $staff['on'][$msgXml['FromUserName']] = $msgXml['FromUserName'] .'@'. date('Y-m-d H:i:s');
-                write_file(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
+                write_file(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
             }
             $format = <<<EOF
 @%s
@@ -88,8 +88,8 @@ EOF;
 EOF;
             $data['text']['content'] = sprintf($format, date('Y-m-d H:i:s'));
         }elseif((abs($msgXml['Latitude']-22.538925) > 0.005 || abs($msgXml['Longitude']-113.947526) > 0.005) && date('H')-0>17){
-            if(file_exists(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php')){
-                $staff = include(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php');
+            if(file_exists(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php')){
+                $staff = include(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php');
                 
                 if(isset($staff['off'][$msgXml['FromUserName']]) || !isset($staff['on'][$msgXml['FromUserName']])){
                     return false;
@@ -100,7 +100,7 @@ EOF;
                 }
                 
                 $staff['off'][$msgXml['FromUserName']] = $msgXml['FromUserName'] .'@'. date('Y-m-d H:i:s');
-                write_file(APPLICATION_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
+                write_file(BASE_PATH.'/cache/staff/staff_'. date('Ymd') .'.php', sprintf($staff_file_format, var_export($staff, true)));
             }else{
                 return false;
             }
