@@ -6,12 +6,10 @@ class UserController extends Yaf_Controller_Abstract{
         $data = array();
         $data['title'] = '个人中心';
         $data['class'] = 'user';
-        
-        $wechatModel = new WechatModel();
-        $sigObj = $wechatModel->getJsApiSigObj();
+
+        $sigObj = WechatModel::getJsApiSigObj();
 
         $data = array_merge($data, $sigObj);
         $this->getView()->assign('data', $data);
     }
-    
 }

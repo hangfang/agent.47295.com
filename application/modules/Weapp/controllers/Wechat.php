@@ -22,7 +22,7 @@ class WechatController extends Yaf_Controller_Abstract {
         $signature = $_GET["signature"];    //微信加密签名
         $timestamp = $_GET["timestamp"];    //时间戳
         $nonce = $_GET["nonce"];            //随机数
-        $token = WX_TOKEN;
+        $token = WECHAT_TOKEN;
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr);      //进行字典序排序
         //sha1加密后与签名对比
@@ -45,7 +45,7 @@ class WechatController extends Yaf_Controller_Abstract {
         $bak4log = $data = file_get_contents('php://input');
         
         if(ENCPRYPT_TYPE === 'aes'){
-            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(WX_TOKEN, WX_ENCODING_AES_KEY, WX_APP_ID);
+            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(WECHAT_TOKEN, WECHAT_ENCODING_AES_KEY, WECHAT_APP_ID);
             $res = $wxBizMsgCrypt->decryptMsg($msgSignature, $timestamp, $nonce, $data, $data);
             if($res !== 0){
                 log_message('error', 'decrypt msg error, error code: '. $res ."\r\n msg content: ". $bak4log);
@@ -82,8 +82,7 @@ class WechatController extends Yaf_Controller_Abstract {
                 $msg[$_v] = isset($msgXml[$_v]) ? $msgXml[$_v] : '';
             }
             
-            $wechatModel = new WechatModel();
-            $suc = $wechatModel->saveMessage($msg);
+            $suc = WechatModel::saveMessage($msg);
             
             $msgtype = $msgXml['MsgType']==='event' ? $msgXml['MsgType'].Ucfirst(strtolower($msgXml['Event'])) : $msgXml['MsgType'];
             $this->$msgtype($msgXml);

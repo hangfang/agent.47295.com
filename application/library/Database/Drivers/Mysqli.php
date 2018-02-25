@@ -263,6 +263,7 @@ class Database_Drivers_Mysqli{
                     return false;
                 }else{
                     $op = preg_replace('/[`0-9a-z_\s\.]/i', '', $k);
+                    $side = '';
 
                     if(is_array($v)){
                         $op = (empty($op) || $op==='=') ? 'in' : 'not in';
@@ -298,6 +299,7 @@ class Database_Drivers_Mysqli{
             }
         }else{
             $op = preg_replace('/[`0-9a-z_\s\.]/i', '', $where);
+            $side= '';
 
             if(is_array($value)){
                 $op = (empty($op) || $op==='=') ? 'in' : 'not in';

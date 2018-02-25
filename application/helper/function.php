@@ -448,7 +448,7 @@ if(!function_exists('http')){
         // http头
         curl_setopt($ch ,CURLOPT_HTTPHEADER, $args['header']);
         curl_setopt($ch ,CURLOPT_USERAGENT, isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.18 Safari/537.36');
-        $args['auth'] && curl_setopt($ch, CURLOPT_USERPWD, $args['auth']);
+        !empty($args['auth']) && curl_setopt($ch, CURLOPT_USERPWD, $args['auth']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查 
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
         

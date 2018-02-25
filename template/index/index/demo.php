@@ -1122,4 +1122,4 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
     <script src="/static/weui/js/zepto.min.js"></script>
     <script src="/static/weui/js/router.min.js"></script>
     <script src="/static/public/js/index/demo.js"></script>
-    <?php include dirname(dirname(__FILE__)).'/common/weui/footer.php';?>
+    <?php include BASE_PATH.'/template/common/weui/footer.php';?>

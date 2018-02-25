@@ -1,6 +1,6 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include dirname(dirname(__FILE__)).'/common/weui/header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
 </div>
  <style>
@@ -47,29 +47,12 @@ include dirname(dirname(__FILE__)).'/common/weui/header.php';
     </div>
     <div class="bd">
         <div class="weui_grids">
-            <a href="/index/query" class="weui_grid">
+            <a href="/index/index/query" class="weui_grid">
                 <div class="weui_grid_icon">
                     <i class="icon icon_actionSheet"></i>
                 </div>
                 <p class="weui_grid_label">
                     便利
-                </p>
-            </a>
-            <a href="/weapp/lottery/index" class="weui_grid">
-                <div class="weui_grid_icon">
-                    <i class="icon icon_toast"></i>
-                </div>
-                <p class="weui_grid_label">
-                    彩票查询
-                </p>
-            </a>
-           
-            <a href="/weapp/news/wxhot" class="weui_grid">
-                <div class="weui_grid_icon">
-                    <i class="icon icon_progress"></i>
-                </div>
-                <p class="weui_grid_label">
-                    新闻资讯
                 </p>
             </a>
             <a href="/weapp/map/index" class="weui_grid">
@@ -80,15 +63,7 @@ include dirname(dirname(__FILE__)).'/common/weui/header.php';
                     地图服务
                 </p>
             </a>
-            <a href="/weapp/image/index" class="weui_grid">
-                <div class="weui_grid_icon">
-                    <i class="icon icon icon_panel"></i>
-                </div>
-                <p class="weui_grid_label">
-                    图像处理
-                </p>
-            </a>
         </div>
     </div>
 </div>
-<?php include dirname(dirname(__FILE__)).'/common/weui/footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>

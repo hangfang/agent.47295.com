@@ -2,28 +2,13 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Wechat_MsgModel extends BaseModel{
-    public static function initDomain(){
-        $wechat = Operation_ClientsWechatModel::getRow(['client_id'=>BaseModel::domain2Id()]);
-        if(!$wechat){
-            log_message('error', '当前企业未接入微信公众号, client_id:'. BaseModel::domain2Id());
-            return false;
-        }
-        
-        Yaf_Registry::set('WECHAT_APP_ID', $wechat['app_id']);
-        Yaf_Registry::set('WECHAT_APP_SECRET',$wechat['app_secret']);
-        Yaf_Registry::set('WECHAT_TOKEN', $wechat['app_token']);
-        Yaf_Registry::set('WECHAT_ENCPRYPT_TYPE', $wechat['app_encrypt_type']);
-        Yaf_Registry::set('WECHAT_ENCODING_AES_KEY', $wechat['app_encoding_aes_key']);
-        return true;
-    }
-    
     /**
      * @todo 从微信获取access_token，并存储于数据库
      * @param boolean force 是否强制从微信接口获取token
      * @return string
      */
     public static function getAccessToken($force=false){
-        $cache = Cache::getInstance(BaseModel::getDomain().':');
+        $cache = Cache::getInstance();
         if(!$force && $cache->exists('wechat.token')){
             $result = $cache->hGetAll('wechat.token');
             if(!empty($result['access_token']) && !empty($result['jsapi_ticket'])){
@@ -34,7 +19,7 @@ class Wechat_MsgModel extends BaseModel{
         $result =['access_token'=>'', 'jsapi_ticket'=>''];
         
         //获取微信对话服务.access_token
-        $data['url'] = sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s', Yaf_Registry::get('WECHAT_APP_ID'), Yaf_Registry::get('WECHAT_APP_SECRET'));
+        $data['url'] = sprintf('WECHAT_API_HOST'.'/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s', WECHAT_APP_ID, WECHAT_APP_SECRET);
         $rt = http($data);
         if(isset($rt['errcode'])){
             log_message('error', 'get access_token from wechat error, msg: '. json_encode($rt));
@@ -44,7 +29,7 @@ class Wechat_MsgModel extends BaseModel{
         $result['access_token'] = $rt['access_token'];
         if(strlen($result['access_token'])){
             $data = array();
-            $data['url'] = sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/cgi-bin/ticket/getticket?access_token=%s&type=jsapi', $result['access_token']);
+            $data['url'] = sprintf(WECHAT_API_HOST.'/cgi-bin/ticket/getticket?access_token=%s&type=jsapi', $result['access_token']);
             $rt = http($data);
             if(isset($rt['errcode']) && $rt['errcode']>0){
                 log_message('error', 'get jsapi_ticket from wechat error, msg: '. json_encode($rt));
@@ -65,8 +50,8 @@ class Wechat_MsgModel extends BaseModel{
     public static function getJsApiSigObj(){
         
         $data = array();
-        $data['debug'] = Yaf_Registry::get('WECHAT_WEB_JS_DEBUG');
-        $data['appId'] = Yaf_Registry::get('WECHAT_APP_ID');
+        $data['debug'] = WECHAT_WEB_JS_DEBUG;
+        $data['appId'] = WECHAT_APP_ID;
         $data['timestamp'] = time();
         $data['nonceStr'] = md5($data['timestamp']);
         
@@ -132,7 +117,7 @@ class Wechat_MsgModel extends BaseModel{
      */
     public static function getLastSendMsg($msgXml, $where=array(), $like=array(),$msg_id=null){
         
-        $db = Database::getInstance('operation');
+        $db = Database::getInstance();
         $db->where('touser', $msgXml['FromUserName']);
         $msg_id && $db->where('msg_id',$msg_id);
         if($where){
@@ -162,7 +147,7 @@ class Wechat_MsgModel extends BaseModel{
      * @return boolean
      */
     public static function saveMessage($msg){
-        return Operation_WechatReceiveMessageModel::insert($msg);
+        return WechatReceiveMessageModel::insert($msg);
     }
     
     /**
@@ -201,7 +186,7 @@ class Wechat_MsgModel extends BaseModel{
             $data[$_msg_name] = $_msg_value;
         }
         
-       Operation_WechatSendMessageModel::insert($data);
+       WechatSendMessageModel::insert($data);
         
         self::autoAnwserWxMessage($msg);
         return true;
@@ -244,11 +229,11 @@ EOF;
         }
         
         log_message('info', 'response msg: '. $msg);
-        if(Yaf_Registry::get('WECHAT_ENCPRYPT_TYPE') === 'aes'){
+        if(WECHAT_ENCPRYPT_TYPE === 'aes'){
             $request = new Yaf_Request_Http();
             $timestamp  = $request->getQuery('timestamp', '');
             $nonce = $request->getQuery('nonce', '');
-            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(Yaf_Registry::get('WECHAT_TOKEN'), Yaf_Registry::get('WECHAT_ENCODING_AES_KEY'), Yaf_Registry::get('WECHAT_APP_ID'));
+            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(WECHAT_TOKEN, WECHAT_ENCODING_AES_KEY, WECHAT_APP_ID);
             $bak4log = $msg;
             $res = $wxBizMsgCrypt->encryptMsg($msg, $timestamp, $nonce, $msg);
             
@@ -272,7 +257,7 @@ EOF;
     }
 
     public static function getUser($openid){
-        $db = Database::getInstance('operation');
+        $db = Database::getInstance();
         $db->where('openid', $openid);
         $query = $db->get('wechat_user');
 

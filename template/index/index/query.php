@@ -1,6 +1,6 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include dirname(dirname(__FILE__)).'/common/weui/header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
 <div class="query">
     <div class="hd">
@@ -63,4 +63,4 @@ EOF;
     </div>
 </div>
 <script src='/static/public/js/index/query.js?v=20160426'></script>
-<?php include dirname(dirname(__FILE__)).'/common/weui/footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>

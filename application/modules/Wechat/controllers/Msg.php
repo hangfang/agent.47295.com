@@ -51,7 +51,7 @@ class MsgController extends WechatController {
         $bak4log = $data = file_get_contents('php://input');
         
         if(ENCPRYPT_TYPE === 'aes'){
-            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(Yaf_Registry::get('WECHAT_TOKEN'), Yaf_Registry::get('WECHAT_ENCODING_AES_KEY'), Yaf_Registry::get('WECHAT_APP_ID'));
+            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt('WECHAT_TOKEN', 'WECHAT_ENCODING_AES_KEY', 'WECHAT_APP_ID');
             $res = $wxBizMsgCrypt->decryptMsg($msgSignature, $timestamp, $nonce, $data, $data);
             if($res !== 0){
                 log_message('error', 'decrypt msg error, error code: '. $res ."\r\n msg content: ". $bak4log);

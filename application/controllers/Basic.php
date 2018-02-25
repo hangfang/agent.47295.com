@@ -32,11 +32,11 @@ class BasicController extends Yaf_Controller_Abstract {
                 lExit($this->_error[3]);
             }
 
-            if($moduleName==='index' || ($moduleName==='exh' && $controllerName==='sty' && $actionName==='getrichdescriptionpage')){
+            if($moduleName==='index' || $moduleName==='weapp'){
                 $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
                 $this->setViewpath($viewpath);
                 $this->_view->assign('viewPath', $viewpath);
-                $this->_view->assign('staticDir', '/static_files/'.$moduleName .'/');
+                $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
                 return true;
             }
 

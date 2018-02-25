@@ -19,6 +19,7 @@ class KuaidiModel extends BaseModel{
         $data = array();
         $data['data'] = $param;
         $data['url'] = KD_NIAO_API_URL;
+        $data['method'] = 'POST';
         
         $rt = http($data);
         

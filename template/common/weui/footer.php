@@ -81,17 +81,17 @@
 
             </div>
             <div class="weui_tabbar">
-                <a href="/index/index" class="weui_tabbar_item <?php if($data['class']==='app'){echo 'weui_bar_item_on';}?>">
+                <a href="/index/index/index" class="weui_tabbar_item <?php if($data['class']==='app'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
                         <img src="/static/weui/images/icon_nav_button.png" alt="">
                     </div>
-                    <p class="weui_tabbar_label">微信</p>
+                    <p class="weui_tabbar_label">最新</p>
                 </a>
                 <a href="/weapp/contact/index" id="contact" class="weui_tabbar_item <?php if($data['class']==='contact'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
                         <img src="/static/weui/images/icon_nav_msg.png" alt="">
                     </div>
-                    <p class="weui_tabbar_label">通讯录</p>
+                    <p class="weui_tabbar_label">联系方式</p>
                 </a>
                 <a href="/weapp/map/index" class="weui_tabbar_item <?php if($data['class']==='map'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
@@ -103,7 +103,7 @@
                     <div class="weui_tabbar_icon">
                         <img src="/static/weui/images/icon_nav_cell.png" alt="">
                     </div>
-                    <p class="weui_tabbar_label">我</p>
+                    <p class="weui_tabbar_label">个人中心</p>
                 </a>
             </div>
         </div>

@@ -10,8 +10,7 @@ class MapController extends Yaf_Controller_Abstract{
         $data['title'] = '当前位置';
         $data['class'] = 'map';
         
-        $wechatModel = new WechatModel();
-        $sigObj = $wechatModel->getJsApiSigObj();
+        $sigObj = WechatModel::getJsApiSigObj();
 
         $data = array_merge($data, $sigObj);
         $this->getView()->assign('data', $data);
@@ -24,8 +23,7 @@ class MapController extends Yaf_Controller_Abstract{
         $data['title'] = '当前位置';
         $data['class'] = 'map';
 
-        $wechatModel = new WechatModel();
-        $sigObj = $wechatModel->getJsApiSigObj();
+        $sigObj = WechatModel::getJsApiSigObj();
 
         $data = array_merge($data, $sigObj);
         $this->getView()->assign('data', $data);

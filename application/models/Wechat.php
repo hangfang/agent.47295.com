@@ -3,40 +3,31 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class WechatModel extends BaseModel{
     
-    public $access_token = '';
-    public $jsapi_ticket = '';
-    
-    public function __construct(){
-        parent::__construct();
-        $this->access_token = $this->getAccessToken();
-        $this->jsapi_ticket = $this->getJsApiTicket();
-    }
-    
-    public function accessTokenExpired(){
+    public static function accessTokenExpired(){
         $db = Database::getInstance();
         return $db->truncate('wechat_token');
-    }
+}
     
     /**
      * 从微信获取access_token，并存储于数据库
      * @return string
      */
-    public function getAccessToken(){
+    public static function getAccessToken(){
         $db = Database::getInstance();
         $db->select('token');
         $db->where('insert_time > ', date('Y-m-d H:i:s', time()-2*3600));
-        $db->order_by('insert_time', 'desc');
+        $db->orderBy('insert_time desc');
         $db->limit(1, 0);
         $query = $db->get('wechat_token');
         
         $token = $query && $query->num_rows()>0 ? $query->row()->token : '';
         
         if($token === ''){
-            $this->accessTokenExpired();//清除token记录表
+            self::accessTokenExpired();//清除token记录表
             
             $data = array();
             $data['method'] = 'get';
-            $data['url'] = sprintf('%s/token?grant_type=client_credential&appid=%s&secret=%s', WX_CGI_ADDR, WX_APP_ID, WX_APP_SECRET);
+            $data['url'] = sprintf('%s/token?grant_type=client_credential&appid=%s&secret=%s', WECHAT_API_HOST, WECHAT_APP_ID, WECHAT_APP_SECRET);
             $rt = http($data);
             
             if(isset($rt['errcode'])){
@@ -52,20 +43,20 @@ class WechatModel extends BaseModel{
             }
         }
         
-        return $this->access_token = $token;
+        return $token;
     }
     
-    public function getJsApiSigObj(){
+    public static function getJsApiSigObj(){
         
         $data = array();
-        $data['debug'] = WX_JSAPI_DEBUG;
-        $data['appId'] = WX_APP_ID;
+        $data['debug'] = WECHAT_WEB_JS_DEBUG;
+        $data['appId'] = WECHAT_APP_ID;
         $data['timestamp'] = time();
         $data['nonceStr'] = md5($data['timestamp']);
         
         
         $data2gen = array();
-        $data2gen['jsapi_ticket'] = $this->jsapi_ticket;
+        $data2gen['jsapi_ticket'] = self::getJsApiTicket();
         $data2gen['noncestr'] = $data['nonceStr'];
         $data2gen['timestamp'] = $data['timestamp'];
         $data2gen['url'] = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING'];
@@ -84,12 +75,12 @@ class WechatModel extends BaseModel{
     }
     
     
-    public function getJsApiTicket(){
+    public static function getJsApiTicket(){
         
         $db = Database::getInstance();
         $db->select('jsapi_ticket');
         $db->where('insert_time > ', date('Y-m-d H:i:s', time()-2*3600));
-        $db->order_by('insert_time', 'desc');
+        $db->orderBy('insert_time desc');
         $db->limit(1, 0);
         $query = $db->get('wechat_token');
         
@@ -98,14 +89,14 @@ class WechatModel extends BaseModel{
         if($jsapi_ticket === ''){
             $data = array();
             $data['method'] = 'get';
-            $data['url'] = sprintf('%s/ticket/getticket?access_token=%s&type=jsapi', WX_CGI_ADDR, $this->access_token);
+            $data['url'] = sprintf('%s/ticket/getticket?access_token=%s&type=jsapi', WECHAT_API_HOST, self::getAccessToken());
             $rt = http($data);
             
             if(isset($rt['errcode']) && $rt['errcode']>0){
                 log_message('error', 'get jsapi_ticket from wechat error, msg: '. json_encode($rt));
                 if($rt['errcode'] === 42001){//access_token过期
-                    $this->accessTokenExpired();
-                    return call_user_func_array(array($this, 'getJsApiTicket'), array());
+                    self::accessTokenExpired();
+                    return self::getJsApiTicket();
                 }
             }
             
@@ -117,7 +108,7 @@ class WechatModel extends BaseModel{
             }
         }
         
-        return $this->jsapi_ticket = $jsapi_ticket;
+        return $jsapi_ticket;
     }
     
     /**
@@ -127,7 +118,7 @@ class WechatModel extends BaseModel{
      * @param array $like
      * @return array
      */
-    public function getLastReceiveMsg($msgXml, $where=array(), $like=array()){
+    public static function getLastReceiveMsg($msgXml, $where=array(), $like=array()){
         
         $db = Database::getInstance();
         $db->where('FromUserName', $msgXml['FromUserName']);
@@ -142,7 +133,7 @@ class WechatModel extends BaseModel{
             }
             $db->like($_k, $_v);
         }
-        $db->order_by('CreateTime', 'desc');
+        $db->orderBy('CreateTime desc');
         $db->limit(1, 0);
         $query = $db->get('wechat_receive_message');
 
@@ -156,7 +147,7 @@ class WechatModel extends BaseModel{
      * @param array $like
      * @return array
      */
-    public function getLastSendMsg($msgXml, $where=array(), $like=array()){
+    public static function getLastSendMsg($msgXml, $where=array(), $like=array()){
         
         $db = Database::getInstance();
         $db->where('touser', $msgXml['FromUserName']);
@@ -171,7 +162,7 @@ class WechatModel extends BaseModel{
                 $db->like($_k, $_v);
             }
         }
-        $db->order_by('CreateTime', 'desc');
+        $db->orderBy('CreateTime desc');
         $db->limit(1, 0);
         $query = $db->get('wechat_send_message');
 
@@ -183,7 +174,7 @@ class WechatModel extends BaseModel{
      * @param array $msg
      * @return boolean
      */
-    public function saveMessage($msg){
+    public static function saveMessage($msg){
         
         unset($msg['CreateTime']);
         $db = Database::getInstance();
@@ -200,7 +191,7 @@ class WechatModel extends BaseModel{
      * @param array $msg
      * @return boolean
      */
-    public function sendMessage($msg){
+    public static function sendMessage($msg){
 //        没权限发消息/(ㄒoㄒ)/~~
 //        $data['data'] = $msg;
 //        $data['url'] = sprintf('%s/message/custom/send?access_token=%s', WX_CGI_ADDR, $this->access_token);
@@ -236,11 +227,11 @@ class WechatModel extends BaseModel{
             log_message('error', 'save wechat_send_message error, sql:'. $db->last_query());
         }
         
-        $this->autoAnwserWxMessage($msg);
+        self::autoAnwserWxMessage($msg);
         return true;
     }
     
-    public function autoAnwserWxMessage($msg){
+    public static function autoAnwserWxMessage($msg){
         $msgformat = get_var_from_conf('msgformat');
         switch($msg['msgtype']){
             case 'image':
@@ -279,7 +270,7 @@ EOF;
 
             $timestamp  = $request->getQuery('timestamp', '');
             $nonce = $request->getQuery('nonce', '');
-            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(WX_TOKEN, WX_ENCODING_AES_KEY, WX_APP_ID);
+            $wxBizMsgCrypt = new Wechat_WXBizMsgCrypt(WECHAT_TOKEN, WECHAT_ENCODING_AES_KEY, WECHAT_APP_ID);
             $bak4log = $msg;
             $res = $wxBizMsgCrypt->encryptMsg($msg, $timestamp, $nonce, $msg);
             
@@ -295,9 +286,9 @@ EOF;
         exit;
     }
 
-    public function subscribe($openid){
+    public static function subscribe($openid){
         $db = Database::getInstance();
-        if($this->getUser($openid)){
+        if(self::getUser($openid)){
             
             $db->set('status', 0);
             $db->set('update_time', date('Y-m-d H:i:s'));
@@ -323,7 +314,7 @@ EOF;
         return 'new';
     }
 
-    public function unsubscribe($openid){
+    public static function unsubscribe($openid){
         if($this->getUser($openid)){
             $db = Database::getInstance();
             $db->set('status', 1);
@@ -344,7 +335,7 @@ EOF;
         return false;
     }
 
-    public function getUser($openid){
+    public static function getUser($openid){
         $db = Database::getInstance();
         $db->where('openid', $openid);
         $query = $db->get('wechat_user');
