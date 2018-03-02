@@ -47,33 +47,71 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
         };
         set_exception_handler($tmp);
 
-        spl_autoload_register(function($modelName) {
-            if(stripos($modelName, 'Model')!==false){
+        spl_autoload_register(function($name) {
+            $args = explode('_', $name);
 
-                $_className = str_replace('Model', '', $modelName);
+            if(count($args)===2){
+                $_database = strtolower($args[0]);
+                $_className = str_replace('Model', '', $args[1]);
                 $_table = preg_replace('/^_|_$/', '', strtolower(hump2Line($_className)));
-                
+                $_dir = ucfirst($_database);
+
+                $tpl = <<<EOF
+<?php
+defined('BASE_PATH') OR exit('No direct script access allowed');
+
+class {$_dir}_{$_className}Model extends BaseModel {
+    public static \$_table = '{$_table}';
+    public static \$_database = '{$_database}';
+}
+EOF;
+                $path = realpath(BASE_PATH).DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.$_dir;
+                if(!file_exists($path)){
+                    mkdir($path, '0744', true);
+                }
+
+                $file = $path.DIRECTORY_SEPARATOR.$_className.'.php';
+                if(file_exists($file)){
+                    log_message('error', $file.'已存在,不再初始化model文件');
+                    return true;
+                }
+
+                file_put_contents($file, $tpl);
+
+                require_once $file;
+                return true;
+            }else if(count($args)===1){
+                $_database = 'agent';
+                $_className = str_replace('Model', '', $args[0]);
+                $_table = preg_replace('/^_|_$/', '', strtolower(hump2Line($_className)));
+
                 $tpl = <<<EOF
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class {$_className}Model extends BaseModel {
-public static \$_table = '{$_table}';
+    public static \$_table = '{$_table}';
+    public static \$_database = '{$_database}';
 }
 EOF;
                 $path = realpath(BASE_PATH).DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'models';
                 if(!file_exists($path)){
                     mkdir($path, '0744', true);
                 }
-                
+
                 $file = $path.DIRECTORY_SEPARATOR.$_className.'.php';
+                if(file_exists($file)){
+                    log_message('error', $file.'已存在,不再初始化model文件');
+                    return true;
+                }
+
                 file_put_contents($file, $tpl);
-                
+
                 require_once $file;
                 return true;
             }
 
-            throw new Exception('class '. $modelName . ' not found!', 500);
+            throw new Exception('class '. $name . ' not found!', 500);
         });
     }
 

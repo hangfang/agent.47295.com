@@ -7,10 +7,12 @@
  * @date: 2016-04-26
  */
 define('BASE_PATH', dirname(__FILE__));
+define('PHP_ENV', ini_get('yaf.environ'));
 
 if (!extension_loaded("yaf"))
 {
 	include(BASE_PATH . '/framework/loader.php');
 }
 $application = new Yaf_Application(BASE_PATH . "/conf/application.ini");
+Yaf_Registry::set('app', $application);
 $application->bootstrap()->getDispatcher()->dispatch(new Yaf_Request_Simple());

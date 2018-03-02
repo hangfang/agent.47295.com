@@ -17,14 +17,14 @@ class Database{
      * @param string $default_group 数据库组名
      * @return Database_Drivers_Pdo_Mysql Mysql驱动类的实例
      */
-    public static function getInstance($default_group='db'){
+    public static function getInstance($default_group='agent'){
         if(! $config = Yaf_Registry::get('db_config')){
             $config = new Yaf_Config_Ini(BASE_PATH . '/conf/database.ini', ini_get('yaf.environ'));
             $config = $config->toArray();
             $config = $config['database'][$default_group][rand(0,count($config)-1)];
         }
 
-        $key = 'db_instance';
+        $key = 'db_instance_'.$default_group;
         if(self::$_instance = Yaf_Registry::get($key)){
             if(self::$_instance === false){
                 lExit(1025);
@@ -40,7 +40,7 @@ class Database{
             $driver = 'Database_Drivers_'.$driverName;
             if (class_exists($driver) ){
                 try{
-                    self::$_instance = new $driver($config, $key);
+                    self::$_instance = new $driver($config, $default_group);
                 }catch(Exception $e){
                     log_message('error', 'mysqli: 数据库连接失败!');
                     self::$_instance = false;
@@ -58,7 +58,7 @@ class Database{
             // Check for a subdriver
             if (class_exists($driver) ){
                 try{
-                    self::$_instance = new $driver($config, $key);
+                    self::$_instance = new $driver($config, $default_group);
                 }catch(Exception $e){
                     log_message('error', 'pdo: 数据库连接失败!');
                     self::$_instance = false;

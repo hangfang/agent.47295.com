@@ -347,7 +347,7 @@ class BaseModel
         }
 
         $db = Database::getInstance('information_schema');
-        $where = ['`TABLE_NAME`' => static::$_table, 'TABLE_SCHEMA' => static::$_database];
+        $where = ['`TABLE_NAME`' => static::$_table, '`TABLE_SCHEMA`' => static::$_database];
 
         $rt = $db->where($where)->get('`COLUMNS`');
         if ($rt === false) {

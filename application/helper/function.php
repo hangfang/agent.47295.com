@@ -452,7 +452,7 @@ if(!function_exists('http')){
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 跳过证书检查 
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在
         
-        log_message('debug', 'request remote server'. "\n" .'url: ['. $args['url'] .']'."\n".'param: ['. json_encode($args['data'], JSON_UNESCAPED_UNICODE) .']');
+        log_message('info', 'request remote server'. "\n" .'url: ['. $args['url'] .']'."\n".'param: ['. json_encode($args['data'], JSON_UNESCAPED_UNICODE) .']');
         $result = curl_exec($ch);
 
         //lExit(curl_getinfo($ch));
@@ -463,7 +463,7 @@ if(!function_exists('http')){
         if($from != 'UTF-8'){
             $tmp = mb_convert_encoding($tmp, 'UTF-8', $from);
         }
-        log_message('debug', 'result: ['. $tmp .']');
+        log_message('info', 'result: ['. $tmp .']');
 
         curl_close($ch);
 
@@ -1247,7 +1247,7 @@ if (!function_exists('buildSql')) {
         if ($preparedSql{0}==='(') {
             $preparedSql{0} = $preparedSql{strlen($preparedSql)-1} = ' ';
         }
-        if (false !== strpos($preparedSql, 'INSERT')) {
+        if (false !== strpos($preparedSql, 'INSERT') || false !== strpos($preparedSql, 'REPLACE')) {
             $isInsert = true;
         }
 
