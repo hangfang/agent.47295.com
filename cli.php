@@ -8,6 +8,7 @@
  */
 define('BASE_PATH', dirname(__FILE__));
 define('PHP_ENV', ini_get('yaf.environ'));
+date_default_timezone_set('Asia/Shanghai');
 
 if (!extension_loaded("yaf"))
 {
