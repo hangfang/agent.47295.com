@@ -162,6 +162,9 @@ class Wechat_MsgModel extends BaseModel{
             case 'video':
                 $msg = sprintf($msgformat['video_format'], $msg['touser'], $msg['fromuser'], time(), $msg['video']['media_id'], $msg['video']['thumb_media_id'], $msg['music']['title'], $msg['music']['description']);
                 break;
+            case 'voice':
+                $msg = sprintf($msgformat['voice_format'], $msg['touser'], $msg['fromuser'], time(), $msg['voice']['media_id']);
+                break;
             case 'music':
                 $msg = sprintf($msgformat['music_format'], $msg['touser'], $msg['fromuser'], time(), $msg['music']['title'], $msg['music']['description'], $msg['music']['musicurl'], $msg['music']['hqmusicurl'], $msg['music']['thumb_media_id']);
                 break;

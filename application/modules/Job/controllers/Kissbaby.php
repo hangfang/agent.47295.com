@@ -22,12 +22,11 @@ class KissbabyController extends BasicController{
         }
         
         $now = time();
-        $db = Database::getInstance('kissbaby');
-        $db->startTransaction();
         foreach($categoryList as $_cate){
             $_banner = empty($_cate['banner'][0]['image']) ? '' : str_replace('\\', '/', $_cate['banner'][0]['image']);
             if($_banner){
-                $this->saveImage($_banner);
+                $_banner = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_banner, '/'));
+                $this->__saveImage($_banner);
             }
             
             $_replace = [
@@ -42,15 +41,16 @@ class KissbabyController extends BasicController{
             ];
             
             if(!Kissbaby_CategoryModel::replace($_replace)){
-                $db->rollBack();
                 log_message('error', $msg = __FUNCTION__.', 更新父分类失败. replace:'.print_r($_replace, true));
-                exit(date('Y-m-d H:i:s', $now).' '.$msg."\n");
+                echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
             }
             
+            echo 'update kissbaby category succ..., name:'.$_cate['name']."\n";
             foreach($_cate['children'] as $_subCate){
                 $_image = empty($_subCate['image']) ? '' : str_replace('\\', '/', $_subCate['image']);
+                $_image = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_image, '/'));
                 if($_image){
-                    $this->saveImage($_image);
+                    $this->__saveImage($_image);
                 }
             
                 $_replace = [
@@ -65,21 +65,21 @@ class KissbabyController extends BasicController{
                 ];
             
                 if(!Kissbaby_CategoryModel::replace($_replace)){
-                    $db->rollBack();
                     log_message('error', $msg = __FUNCTION__.', 更新子分类失败. replace:'.print_r($_replace, true));
-                    exit(date('Y-m-d H:i:s', $now).' '.$msg."\n");
+                    echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
                 }
+                
+                echo 'update kissbaby sub category succ..., name:'.$_subCate['name']."\n";
             }
         }
         
-        $db->commit();
         exit(date('Y-m-d H:i:s', $now).' '.'更新分类成功'."\n");
     }
     
     /**
      * 从kissbaby获取商品信息
      */
-    public function getProductDetailAction(){
+    public function getProductAction(){
         $categoryList = Kissbaby_CategoryModel::getList();
         foreach($categoryList as $_cate){
             $_total = 100;
@@ -121,27 +121,14 @@ class KissbabyController extends BasicController{
                     
                     if(!empty($detail['images'])){
                         foreach($detail['images'] as $_image){
-                            $this->__saveImage(str_replace('image/',  '', trim($_image, '/')));
+                            $_image = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_image, '/'));
+                            $this->__saveImage(str_replace('image/',  '', $_image));
                         }
                         
                         $detail['image'] = implode(',', $detail['images']);
                     }else{
-                        $this->__saveImage(str_replace('image/',  '', trim($detail['image'], '/')));
-                    }
-                    
-                    if(!empty($detail['description'])){
-                        if(preg_match_all('/src\="([^"]+)"/', $detail['description'], $matches)){
-                            $detail['description'] = [];
-                            foreach($matches[1] as $_image){
-                                //log_message('error', print_r(parse_url($_image), true));exit;
-                                $_path = str_replace('//image/', '', parse_url($_image, PHP_URL_PATH));
-                                $_path = str_replace('/image/',  '', $_path);
-                                $this->__saveImage($_path);
-                                $detail['description'][] = $_path;
-                            }
-                            
-                            $detail['description'] = implode(',', $detail['description']);
-                        }
+                        $detail['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($detail['image'], '/'));
+                        $this->__saveImage(str_replace('image/',  '', $detail['image']));
                     }
                     
                     $_update = [
@@ -182,6 +169,80 @@ class KissbabyController extends BasicController{
                 echo '-----------------------------------------------'."\n";
                 $_page++;
             }while($_total>$_page*$_limit);
+        }
+    }
+    
+    /**
+     * 从kissbaby获取商品信息
+     */
+    public function getSingleProductAction(){
+        $productId = $this->_request->getParam('product_id');
+        if(!$productId){
+            log_message('error', '参数错误, product_id不能为空');
+            echo '参数错误, product_id不能为空'."\n";
+            exit;
+        }
+        
+        $detail = http($_tmpPrd=['url'=>sprintf(PRODUCT_DETAIL, $productId)]);
+        if(!$detail){
+            log_message('error', '从kissbaby获取商品详情失败');
+            echo 'get product detail from kissbaby failed...'."\n";
+            exit;
+        }
+
+        if(empty($detail['product'])){
+            log_message('error', 'kissbaby商品没有详情, url:'.$_tmpPrd['url']);
+            echo 'product detail empty..., url:'.$_tmpPrd['url']."\n";
+            exit;
+        }
+
+
+        $detail = $detail['product'];
+
+        if(!empty($detail['images'])){
+            foreach($detail['images'] as $_image){
+                $_image = preg_replace('/[^a-z0-9\/\.]/i', '', $_image);
+                $this->__saveImage(str_replace('image/',  '', trim($_image, '/')));
+            }
+
+            $detail['image'] = implode(',', $detail['images']);
+        }else{
+            $detail['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($detail['image'], '/'));
+            $detail['image'] = str_replace('image/',  '', $detail['image']);
+            $this->__saveImage($detail['image']);
+        }
+
+        $_update = [
+            'category_id'   =>  0,
+            'product_id'   =>  $detail['product_id'],
+            'product_name'   =>  $detail['name'],
+            'product_image'   =>  $detail['image'],
+            'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
+            'product_sale_price'   =>  $detail['sale_price'],
+            'product_vip_price'   =>  $detail['vip_price'],
+            'product_tag'   =>  $detail['tag'],
+            'product_model'   =>  $detail['model'],
+            'product_purchased'   =>  $detail['purchased'],
+            'create_time'   =>  empty($detail['date_added']) ? time() : strtotime($detail['date_added']),
+            'ts'   =>  empty($detail['date_modified']) ? date('Y-m-d H:i:s') : $detail['date_modified'],
+        ];
+
+        if(Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id')){
+            if(false===Kissbaby_ProductModel::update($_update, $_where=['product_id'=>$detail['product_id']])){
+                log_message('error', '更新kissbaby商品详情失败, update:'.print_r($_update, true).', where:'.print_r($_where, true).', url:'.print_r($_tmpPrd['url'], true));
+                echo '   update kissbaby product detail tailed..., url:'.$_tmpPrd['url']."\n";
+                exit;
+            }
+
+            echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
+        }else{
+            if(!Kissbaby_ProductModel::insert($_update)){
+                log_message('error', '插入kissbaby商品详情失败, insert:'.print_r($_update, true).', url:'.print_r($_tmpPrd['url'], true));
+                echo '   insert kissbaby product detail tailed..., url:'.$_tmpPrd['url']."\n";
+                exit;
+            }
+
+            echo '  insert kissbaby product detail succ..., name:'.$detail['name']."\n";
         }
     }
     
