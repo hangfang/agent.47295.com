@@ -10,6 +10,7 @@ class LogPlugin extends Yaf_Plugin_Abstract {
 
 	public function routerStartup(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
         $post = $request->getPost();
+        $post = $post ? $post : file_get_contents('php://input');
         $get = $request->getQuery();
         $cookie = $_COOKIE;
         
