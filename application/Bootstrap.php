@@ -10,18 +10,6 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  */
 class Bootstrap extends Yaf_Bootstrap_Abstract{
 
-    public function _initConfig() {
-        //把配置保存起来
-        $arrConfig = Yaf_Application::app()->getConfig();
-        Yaf_Registry::set('config', $arrConfig);
-        Yaf_Loader::import( BASE_PATH .'/conf/constants.php' );
-        ini_set('session.name', $arrConfig['application']['session']['name']);
-        ini_set('session.save_handler', $arrConfig['application']['session']['save_handler']);
-        ini_set('session.save_path', $arrConfig['application']['session']['save_path']);
-        ini_set('session.gc_maxlifetime', $arrConfig['application']['session']['gc_maxlifetime']);
-        Yaf_Session::getInstance()->start();
-    }
-
     public function _initHelpers(){
         Yaf_Loader::import( BASE_PATH .'/application/helper/function.php' );
         Yaf_Loader::import( BASE_PATH .'/application/helper/file.php' );
@@ -115,6 +103,18 @@ EOF;
         });
     }
 
+    public function _initConfig() {
+        //把配置保存起来
+        $arrConfig = Yaf_Application::app()->getConfig();
+        Yaf_Registry::set('config', $arrConfig);
+        Yaf_Loader::import( BASE_PATH .'/conf/constants.php' );
+        ini_set('session.name', $arrConfig['application']['session']['name']);
+        ini_set('session.save_handler', $arrConfig['application']['session']['save_handler']);
+        ini_set('session.save_path', $arrConfig['application']['session']['save_path']);
+        ini_set('session.gc_maxlifetime', $arrConfig['application']['session']['gc_maxlifetime']);
+        Yaf_Session::getInstance()->start();
+    }
+    
     public function _initPlugin(Yaf_Dispatcher $dispatcher) {
         //注册一个插件
         !is_cli() && $dispatcher->registerPlugin(new LogPlugin());
