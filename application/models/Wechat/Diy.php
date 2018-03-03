@@ -15,7 +15,7 @@ class Wechat_DiyModel extends BaseModel{
         $data['touser'] = $msgXml['FromUserName'];
         $data['fromuser'] = $msgXml['ToUserName'];
         $data['text']['content'] = $msgformat['msg_unrecognized'];
-        $data['msg_id'] = $rs['msg_id'];
+        //$data['msg_id'] = $rs['msg_id'];
 
         
         Wechat_MsgModel::sendMessage($data);
