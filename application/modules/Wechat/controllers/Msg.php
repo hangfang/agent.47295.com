@@ -78,7 +78,7 @@ class MsgController extends WechatController {
             $msg = array();
             $msgformat = get_var_from_conf('msgformat')['receive_format'][$msgXml['MsgType']];
             foreach($msgformat as $_field){
-                if(!empty($msgXml[$_field]) && in_array($msgXml[$_field])){
+                if(!empty($msgXml[$_field]) && is_array($msgXml[$_field])){
                     if($_field==='SendLocationInfo'){
                         foreach($msgXml[$_field] as $_subk=>$_subv){
                             $msg[$_subk] = $_subv;
