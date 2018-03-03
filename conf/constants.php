@@ -66,3 +66,7 @@ define('KD_NIAO_API_URL', 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.a
 /*腾讯地图*/
 define('TENCENT_MAP_APP_KEY', 'J7CBZ-YV43X-PVS4E-ZGYVP-KF2T3-A3BQZ');
 define('TENCENT_MAP_APP_URL', 'http://apis.map.qq.com/ws');
+
+//kissbaby
+define('KISSBABY_KEYWORD', '港货 母婴 药品 奶粉 辅食 奶瓶 化妆品 美颜 保养 包包');
+define('KISSBABY_DESCRIPTION', '归功化妆品、母婴等产品香港代购服务');

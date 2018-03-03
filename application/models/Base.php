@@ -94,14 +94,15 @@ class BaseModel
      * @param array $where 删除数据的条件
      * @return boolean
      */
-    public static function delete($where)
+    public static function delete($where=[])
     {
         if (empty(static::$_database) || empty(static::$_table)) {
             return [];
         }
 
         $db = Database::getInstance(static::$_database);
-        $query = $db->where($where)->delete(static::$_table);
+        $where && $db->where($where);
+        $query = $db->delete(static::$_table);
         if ($query === false) {
             static::$_error = 501;
             return false;
@@ -195,7 +196,7 @@ class BaseModel
         }
 
         if (empty($fields) || !is_array($fields)) {
-            log_message('error', 'sql: insert into ' . static::$_database . '.' . static::$_table . ' failed, param '. print_r($field, true) .' error.');
+            log_message('error', 'sql: insert into ' . static::$_database . '.' . static::$_table . ' failed, param '. print_r($fields, true) .' error.');
             return false;
         }
 

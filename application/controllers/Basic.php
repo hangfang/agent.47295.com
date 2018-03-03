@@ -8,10 +8,6 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
  */
 class BasicController extends Yaf_Controller_Abstract {
     public $_error = array();
-    private $_post = array();
-    private $_post_session = array();
-    private $_get = array();
-    private $_uri = array();
     
 	/** 
      * 执行一些初始化工作
@@ -32,7 +28,8 @@ class BasicController extends Yaf_Controller_Abstract {
                 lExit($this->_error[3]);
             }
 
-            if($moduleName==='index' || $moduleName==='weapp'){
+            if($moduleName==='index' || $moduleName==='weapp' || $moduleName==='shop'){
+                header('content-type:text/html;charset=utf-8', true);
                 $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
                 $this->setViewpath($viewpath);
                 $this->_view->assign('viewPath', $viewpath);
