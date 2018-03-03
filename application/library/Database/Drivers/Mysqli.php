@@ -116,7 +116,7 @@ class Database_Drivers_Mysqli{
     
     public final function __construct($config, $default_group){
         $this->_config = $config;
-        $this->_default_group = $default_group;
+        $this->_default_group = __CLASS__.$default_group;
         // Do we have a socket path?
 		if ($config['hostname'][0] === '/'){
 			$hostname = NULL;

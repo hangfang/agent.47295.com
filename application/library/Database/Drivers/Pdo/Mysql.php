@@ -10,7 +10,7 @@ class Database_Drivers_Pdo_Mysql extends Database_Drivers_Pdo{
     public $_default_group = '';
     private $_options = array();
     public final function __construct($config, $default_group){
-        $this->_default_group = $default_group;
+        $this->_default_group = __CLASS__.$default_group;
         $this->_config = $config;
 		if (empty($config['dsn'])){
 			$config['dsn'] = 'mysql:host='.(empty($config['hostname']) ? '127.0.0.1' : $config['hostname']);
