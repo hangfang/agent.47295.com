@@ -12,7 +12,7 @@ define('LATEST_PRODUCT', 'http://kiss.api.niaobushi360.com/index.php?route=produ
 //首页推荐
 define('HOME_RECOMMAND', 'http://kiss.api.niaobushi360.com/index.php?route=module/special/appGetHomeInfoNew&device=android&version=111');
 //活动列表
-define('ACTIVITY_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=module/special/appGetSalesNew&limit=%d&page=%s&device=android&version=111');
+define('ACTIVITY_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=module/special/appGetSalesNew&limit=20&page=0&device=android&version=111');
 //活动商品列表
 define('ACTIVITY_PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=product/sale/getSaleInfo&sale_id=%s&sort=popular&order=desc&page=%s&limit=%s&device=android&version=111');
 
@@ -397,6 +397,107 @@ class KissbabyController extends BasicController{
             echo 'insert kissbaby home recommand product failed...'."\n";
         }else{
             echo 'insert kissbaby home recommand product succ...'."\n";
+        }
+    }
+    
+    /**
+     * 从kissbaby获取活动列表
+     */
+    public function getActivityAction(){
+        $activityList = http($_tmp=['url'=>ACTIVITY_LIST]);
+        foreach($activityList['sales'] as $_activity){
+            if(!empty($_activity['banner_lg'])){
+                $_activity['banner_lg'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_activity['banner_lg'], '/'));
+                $this->__saveImage(str_replace('image/',  '', $_activity['banner_lg']));
+            }
+
+            $_update = [
+                'activity_id'   =>  $_activity['sale_id'],
+                'activity_name'   =>  $_activity['name'],
+                'activity_image'   =>  empty($_activity['banner_lg']) ? '' : $_activity['banner_lg'],
+                'start_time'   =>  $_activity['date_start'],
+                'end_time'   =>  $_activity['date_end'],
+                'activity_status'   =>  $_activity['status'],
+                'activity_visible'   =>  $_activity['visible'],
+                'activity_order'   =>  $_activity['sort_order'],
+                'create_time'   =>  time(),
+                'ts'            =>  date('Y-m-d H:i:s')
+            ];
+                
+            if(!Kissbaby_ActivityModel::getRow(['activity_id'=>$_activity['sale_id']], 'activity_id')){
+                if(false===Kissbaby_ActivityModel::insert($_update)){
+                    log_message('error', '删除kissbaby活动失败');
+                    echo 'insert kissbaby activity failed...'."\n";
+                    continue;
+                }
+            }else{
+                if(false===Kissbaby_ActivityModel::update($_update, ['activity_id'=>$_activity['sale_id']])){
+                    log_message('error', '更新kissbaby活动失败');
+                    echo 'update kissbaby activity failed...'."\n";
+                }
+            }
+
+            $_total = 100;
+            $_limit = 20;
+            $_page = 0;
+            $_number = 0;
+            do{
+                echo 'activity start..., activity_id:'.$_activity['sale_id'].' page:'.$_page."\n";
+                $productList = http($_tmpPrd=['url'=>sprintf(ACTIVITY_PRODUCT_LIST, $_activity['sale_id'], $_page, $_limit)]);
+                if(!$productList){
+                    log_message('error', '从kissbaby获取活动商品列表失败');
+                    echo 'get activity product list from kissbaby failed...'."\n";
+                    break;
+                }
+
+                if(empty($productList['sale']['products'])){
+                    log_message('error', 'kissbaby活动下没有商品, url:'.$_tmpPrd['url']);
+                    echo 'activity product list empty..., url:'.$_tmpPrd['url']."\n";
+                    break;
+                }
+                
+                //log_message('error', print_r($goodsList, true));exit;
+                foreach($productList['sale']['products'] as $_product){
+                    if(empty($_product['image'])){
+                        $_product['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_product['image'], '/'));
+                        $this->__saveImage(str_replace('image/',  '', $_product['image']));
+                    }
+                    
+                    $_update = [
+                        'activity_id'   =>  $_activity['sale_id'],
+                        'product_id'   =>  $_product['product_id'],
+                        'product_name'   =>  $_product['name'],
+                        'product_image'   =>  $_product['image'],
+                        'product_sale_price'   =>  $_product['sale_price'],
+                        'product_vip_price'   =>  $_product['vip_price'],
+                        'create_time'   =>  time(),
+                        'ts'   =>  date('Y-m-d H:i:s')
+                    ];
+                    
+                    if(Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id')){
+                        if(false===Kissbaby_ActivityProductModel::update($_update, $_where)){
+                            log_message('error', '更新kissbaby活动商品失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
+                            echo '   update kissbaby activity product failed..., activity_name:'.$_activity['name']."\n";
+                            continue;
+                        }
+                        
+                        echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
+                    }else{
+                        if(!Kissbaby_ActivityProductModel::insert($_update)){
+                            log_message('error', '插入kissbaby活动商品失败, insert:'.print_r($_update, true));
+                            echo '   insert kissbaby activity product detail failed..., activity_name:'.$_activity['name']."\n";
+                            continue;
+                        }
+                        
+                        echo '  insert kissbaby activity product detail succ..., name:'.$_product['name']."\n";
+                    }
+                }
+                
+                echo 'activity succ..., name:'.$_activity['name'].' page:'.$_page."\n";
+                echo '-----------------------------------------------'."\n";
+                $_page++;
+                $_number += $_limit;
+            }while($_total>$_number);
         }
     }
     
