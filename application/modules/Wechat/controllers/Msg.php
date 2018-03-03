@@ -22,7 +22,7 @@ class MsgController extends WechatController {
         $signature = $_GET["signature"];    //微信加密签名
         $timestamp = $_GET["timestamp"];    //时间戳
         $nonce = $_GET["nonce"];            //随机数
-        $token = Yaf_Registry::get('WECHAT_TOKEN');
+        $token = WECHAT_TOKEN;
         $tmpArr = array($token, $timestamp, $nonce);
         sort($tmpArr);      //进行字典序排序
         //sha1加密后与签名对比
