@@ -147,7 +147,7 @@ class Wechat_MsgModel extends BaseModel{
             $data[$_msg_name] = $_msg_value;
         }
         
-       WechatSendMessageModel::insert($data);
+       Wechat_SendMessageModel::insert($data);
         
         self::autoAnwserWxMessage($msg);
         return true;
