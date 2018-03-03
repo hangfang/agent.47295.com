@@ -403,8 +403,7 @@ class WechatController extends Yaf_Controller_Abstract {
     
     private function searchAround($msg, $msgXml){
         $msgformat = get_var_from_conf('msgformat');
-        $wechatModel = new WechatModel();
-        $lastMsg = $wechatModel->getLastReceiveMsg($msgXml, array('MsgType'=>'location'));
+        $lastMsg = WechatModel::getLastReceiveMsg($msgXml, array('MsgType'=>'location'));
         if(empty($lastMsg)){
             $data = $msgformat['send_format']['text'];
             $data['touser'] = $msgXml['FromUserName'];

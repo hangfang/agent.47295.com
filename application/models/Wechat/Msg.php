@@ -83,29 +83,11 @@ class Wechat_MsgModel extends BaseModel{
      * @todo 查询上一条接收记录(5分钟之内)
      * @param array $msgXml
      * @param array $where
-     * @param array $like
      * @return array
      */
-    public static function getLastReceiveMsg($msgXml, $where=array(), $like=array()){
-        
-        $db = Database::getInstance('operation');
-        $db->where('FromUserName', $msgXml['FromUserName']);
-        foreach($where as $_k=>$_v){
-            $db->where($_k, $_v);
-        }
-        
-        foreach($like as $_k=>$_v){
-            if(is_array($_v)){
-                $db->like($_k, $_v['value'], isset($_v['side'])?$_v['side']:'both', isset($_v['escape'])?$_v['escape']:NULL);
-                continue;
-            }
-            $db->like($_k, $_v);
-        }
-        $db->order_by('CreateTime', 'desc');
-        $db->limit(1, 0);
-        $query = $db->get('wechat_receive_message');
-
-        return $query && $query->num_rows()===1 ? $query->row_array() : array();
+    public static function getLastReceiveMsg($msgXml, $where=array()){
+        $where['FromUserName'] = $msgXml['FromUserName'];
+        return Wechat_ReceiveMessageModel::getRow($where, '*', 'id desc');
     }
     
        /**
@@ -115,30 +97,9 @@ class Wechat_MsgModel extends BaseModel{
      * @param array $like
      * @return array
      */
-    public static function getLastSendMsg($msgXml, $where=array(), $like=array(),$msg_id=null){
-        
-        $db = Database::getInstance();
-        $db->where('touser', $msgXml['FromUserName']);
-        $msg_id && $db->where('msg_id',$msg_id);
-        if($where){
-            foreach($where as $_k=>$_v){
-                $db->where($_k, $_v);
-            }
-        }
-        if($like){
-            foreach($like as $_k=>$_v){
-                if(is_array($_v)){
-                    $db->like($_k, $_v['value'], isset($_v['side'])?$_v['side']:'both', isset($_v['escape'])?$_v['escape']:NULL);
-                }else{
-                    $db->like($_k, $_v);
-                }
-            }
-        }
-        $db->order_by('createtime', 'desc');
-        $db->limit(1, 0);
-        $query = $db->get('wechat_send_message');
-
-        return $query && $query->num_rows()===1 ? $query->row_array() : array();
+    public static function getLastSendMsg($msgXml, $where=array()){
+        $where['touser'] = $msgXml['FromUserName'];
+        return Wechat_SendMessageModel::getRow($where, '*', 'id desc');
     }
     
     /**
@@ -147,7 +108,7 @@ class Wechat_MsgModel extends BaseModel{
      * @return boolean
      */
     public static function saveMessage($msg){
-        return WechatReceiveMessageModel::insert($msg);
+        return Wechat_ReceiveMessageModel::insert($msg);
     }
     
     /**
@@ -257,11 +218,7 @@ EOF;
     }
 
     public static function getUser($openid){
-        $db = Database::getInstance();
-        $db->where('openid', $openid);
-        $query = $db->get('wechat_user');
-
-        return $query && $query->num_rows()===1 ? $query->row_array() : array();
+        return Wechat_UserModel::getRow(['openid'=>$openid]);
     }
 
     public static function kfSessionCreate($msgXml){
