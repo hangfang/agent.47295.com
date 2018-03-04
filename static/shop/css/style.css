@@ -580,6 +580,17 @@ h2.m_3 {
 .col_1_of_3:hover .shop-holder{
 	border: 8px solid #f54d56;
 }
+.span_1_of_5 {
+  width:18.7%;
+}
+.col_1_of_5 {
+  display: block;
+  float: left;
+  margin:0 0 0 1.6%;
+}
+.col_1_of_3:hover .shop-holder{
+	border: 8px solid #f54d56;
+}
 .shop-holder{
 	border: 8px solid #ebebeb;
   transition: all 0.3s ease;

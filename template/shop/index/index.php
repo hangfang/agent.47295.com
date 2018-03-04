@@ -15,10 +15,10 @@ include $viewPath.'header.php';
 </div>
 
 <div class="content_top">
-	<h3 class="m_1">新品到货</h3>
+	<h3 class="m_1" style="display:none;">精品推荐</h3>
 	<div class="container">
 	   <div class="box_1">
-	       <div class="col-md-7">
+	       <div class="col-md-7-bak">
 			    <div class="section group">
 						<div class="col_1_of_3 span_1_of_3">
 							<div class="shop-holder">
@@ -59,10 +59,36 @@ include $viewPath.'header.php';
 		                            <span><span class="amount">$45.00</span></span>
 		                    </div>
 						</div>
+						<div class="col_1_of_3 span_1_of_3">
+							<div class="shop-holder">
+		                         <div class="product-img">
+		                            <a href="single.html">
+		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic3.jpg" class="img-responsive"  alt="item4">		                            </a>
+		                            <a href="" class="button "></a>		                         </div>
+		                    </div>
+		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
+		                            <div><a href="single.html" rel="tag">humour</a></div>
+		                            <h3><a href="single.html">Non-charac</a></h3>
+		                            <span><span class="amount">$45.00</span></span>
+		                    </div>
+						</div>
+						<div class="col_1_of_3 span_1_of_3">
+							<div class="shop-holder">
+		                         <div class="product-img">
+		                            <a href="single.html">
+		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic3.jpg" class="img-responsive"  alt="item4">		                            </a>
+		                            <a href="" class="button "></a>		                         </div>
+		                    </div>
+		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
+		                            <div><a href="single.html" rel="tag">humour</a></div>
+		                            <h3><a href="single.html">Non-charac</a></h3>
+		                            <span><span class="amount">$45.00</span></span>
+		                    </div>
+						</div>
 						<div class="clearfix"></div> 
 				</div>
 		</div>
-		<div class="col-md-5 row_3">
+		<div class="col-md-5 row_3" style="display:none;">
 			<div class="about-block-content">
 		       <div class="border-add"></div>
 				<h4>About Us</h4>

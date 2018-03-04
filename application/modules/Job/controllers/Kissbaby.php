@@ -182,6 +182,7 @@ class KissbabyController extends BasicController{
                 $_number += $_limit;
             }while($_total>$_number);
         }
+        echo __FUNCTION__.',按分类更新商品成功'."\n";
     }
     
     /**
@@ -256,6 +257,7 @@ class KissbabyController extends BasicController{
 
             echo '  insert kissbaby product detail succ..., name:'.$detail['name']."\n";
         }
+        echo __FUNCTION__.',按单个商品成功'."\n";
     }
     
     /**
@@ -321,6 +323,7 @@ class KissbabyController extends BasicController{
             $_page++;
             $_number += $_limit;
         }while($_total>$_number);
+        echo __FUNCTION__.',更新新品到货成功'."\n";
     }
     
     /**
@@ -398,6 +401,8 @@ class KissbabyController extends BasicController{
         }else{
             echo 'insert kissbaby home recommand product succ...'."\n";
         }
+        
+        echo __FUNCTION__.',更新首页推荐成功'."\n";
     }
     
     /**
@@ -499,6 +504,7 @@ class KissbabyController extends BasicController{
                 $_number += $_limit;
             }while($_total>$_number);
         }
+        echo __FUNCTION__.',更新活动成功'."\n";
     }
     
     /**

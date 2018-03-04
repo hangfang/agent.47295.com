@@ -49,7 +49,7 @@
             </div>
             <div class="col-xs-7 menu">
                 <ul class="megamenu skyblue">
-                    <li class="active grid"><a class="color1" href="index.html">新品到货</a></li>
+                    <li class="active grid"><a class="color1" href="index.html">精品推荐</a></li>
                     <li class="grid"><a class="color2" href="#">热销爆款</a></li>
                     <li><a class="color4" href="about.html">限时活动</a></li>				
                     <li><a class="color5" href="404.html">商品分类</a></li>
