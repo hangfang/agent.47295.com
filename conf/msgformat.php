@@ -15,11 +15,11 @@ $msgformat['msg_kfsession_create_succ'] = <<<EOF
 EOF;
 
 $msgformat['msg_invite'] = <<<EOF
-欢迎关注诸葛到店,黄金珠宝店的好军师\n
-        为黄金珠宝品牌商和门店研发的高效、低成本SaaS解决方案！\n
-        <a href="http://api.zhugedaodian.com/app/download">【点击下载】</a>最新版的诸葛到店app，让“诸葛到店”带你轻松运营门店！
-------------------------\n
-想了解更多信息，请<a href="https://www.zhugedaodian.com">点击这里</a>\n
+感谢关注琳玲Dai购\n
+        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
+        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>\n
+        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>\n
+详请咨询<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
 EOF;
 
 $msgformat['msg_gold'] = <<<EOF
@@ -31,11 +31,11 @@ $msgformat['msg_gold'] = <<<EOF
 EOF;
 
 $msgformat['msg_unrecognized'] = <<<EOF
-欢迎关注诸葛到店,黄金珠宝店的好军师\n
-        为黄金珠宝品牌商和门店研发的高效、低成本SaaS解决方案！\n
-        <a href="http://api.zhugedaodian.com/app/download">【点击下载】</a>最新版的诸葛到店app，让“诸葛到店”带你轻松运营门店！
-------------------------\n
-想了解更多信息，请<a href="https://www.zhugedaodian.com">点击这里</a>\n
+感谢关注琳玲Dai购\n
+        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
+        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>\n
+        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>\n
+详请咨询<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
 EOF;
         
 $msgformat['msg_to_large'] = <<<EOF
@@ -56,19 +56,19 @@ $msgformat['msg_position'] = <<<EOF
 EOF;
 
 $msgformat['msg_welcome_back'] = <<<EOF
-欢迎关注诸葛到店,黄金珠宝店的好军师\n
-        为黄金珠宝品牌商和门店研发的高效、低成本SaaS解决方案！\n
-        <a href="http://api.zhugedaodian.com/app/download">【点击下载】</a>最新版的诸葛到店app，让“诸葛到店”带你轻松运营门店！
-------------------------\n
-想了解更多信息，请<a href="https://www.zhugedaodian.com">点击这里</a>\n
+感谢关注琳玲Dai购\n
+        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
+        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>\n
+        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>\n
+详请咨询<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
 EOF;
 
 $msgformat['msg_welcome_newbeing'] = <<<EOF
-欢迎关注诸葛到店,黄金珠宝店的好军师\n
-        为黄金珠宝品牌商和门店研发的高效、低成本SaaS解决方案！\n
-        <a href="http://api.zhugedaodian.com/app/download">【点击下载】</a>最新版的诸葛到店app，让“诸葛到店”带你轻松运营门店！
-------------------------\n
-想了解更多信息，请<a href="https://www.zhugedaodian.com">点击这里</a>\n
+感谢关注琳玲Dai购\n
+        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
+        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>\n
+        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>\n
+详请咨询<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
 EOF;
 
 $msgformat['transfer_customer_service_format'] = <<<EOF
