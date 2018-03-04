@@ -17,12 +17,12 @@ class Manage_UserController extends BasicController {
      * @param string remark 粉丝的备注名
      */
     public function updateRemarkAction(){
-        $openId = BaseModel::getPost('openid');
+        $openId = $this->_request->getPost('openid');
         if(empty($openId)){
             lExit(502, '粉丝的openid不能为空');
         }
         
-        $remark = BaseModel::getPost('remark');
+        $remark = $this->_request->getPost('remark');
         if(strlen($remark)>30){
             lExit(502, '新备注名不能大于30字符');
         }
@@ -52,12 +52,12 @@ class Manage_UserController extends BasicController {
      *    }
      */
     public function getUserInfoAction(){
-        $openId = BaseModel::getPost('openid');
+        $openId = $this->_request->getPost('openid');
         if(empty($openId)){
             lExit(502, '粉丝的openid不能为空');
         }
         
-        $lang = BaseModel::getPost('lang');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+        $lang = $this->_request->getPost('lang');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
         
         lExit(Wechat_ApiModel::getUserInfo($openId, $lang));
     }
@@ -85,7 +85,7 @@ class Manage_UserController extends BasicController {
      * }
      */
     public function batchGetUserInfoAction(){
-        $userList = BaseModel::getPost('user_list');
+        $userList = $this->_request->getPost('user_list');
         if(empty($userList)){
             lExit(502, '粉丝的列表不能为空');
         }
@@ -98,7 +98,7 @@ class Manage_UserController extends BasicController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getUsersAction(){
-        $nextOpenid = BaseModel::getPost('next_openid');
+        $nextOpenid = $this->_request->getPost('next_openid');
         lExit(Wechat_ApiModel::getUsers($nextOpenid));
     }
     
@@ -107,7 +107,7 @@ class Manage_UserController extends BasicController {
      * @param string begin_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getBlackListAction(){
-        $beginOpenid = BaseModel::getPost('begin_openid');
+        $beginOpenid = $this->_request->getPost('begin_openid');
         lExit(Wechat_ApiModel::getBlackList($beginOpenid));
     }
     
@@ -116,7 +116,7 @@ class Manage_UserController extends BasicController {
      * @param string openid_list 粉丝的openid列表
      */
     public function batchBlackListAction(){
-        $openIdList = BaseModel::getPost('openid_list');
+        $openIdList = $this->_request->getPost('openid_list');
         if(empty($openIdList)){
             lExit(502, '粉丝的列表不能为空');
         }
@@ -129,7 +129,7 @@ class Manage_UserController extends BasicController {
      * @param string openid_list 粉丝的openid列表
      */
     public function batchUnblackListAction(){
-        $openIdList = BaseModel::getPost('openid_list');
+        $openIdList = $this->_request->getPost('openid_list');
         if(empty($openIdList)){
             lExit(502, '粉丝的列表不能为空');
         }

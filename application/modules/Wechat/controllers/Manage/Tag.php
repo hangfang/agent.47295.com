@@ -23,7 +23,7 @@ class Manage_TagController extends BasicController {
      * @param string name 标签名字
      */
     public function createTagAction(){
-        $name = trim(BaseModel::getPost('name'));
+        $name = trim($this->_request->getPost('name'));
         if(empty($name)){
             lExit(502, '标签名字不能为空');
         }
@@ -39,12 +39,12 @@ class Manage_TagController extends BasicController {
      * @param string name 标签名字
      */
     public function updateTagAction(){
-        $id = trim(BaseModel::getPost('id'));
+        $id = trim($this->_request->getPost('id'));
         if(empty($id)){
             lExit(502, '标签id不能为空');
         }
         
-        $name = trim(BaseModel::getPost('name'));
+        $name = trim($this->_request->getPost('name'));
         if(empty($name)){
             lExit(502, '标签名字不能为空');
         }
@@ -60,7 +60,7 @@ class Manage_TagController extends BasicController {
      * @param string name 标签名字
      */
     public function deleteTagAction(){
-        $id = trim(BaseModel::getPost('id'));
+        $id = trim($this->_request->getPost('id'));
         if(empty($id)){
             lExit(502, '标签id不能为空');
         }
@@ -73,11 +73,11 @@ class Manage_TagController extends BasicController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getTagUsersAction(){
-        $tagId = trim(BaseModel::getPost('id'));
+        $tagId = trim($this->_request->getPost('id'));
         if(empty($tagId)){
             lExit(502, '标签id不能为空');
         }
-        $nextOpenId = trim(BaseModel::getPost('next_openid'));
+        $nextOpenId = trim($this->_request->getPost('next_openid'));
         
         lExit(Wechat_ApiModel::getTagUsers($tagId, $nextOpenId));
     }
@@ -88,12 +88,12 @@ class Manage_TagController extends BasicController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function batchTaggingAction(){
-        $tagId = trim(BaseModel::getPost('id'));
+        $tagId = trim($this->_request->getPost('id'));
         if(empty($tagId)){
             lExit(502, '标签id不能为空');
         }
         
-        $openidList = BaseModel::getPost('openid');
+        $openidList = $this->_request->getPost('openid');
         if(empty($openidList)){
             lExit(502, '粉丝openid不能为空');
         }
@@ -109,13 +109,13 @@ class Manage_TagController extends BasicController {
      */
     public function batchUntaggingAction(){
         $params = [];
-        $tmp = trim(BaseModel::getPost('id'));
+        $tmp = trim($this->_request->getPost('id'));
         if(empty($tmp)){
             lExit(502, '标签id不能为空');
         }
         $params['tagid'] = $tmp;
         
-        $tmp = BaseModel::getPost('openid');
+        $tmp = $this->_request->getPost('openid');
         if(empty($tmp)){
             lExit(502, '粉丝openid不能为空');
         }
@@ -130,7 +130,7 @@ class Manage_TagController extends BasicController {
      * @param string openid 粉丝的openid
      */
     public function getUserTagsAction(){
-        $openId = BaseModel::getPost('openid');
+        $openId = $this->_request->getPost('openid');
         if(empty($openId)){
             lExit(502, '粉丝openid不能为空');
         }

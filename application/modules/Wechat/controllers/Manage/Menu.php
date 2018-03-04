@@ -6,9 +6,6 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 class Manage_MenuController extends BasicController {
     public function init(){
         parent::init();
-        if(!Wechat_MsgModel::initDomain()){
-            lExit(502, '当前企业未接入微信公众号');
-        }
     }
     
     /**
@@ -106,7 +103,28 @@ class Manage_MenuController extends BasicController {
                 ]
             ]
         ];
-        $menus = BaseModel::getPost('menu', $default);
+        
+        $default = [
+            [
+                "type"=>"view", 
+                "name"=>"我要下单", 
+                "url"=>"http://agent.47295.com/shop/index/index", 
+                "sub_button"=>[ ]
+            ], 
+            [
+                "type"=>"view", 
+                "name"=>"查询订单", 
+                "url"=>"http://agent.47295.com/shop/order/latest", 
+                "sub_button"=>[ ]
+            ],
+                        [
+                "type"=>"view", 
+                "name"=>"个人中心", 
+                "url"=>"http://agent.47295.com/shop/account/index", 
+                "sub_button"=>[ ]
+            ]
+        ];
+        $menus = $this->_request->getPost('menu', $default);
         if(empty($menus)){
             lExit(502, '菜单数据格式错误');
         }
@@ -230,7 +248,7 @@ class Manage_MenuController extends BasicController {
                 ]
             ]
         ];
-        $menus = BaseModel::getPost('menu', $default);
+        $menus = $this->_request->getPost('menu', $default);
         if(empty($menus)){
             lExit(502, '菜单数据格式错误');
         }
@@ -244,7 +262,7 @@ class Manage_MenuController extends BasicController {
                 "client_platform_type"=>"1",//客户端版本，当前只具体到系统型号：IOS(1), Android(2),Others(3)，不填则不做匹配
                 "language"=>"zh_CN"
             ];
-        $rules = BaseModel::getPost('rules', $rules);
+        $rules = $this->_request->getPost('rules', $rules);
         if(empty($rules)){
             lExit(502, '个性化规则不能都为空');
         }
@@ -290,7 +308,7 @@ class Manage_MenuController extends BasicController {
      * @param string menuid 个性化菜单id
      */
     public function deleteConditionalAction(){
-        $menuId = BaseModel::getPost('menuid');
+        $menuId = $this->_request->getPost('menuid');
         if(empty($menuId)){
             lExit(502, '菜单id不能为空');
         }
@@ -302,7 +320,7 @@ class Manage_MenuController extends BasicController {
      * @param string user_id 粉丝的openid或者微信号
      */
     public function tryConditionalAction(){
-        $userId = BaseModel::getPost('user_id');
+        $userId = $this->_request->getPost('user_id');
         if(empty($userId)){
             lExit(502, '粉丝的openid或者微信号不能为空');
         }

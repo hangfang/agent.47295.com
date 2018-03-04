@@ -876,21 +876,20 @@ if(!function_exists('lExit')){
     function lExit($code=[], $msg=null){
         header('content-type:application/json;charset=utf-8', true);
         if(is_object($code) || is_array($code)){
-            $body4log = json_encode(['response'=>['data'=>$code], '_a'=>ENCRYPT_OUTPUT], JSON_UNESCAPED_UNICODE);//保存加密前的数据，写入日志
+            $body4log = json_encode(['response'=>['data'=>$code]], JSON_UNESCAPED_UNICODE);//保存加密前的数据，写入日志
             $body = json_encode([
-				'response' => ENCRYPT_OUTPUT ? DES::encodeWithBase64(['data'=>$code]):['data'=>$code],
-				'_a'=> ENCRYPT_OUTPUT,
+				'response' => ['data'=>$code],
 				'state'=>true
 			],JSON_UNESCAPED_UNICODE);
 		}else if(is_bool($code)){
-            $body4log = $body = json_encode(['response'=>['data'=>$code], '_a'=>false, 'state'=>true], JSON_UNESCAPED_UNICODE);
+            $body4log = $body = json_encode(['response'=>['data'=>$code], 'state'=>true], JSON_UNESCAPED_UNICODE);
         }else{
             if(is_null($msg)){
                 $error = get_var_from_conf('error');
                 if(isset($error[$code])){
                     $body4log = $body = json_encode(['error'=>['code'=>$code, 'message'=>$error[$code]['message']]], JSON_UNESCAPED_UNICODE);
                 }else{
-                    $body4log = $body = json_encode(['response'=>['data'=>$code], '_a'=>false, 'state'=>true], JSON_UNESCAPED_UNICODE);
+                    $body4log = $body = json_encode(['response'=>['data'=>$code], 'state'=>true], JSON_UNESCAPED_UNICODE);
                 }
             }else{
                 $body4log = $body = json_encode(['error'=>['code'=>$code, 'message'=>$msg]], JSON_UNESCAPED_UNICODE);

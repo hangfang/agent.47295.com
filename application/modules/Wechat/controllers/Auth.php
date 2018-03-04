@@ -9,7 +9,7 @@ class AuthController extends WechatController {
      * @author fanghang@fujiacaifu.com
      */
     public function indexAction(){
-        $url = BaseModel::getQuery('redirect_uri');
+        $url = $this->_request->getQuery('redirect_uri');
 
         if(isset($_SESSION['user']) && $_SESSION['user_type']=='seller'){
             $url = $url ? $url : '/wechat/user/index';
@@ -98,7 +98,7 @@ class AuthController extends WechatController {
      */
     public function loginAction(){
         $url = '/wechat/auth/index';
-        if($tmp=BaseModel::getQuery('redirect_uri')){
+        if($tmp=$this->_request->getQuery('redirect_uri')){
             $url = $tmp;
         }
         
@@ -107,7 +107,7 @@ class AuthController extends WechatController {
         }
 
         //微信授权登录
-        header('location: '.sprintf(Yaf_Registry::get('WECHAT_OPEN_HOST').'/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', Yaf_Registry::get('WECHAT_APP_ID'), urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url)));exit;
+        header('location: '.sprintf(WECHAT_OPEN_HOST.'/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', WECHAT_APP_ID, urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url)));exit;
     }
     
     /**
@@ -115,11 +115,11 @@ class AuthController extends WechatController {
      * @author fanghang@fujiacaifu.com
      */
     public function codeAction(){
-        $code = BaseModel::getQuery('code');
-        $state = BaseModel::getQuery('state');
+        $code = $this->_request->getQuery('code');
+        $state = $this->_request->getQuery('state');
         
         $url = '/wechat/auth/index';
-        $tmp = BaseModel::getQuery('redirect_uri');
+        $tmp = $this->_request->getQuery('redirect_uri');
         if($tmp && strpos($tmp, $url)===false){
             $url .= '?redirect_uri='.urlencode($tmp);
         }
@@ -143,17 +143,17 @@ class AuthController extends WechatController {
      * @author fanghang@fujiacaifu.com
      */
     public function bindAction(){
-        $type = BaseModel::getPost('type');
+        $type = $this->_request->getPost('type');
         if(!in_array($type, ['vip', 'seller'])){
             lExit('绑定类型错误，必须为会员、店员二选一');
         }
         
-        $mobile = BaseModel::getPost('mobile');
+        $mobile = $this->_request->getPost('mobile');
         if(!preg_match(PHONE_REG, $mobile)){
             lExit('手机号码错误');
         }
         
-        $password = BaseModel::getPost('password');
+        $password = $this->_request->getPost('password');
         if(empty($password)){
             lExit('密码不能为空');
         }
@@ -199,7 +199,7 @@ class AuthController extends WechatController {
      * @param string user_type 角色名字 (seller|vip)
      */
     public function selectAction(){
-        $userType = BaseModel::getPost('user_type');
+        $userType = $this->_request->getPost('user_type');
         if(!in_array($userType, ['seller', 'vip'])){
             lExit(502, '角色必须为店员或者会员');
         }
@@ -214,7 +214,7 @@ class AuthController extends WechatController {
     public function subscribeAuthAction(){
         //需要每家企业在诸葛到店登记模版id
         //微信授权
-        header('location: '.sprintf('https://mp.weixin.qq.com/mp/subscribemsg?action=get_confirm&appid=%s&scene=%s&template_id=%s&redirect_url=%s&reserved=test#wechat_redirect', Yaf_Registry::get('WECHAT_APP_ID'), 1000, 'fDDGjNbCi-M6f1cPXxah93IUSW1kUsYgkdJ2dZ30Tms', urlencode(BASE_URL.'/wechat/auth/subscribemsg')));exit;
+        header('location: '.sprintf('https://mp.weixin.qq.com/mp/subscribemsg?action=get_confirm&appid=%s&scene=%s&template_id=%s&redirect_url=%s&reserved=test#wechat_redirect', WECHAT_APP_ID, 1000, 'fDDGjNbCi-M6f1cPXxah93IUSW1kUsYgkdJ2dZ30Tms', urlencode(BASE_URL.'/wechat/auth/subscribemsg')));exit;
     }
     
     /**
@@ -227,30 +227,30 @@ class AuthController extends WechatController {
      */
     public function subscribeMsgAction(){
         $params = [];
-        $tmp = BaseModel::getQuery('openid');
+        $tmp = $this->_request->getQuery('openid');
         if(!$tmp){
             lExit(502, '用户openid非法');
         }
         $params['touser'] = $tmp;
         
-        $tmp = BaseModel::getQuery('template_id');
+        $tmp = $this->_request->getQuery('template_id');
         if(!$tmp){
             lExit(502, '消息模版id非法');
         }
         $params['template_id'] = $tmp;
         
-        $tmp = BaseModel::getQuery('action');
+        $tmp = $this->_request->getQuery('action');
         if($tmp!=='confirm'){
             lExit(502, '用户拒绝授权');
         }
         
-        $tmp = BaseModel::getQuery('scene');
+        $tmp = $this->_request->getQuery('scene');
         if(!$tmp){
             lExit(502, '场景值非法');
         }
         $params['scene'] = $tmp;
         
-        $tmp = BaseModel::getQuery('reserved');
+        $tmp = $this->_request->getQuery('reserved');
         
         $params['url'] = 'http://www.zhugedaodian.com';//点击消息时跳转地址
         $params['title'] = '消息标题AAA';//消息标题

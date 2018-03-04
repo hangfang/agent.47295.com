@@ -42,10 +42,8 @@ class BasicController extends Yaf_Controller_Abstract {
             if(BaseModel::whiteList($moduleName.'_'.$controllerName.'_'.$actionName)){
                 return true;
             }
-
-            $this->validRequest();
             
-            BaseModel::accessible();//校验登录
+            //BaseModel::accessible();//校验登录
         }else{//命令行下
             Yaf_Dispatcher::getInstance()->autoRender(FALSE);
             
@@ -276,21 +274,6 @@ class BasicController extends Yaf_Controller_Abstract {
         unlink($local);
         //echo 'upload file done!'."\n";
         return $remote;
-    }
-    
-    /**
-     * 校验请求头
-     */
-    private function validRequest(){
-        if(empty(BaseModel::getDomain()) || empty(REST_REQUEST_PLATFORM) || empty(REST_TOKEN)){
-            $post = BaseModel::getPost();
-            $get = BaseModel::getQuery();
-            $cookie = $_COOKIE;
-
-            $body = json_encode(['error'=>['code'=>403, 'message'=>'非法请求']], JSON_UNESCAPED_UNICODE);
-            log_message('all', 'request_id:'.Yaf_Registry::get('request_id')."\tip:". ip_address() ."\n    ".'response:'.$body."\n");
-            exit($body);
-        }
     }
     
     /**

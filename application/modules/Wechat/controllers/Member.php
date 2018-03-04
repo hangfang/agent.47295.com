@@ -29,7 +29,7 @@ class MemberController extends WechatController {
      * @author fanghang@fujiacaifu.com
      */
     public function selectAction(){
-        $vipId = BaseModel::getPost('vip_id');
+        $vipId = $this->_request->getPost('vip_id');
         if(empty($vipId)){
             lExit('wechat.vipIdEmpty', '会员id不能为空');
         }
@@ -65,13 +65,13 @@ class MemberController extends WechatController {
     public function getBillListAction(){
         //从g3.shop_retail查询
         $where = ['openid'=>$_SESSION['wechat']['openid']];
-        $clientId = BaseModel::getPost('client_id');
+        $clientId = $this->_request->getPost('client_id');
         if($clientId){
             !in_array($clientId, array_column($_SESSION['member']['list'], 'client_id')) && lExit(502, '企业ID非法');
             $where['client_id'] = $clientId;
         }
         
-        $shopId = BaseModel::getPost('shop_id');
+        $shopId = $this->_request->getPost('shop_id');
         if($shopId && !in_array($shopId, array_column($_SESSION['member']['list'], 'shop_id'))){
             lExit(502, '门店ID非法');
         }
@@ -85,12 +85,12 @@ class MemberController extends WechatController {
                 $where['shop_id'] = $shopId;
             }
             
-            $startDate = BaseModel::getPost('start_date');
+            $startDate = $this->_request->getPost('start_date');
             if($startTime){
                 $where['bill_time1>='] = strtotime($startDate);
             }
             
-            $endDate = BaseModel::getPost('end_date');
+            $endDate = $this->_request->getPost('end_date');
             if($endDate){
                 $where['bill_time1<='] = strtotime($endDate.' 23:59:59');
             }
@@ -123,10 +123,10 @@ class MemberController extends WechatController {
         
         array_multisort(array_column($billList, 'bill_time1'), SORT_DESC, $billList);
         
-        $page = intval(BaseModel::getPost('page'));
+        $page = intval($this->_request->getPost('page'));
         $page = $page<=1 ? 1 : $page;
         
-        $length = intval(BaseModel::getPost('length'));
+        $length = intval($this->_request->getPost('length'));
         $length = $length<=0 ? 10 : $length;
         $offset = ($page-1)*$length;
 
@@ -141,12 +141,12 @@ class MemberController extends WechatController {
      */
     public function getBillDetailAction(){
         //从g3.shop_retail_child_sell查询
-        $clientId = BaseModel::getPost('client_id');
+        $clientId = $this->_request->getPost('client_id');
         if(!in_array($clientId, array_column($_SESSION['member']['list'], 'client_id'))){
             lExit(502, '企业ID非法');
         }
         
-        $billId = BaseModel::getPost('bill_id');
+        $billId = $this->_request->getPost('bill_id');
         if(!$billId){
             lExit(502, '单据ID非法');
         }
@@ -212,12 +212,12 @@ class MemberController extends WechatController {
      */
     public function getVipDetailAction(){
         //从g3.mms_member查询
-        $clientId = BaseModel::getPost('client_id');
+        $clientId = $this->_request->getPost('client_id');
         if(!in_array($clientId, array_column($_SESSION['member']['list'], 'client_id'))){
             lExit(502, '企业ID非法');
         }
         
-        $memberMobile = BaseModel::getPost('member_mobile');
+        $memberMobile = $this->_request->getPost('member_mobile');
         if(!in_array($memberMobile, array_column($_SESSION['member']['list'], 'memberMobile'))){
             lExit(502, '会员卡不存在');
         }
@@ -243,12 +243,12 @@ class MemberController extends WechatController {
      * @param string bill_id 单据id
      */
     public function getWarrantySheetAction(){
-        $clientId = BaseModel::getPost('client_id');
+        $clientId = $this->_request->getPost('client_id');
         if(!in_array($clientId, array_column($_SESSION['member']['list'], 'client_id'))){
             lExit(502, '企业ID非法');
         }
         
-        $billId = BaseModel::getPost('bill_id');
+        $billId = $this->_request->getPost('bill_id');
         if(!$billId){
             lExit(502, '单据id非法');
         }

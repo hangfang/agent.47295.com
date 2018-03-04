@@ -166,13 +166,13 @@ class Wechat_ApiModel extends BaseModel{
      * @param array $params 请求参数
      * @return boolean or array
      */
-    private static function request($uri, $params, $method='POST', $get=[]){
+    private static function request($uri, $params=[], $method='POST', $get=[]){
         $access_token = Wechat_MsgModel::getAccessToken();
         if(!$access_token){
             return false;
         }
         
-        $args = ['method'=>$method, 'url'=>sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/cgi-bin/%s?access_token=%s', $uri, $access_token['access_token'])];
+        $args = ['method'=>$method, 'url'=>sprintf(WECHAT_API_HOST.'/cgi-bin/%s?access_token=%s', $uri, $access_token['access_token'])];
         if(!empty($get)){
             foreach($get as $_k=>$_v){
                 $args['url'] .= '&'.$_k.'='.$_v;
@@ -204,7 +204,7 @@ class Wechat_ApiModel extends BaseModel{
      * @return array
      */
     public static function getSnsUserInfo(){
-        $args = ['url'=>sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN', $_SESSION['wechat']['access_token'], $_SESSION['wechat']['openid'])];
+        $args = ['url'=>sprintf(WECHAT_API_HOST.'/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN', $_SESSION['wechat']['access_token'], $_SESSION['wechat']['openid'])];
         return http($args);
     }
     
@@ -457,7 +457,7 @@ class Wechat_ApiModel extends BaseModel{
             return false;
         }
         
-        $args = ['url'=>sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/cgi-bin/user/info?access_token=%s&openid=%s&lang=%s', $access_token['access_token'], $openId, $lang)];
+        $args = ['url'=>sprintf(WECHAT_API_HOST.'/cgi-bin/user/info?access_token=%s&openid=%s&lang=%s', $access_token['access_token'], $openId, $lang)];
         $rt = http($args);
         
         if(isset($rt['errcode']) && $rt['errcode']>0){

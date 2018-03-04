@@ -19,7 +19,7 @@ class Wechat_MsgModel extends BaseModel{
         $result =['access_token'=>'', 'jsapi_ticket'=>''];
         
         //获取微信对话服务.access_token
-        $data['url'] = sprintf('WECHAT_API_HOST'.'/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s', WECHAT_APP_ID, WECHAT_APP_SECRET);
+        $data['url'] = sprintf(WECHAT_API_HOST.'/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s', WECHAT_APP_ID, WECHAT_APP_SECRET);
         $rt = http($data);
         if(isset($rt['errcode'])){
             log_message('error', 'get access_token from wechat error, msg: '. json_encode($rt));

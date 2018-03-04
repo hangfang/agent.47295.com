@@ -72,15 +72,15 @@ class Manage_MaterialController extends BasicController {
      *   {"errcode":40007,"errmsg":"invalid media_id"}
      */
     public function batchGetAction(){
-        $type = BaseModel::getPost('type');
+        $type = $this->_request->getPost('type');
         if(!in_array($type, ['image', 'video', 'voice', 'news'])){
             lExit(502, '素材的类型错误,必须为图片（image）、视频（video）、语音 （voice）、图文（news）');
         }
         
-        $offset = intval(BaseModel::getPost('offset', 0));
+        $offset = intval($this->_request->getPost('offset', 0));
         $offset = $offset<0 ? 0 : $offset;
         
-        $length = intval(BaseModel::getPost('length'));
+        $length = intval($this->_request->getPost('length'));
         $length = $length<=0 ? 10 : $offset;
         if($length<1 || $length>20){
             lExit(502, '素材数量取值在1到20之间');
@@ -131,7 +131,7 @@ class Manage_MaterialController extends BasicController {
      *   }
      */
     public function getDetailAction(){
-        $mediaId = BaseModel::getPost('media_id');
+        $mediaId = $this->_request->getPost('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id非法');
         }
@@ -161,7 +161,7 @@ class Manage_MaterialController extends BasicController {
         {"errcode":40007,"errmsg":"invalid media_id"}
      */
     public function getMediaAction(){
-        $mediaId = BaseModel::getPost('media_id');
+        $mediaId = $this->_request->getPost('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id非法');
         }
@@ -180,7 +180,7 @@ class Manage_MaterialController extends BasicController {
      *   {"errcode":40004,"errmsg":"invalid media type"}
      */
     public function uploadMediaAction(){
-        $type = BaseModel::getPost('type');
+        $type = $this->_request->getPost('type');
         if(!in_array($type, ['image', 'video', 'voice', 'thumb'])){
             lExit(502, '素材的类型错误,必须为图片(image)、视频(video)、视频(video)、缩略图(thumb)');
         }
@@ -229,10 +229,10 @@ class Manage_MaterialController extends BasicController {
      * }
      */
     public function addNewsAction(){
-        $articles = BaseModel::getPost('articles');
+        $articles = $this->_request->getPost('articles');
         if(empty($articles)){
             $articles = [];
-            $request = BaseModel::getPost();
+            $request = $this->_request->getPost();
             foreach($request as $_k=>$_v){
                 eval('$'.$_k.'=\''.addslashes($_v).'\';');
             }
@@ -316,7 +316,7 @@ class Manage_MaterialController extends BasicController {
      *  }
      */
     public function uploadOtherAction(){
-        $type = BaseModel::getPost('type');
+        $type = $this->_request->getPost('type');
         if(!in_array($type, ['image', 'video', 'voice', 'thumb'])){
             lExit(502, '素材的类型错误,必须为图片(image)、视频(video)、视频(video)、缩略图(thumb)');
         }
@@ -347,12 +347,12 @@ class Manage_MaterialController extends BasicController {
         }
         
         if($type==='video'){
-            $title = BaseModel::getPost('title');
+            $title = $this->_request->getPost('title');
             if(empty($title)){
                 lExit(502, '视频标题不能为空');
             }
             
-            $introduction = BaseModel::getPost('introduction');
+            $introduction = $this->_request->getPost('introduction');
             if(empty($introduction)){
                 lExit(502, '视频描述不能为空');
             }
@@ -371,7 +371,7 @@ class Manage_MaterialController extends BasicController {
      *  }
      */
     public function delAction(){
-        $mediaId = BaseModel::getPost('media_id');
+        $mediaId = $this->_request->getPost('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id不能为空');
         }
@@ -398,19 +398,19 @@ class Manage_MaterialController extends BasicController {
      */
     public function updateNewsAction(){
         $params = [];
-        $tmp = BaseModel::getPost('media_id');
+        $tmp = $this->_request->getPost('media_id');
         if(empty($tmp)){
             lExit(502, '素材id不能为空');
         }
         $params['media_id'] = $tmp;
         
-        $tmp = intval(BaseModel::getPost('index'));
+        $tmp = intval($this->_request->getPost('index'));
         $params['media_id'] = $tmp;
         
-        $articles = BaseModel::getPost('articles');
+        $articles = $this->_request->getPost('articles');
         if(empty($articles)){
             $articles = [];
-            $request = BaseModel::getPost();
+            $request = $this->_request->getPost();
             foreach($request as $_k=>$_v){
                 if(in_array($_k, ['media_id', 'index'])){
                     continue;

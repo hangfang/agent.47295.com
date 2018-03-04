@@ -31,7 +31,7 @@ class UserController extends WechatController {
      * @author fanghang@fujiacaifu.com
      */
     public function selectAction(){
-        $userId = BaseModel::getPost('user_id');
+        $userId = $this->_request->getPost('user_id');
         if(empty($userId)){
             lExit('wechat.userIdEmpty', '员工id不能为空');
         }

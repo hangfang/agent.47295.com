@@ -33,7 +33,7 @@ class WechatController extends Yaf_Controller_Abstract {
             return false;
         }
         
-        $args = ['url'=>sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s', Yaf_Registry::get('WECHAT_APP_ID'), $_SESSION['wechat']['refresh_token'])];
+        $args = ['url'=>sprintf(WECHAT_API_HOST.'/sns/oauth2/refresh_token?appid=%s&grant_type=refresh_token&refresh_token=%s', WECHAT_APP_ID, $_SESSION['wechat']['refresh_token'])];
         $result = http($args);
         if(isset($result['errcode'])){
             log_message('error', 'get sns_user_info failed, wechat: '. print_r($result, true));
@@ -55,17 +55,17 @@ class WechatController extends Yaf_Controller_Abstract {
      * @param string state 微信带回的state
      */
     protected function getAccessToken($code, $state){
-        $args = ['method'=>'get', 'url'=>sprintf(Yaf_Registry::get('WECHAT_API_HOST').'/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code', Yaf_Registry::get('WECHAT_APP_ID'), Yaf_Registry::get('WECHAT_APP_SECRET'), $code)];
+        $args = ['method'=>'get', 'url'=>sprintf(WECHAT_API_HOST.'/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code', WECHAT_APP_ID, WECHAT_APP_SECRET, $code)];
         $result = http($args);
         if(isset($result['errcode'])){
             log_message('error', '微信授权失败, result: '. print_r($result, true));
             
             $url = '/wechat/auth/index';
-            if($tmp=BaseModel::getQuery('redirect_uri')){
+            if($tmp=$this->_request->getQuery('redirect_uri')){
                 $url = $tmp;
             }
         
-            header('refresh:3;url='.Yaf_Registry::get('WECHAT_OPEN_HOST').'/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', Yaf_Registry::get('WECHAT_APP_ID'), urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url));
+            header('refresh:3;url='.WECHAT_OPEN_HOST.'/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', WECHAT_APP_ID, urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url));
             exit(isset($result['errmsg']) ? $result['errmsg'] : '微信授权失败');
         }
         
