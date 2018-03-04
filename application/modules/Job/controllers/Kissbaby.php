@@ -505,6 +505,11 @@ class KissbabyController extends BasicController{
         $_path = explode('/', $_imagePath);
         $_fileName = array_pop($_path);
         $_path = IMAGE_PATH.implode('/', $_path);
+        
+        
+        $_path = str_replace('\\', '/', $_path);
+        $_path = preg_replace('/[^0-9a-zA-Z\/\.:]/', '', $_path);
+        $_path = preg_replace('/\s/', '', $_path);
         if(!file_exists($_path)){
             mkdir($_path, 0755, true);
         }
@@ -525,7 +530,7 @@ class KissbabyController extends BasicController{
             return false;
         }
         
-        $_imagePath = str_replace(IMAGE_PATH, '', $_path);
+        $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
         return true;
     }
 }

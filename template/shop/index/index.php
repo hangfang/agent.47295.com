@@ -2,7 +2,7 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include $viewPath.'header.php';
 ?>
-<div id="banner" class="banner" style="">
+<div id="banner" class="banner" style="display:none;">
 	<div class="container">
 		<div class="banner_desc">
 			<h1>琳玲Dai购</h1>
@@ -13,22 +13,6 @@ include $viewPath.'header.php';
 		</div>
 	</div>
 </div>
-<script type='text/javascript'>
-    var homeRecommandActivity = <?php echo $homeRecommandActivity ? json_encode($homeRecommandActivity) : [];?>;
-    var i = 0;
-    var len = homeRecommandActivity.length;
-    if(homeRecommandActivity){
-        setInterval(function(){
-            $('#banner').css('background', 'url(<?php echo KISSBABY_IMAGE_URL;?>'+ homeRecommandActivity[i]['activity_image'] +')');
-            $('#banner h2').html(homeRecommandActivity[i]['activity_name']);
-            $('#banner a').attr('href', '/shop/activity/product?activity_id='+homeRecommandActivity[i]['activity_id']);
-            i++;
-            if(i==len){
-                i = 0;
-            }
-        }, 3000);
-    }
-</script>
 <div class="content_top">
 	<h3 class="m_1" style="display:none;">精品推荐</h3>
 	<div class="container">
@@ -36,7 +20,7 @@ include $viewPath.'header.php';
 	       <div class="col-md-7-bak">
                <?php 
                 for($i=0,$len=count($homeRecommandProduct); $i<$len; $i++){
-                    if($i%3==0){
+                    if(($i+1)%3==0){
                         echo '<div class="section group">';
                     }
 
@@ -66,7 +50,7 @@ include $viewPath.'header.php';
     </div>
 </div>
 EOF;
-                    if($i%3==0){
+                    if(($i+1)%3==0){
                         echo '<div class="clearfix"></div></div>';
                     }
                 }

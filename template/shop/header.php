@@ -28,14 +28,12 @@
 	<div class="container">
 		<div class="one-fifth column row_1">
 			<span class="selection-box"><select class="domains valid" name="domains">
-		       <option>English</option>
-		       <option>French</option>
-		       <option>German</option>
+		       <option>中文</option>
 		    </select></span>
          </div>
          <div class="cssmenu">
 			<ul>
-			    <li class="active"><a href="login.html">My Account</a></li> 
+			    <li class="active"><a href="/shop/account/index">我的账户</a></li> 
 			</ul>
 		 </div>
 	</div>
@@ -49,11 +47,10 @@
             </div>
             <div class="col-xs-7 menu">
                 <ul class="megamenu skyblue">
-                    <li class="active grid"><a class="color1" href="index.html">精品推荐</a></li>
-                    <li class="grid"><a class="color2" href="#">热销爆款</a></li>
-                    <li><a class="color4" href="about.html">限时活动</a></li>				
-                    <li><a class="color5" href="404.html">商品分类</a></li>
-                    <li><a class="color6" style="display:none;" href="contact.html">更多</a></li>
+                    <li class="active grid"><a class="color1" href="/shop/index/index">精品推荐</a></li>
+                    <li class="grid"><a class="color2" href="/shop/product/recommand">热销爆款</a></li>
+                    <li><a class="color4" href="/shop/activity/recommand">限时活动</a></li>				
+                    <li><a class="color5" href="/shop/category/index">商品分类</a></li>
                 </ul> 
             </div>
 		</div>

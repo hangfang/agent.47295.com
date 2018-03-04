@@ -575,7 +575,7 @@ h2.m_3 {
 .col_1_of_3 {
   display: block;
   float: left;
-  margin:0 0 0 1.6%;
+  margin:0 0 0 1.1%;
 }
 .col_1_of_3:hover .shop-holder{
 	border: 8px solid #f54d56;
@@ -627,7 +627,7 @@ h2.m_3 {
 	position: relative;
 }
 .col_1_of_3:first-child {
-  margin-left: 0;
+  //margin-left: 0;
 }
 .about-block-content {
   background-color: #f54d56;
