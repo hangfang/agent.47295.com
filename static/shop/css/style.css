@@ -1807,6 +1807,7 @@ span.right_line2 {
   transition: all 0.3s ease;
   text-transform: uppercase;
   font-size: 0.8125em;
+  margin-top: 1.1rem;
 } 
 .btn1.btn-primary1:hover{
 	background:#000;

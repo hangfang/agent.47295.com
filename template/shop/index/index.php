@@ -2,171 +2,78 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include $viewPath.'header.php';
 ?>
-<div class="banner" style="display:None;">
+<div id="banner" class="banner" style="">
 	<div class="container">
 		<div class="banner_desc">
-			<h1>New Season Arrivals.</h1>
-			<h2>Check out all the new trends</h2>
+			<h1>琳玲Dai购</h1>
+			<h2>最贴心的生活助手</h2>
 			<div class="button">
-			      <a href="#" class="hvr-shutter-out-horizontal">Shop Now</a>
-			    </div>
+                <a href="javascritp:void(0)" class="hvr-shutter-out-horizontal">Shop Now</a>
+            </div>
 		</div>
 	</div>
 </div>
-
+<script type='text/javascript'>
+    var homeRecommandActivity = <?php echo $homeRecommandActivity ? json_encode($homeRecommandActivity) : [];?>;
+    var i = 0;
+    var len = homeRecommandActivity.length;
+    if(homeRecommandActivity){
+        setInterval(function(){
+            $('#banner').css('background', 'url(<?php echo KISSBABY_IMAGE_URL;?>'+ homeRecommandActivity[i]['activity_image'] +')');
+            $('#banner h2').html(homeRecommandActivity[i]['activity_name']);
+            $('#banner a').attr('href', '/shop/activity/product?activity_id='+homeRecommandActivity[i]['activity_id']);
+            i++;
+            if(i==len){
+                i = 0;
+            }
+        }, 3000);
+    }
+</script>
 <div class="content_top">
 	<h3 class="m_1" style="display:none;">精品推荐</h3>
 	<div class="container">
 	   <div class="box_1">
 	       <div class="col-md-7-bak">
-			    <div class="section group">
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder">
-		                         <div class="product-img">
-		                            <a href="single.html">
-		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic1.jpg" class="img-responsive"  alt="item4">		                            </a>
-		                            <a href="" class="button "></a>		                         </div>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <div><a href="single.html" rel="tag">humour</a></div>
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder">
-		                         <div class="product-img">
-		                            <a href="single.html">
-		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic2.jpg" class="img-responsive"  alt="item4">		                            </a>
-		                            <a href="" class="button "></a>		                         </div>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <div><a href="single.html" rel="tag">humour</a></div>
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder">
-		                         <div class="product-img">
-		                            <a href="single.html">
-		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic3.jpg" class="img-responsive"  alt="item4">		                            </a>
-		                            <a href="" class="button "></a>		                         </div>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <div><a href="single.html" rel="tag">humour</a></div>
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder">
-		                         <div class="product-img">
-		                            <a href="single.html">
-		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic3.jpg" class="img-responsive"  alt="item4">		                            </a>
-		                            <a href="" class="button "></a>		                         </div>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <div><a href="single.html" rel="tag">humour</a></div>
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder">
-		                         <div class="product-img">
-		                            <a href="single.html">
-		                                <img width="225" height="265" src="<?php echo $staticDir;?>images/pic3.jpg" class="img-responsive"  alt="item4">		                            </a>
-		                            <a href="" class="button "></a>		                         </div>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <div><a href="single.html" rel="tag">humour</a></div>
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="clearfix"></div> 
-				</div>
+               <?php 
+                for($i=0,$len=count($homeRecommandProduct); $i<$len; $i++){
+                    if($i%3==0){
+                        echo '<div class="section group">';
+                    }
+
+                    $_product = $homeRecommandProduct[$i];
+                    if(!empty($_product['product_image'])){
+                        $_product['product_image'] = explode(',', $_product['product_image']);
+                        $_product['product_image'] = $_product['product_image'][0];
+                    }else{
+                        $_product['product_image'] = '';
+                    }
+                    
+                    $_imgSrc = $_product['product_image'] ? KISSBABY_IMAGE_URL.$_product['product_image'] : '';
+                    echo <<<EOF
+<div class="col_1_of_3 span_1_of_3">
+    <div class="shop-holder">
+         <div class="product-img">
+            <a href="/shop/product/detail?product_id={$_product['product_id']}">
+                <img width_bak="225" height_bak="265" src="{$_imgSrc}" class="img-responsive"  alt="item4">
+            </a>
+            <a href="javascript:void(0);" class="button "></a>
+        </div>
+    </div>
+    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
+            <div><a href="/shop/product/detail?product_id={$_product['product_id']}" rel="tag">{$_product['product_name']}</a></div>
+            <h3><a href="/shop/product/detail?product_id={$_product['product_id']}">Non-charac</a></h3>
+            <span><span class="amount">会员价:\${$_product['product_vip_price']}</span></span>
+    </div>
+</div>
+EOF;
+                    if($i%3==0){
+                        echo '<div class="clearfix"></div></div>';
+                    }
+                }
+                ?>
 		</div>
-		<div class="col-md-5 row_3" style="display:none;">
-			<div class="about-block-content">
-		       <div class="border-add"></div>
-				<h4>About Us</h4>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati beatae quam voluptatibus deleniti ipsa consequatur!</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-				<p>		        	</p></div>
-				<img src="<?php echo $staticDir;?>images/pic9.jpg" class="img-responsive" alt=""/>
-	    </div>
 		<div class="clearfix"></div>
 	</div>
 </div>
-</div>
-<div class="content_bottom">
-<div class="container">
-	<h2 class="m_3">From the Blog</h2>
-	<div class="grid_1">
-		<div class="col-md-6 blog_1">
-			<div class="item-inner"> 
-				<img src="<?php echo $staticDir;?>images/pic7.jpg" class="img-responsive" alt=""/>																	
-					<div class="date-comments">
-						<div class="time"><span class="date"><span class="word1">14</span> <span class="word2">Jan</span> </span></div>											 
-						<div class="comments">
-						<span><span class="word1">0</span>
-						<span class="word2">comment</span></span>
-						</div>
-					 </div>
-			</div>   
-		</div>
-		<div class="col-md-6 row_2">
-			<div class="item-inner"> 
-				<img src="<?php echo $staticDir;?>images/pic8.jpg" class="img-responsive" alt=""/>																	
-					<div class="date-comments">
-						<div class="time"><span class="date"><span class="word1">14</span> <span class="word2">Jan</span> </span></div>											 
-						<div class="comments">
-						<span><span class="word1">0</span>
-						<span class="word2">comment</span></span>
-						</div>
-					 </div>
-			</div>   
-	    </div>
-		<div class="clearfix"></div>
-	</div>
-</div>	
-</div>
-<div class="content_bottom-grid">
-	<div class="col-md-6 row_4"></div>
-	 <div class="col-md-6">
-		<div class="row_5">
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder1">
-		                        <a href="single.html"><img src="<?php echo $staticDir;?>images/pic4.jpg" class="img-responsive" alt=""/></a>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder1">
-		                        <a href="single.html"><img src="<?php echo $staticDir;?>images/pic5.jpg" class="img-responsive" alt=""/></a>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="col_1_of_3 span_1_of_3">
-							<div class="shop-holder1">
-		                        <a href="single.html"><img src="<?php echo $staticDir;?>images/pic6.jpg" class="img-responsive" alt=""/></a>
-		                    </div>
-		                    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-		                            <h3><a href="single.html">Non-charac</a></h3>
-		                            <span><span class="amount">$45.00</span></span>
-		                    </div>
-						</div>
-						<div class="clearfix"></div> 
-					</div>
-	</div>
-	<div class="clearfix"> </div>
 </div>
 <?php include $viewPath.'footer.php';?>

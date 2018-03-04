@@ -4,7 +4,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 //获取分类列表
 define('CATEGORY_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=module/category&device=android&version=111');
 //获取商品列表
-define('PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=product/search&device=android&version=111&keyword=%s&tcid=&cid=%s&bid=popular&sort=popular&order=desc&page=%&limit=%s');
+define('PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=product/search&device=android&version=111&keyword=%s&tcid=&cid=%s&bid=popular&sort=popular&order=desc&page=%s&limit=%s');
 //获取商品详情
 define('PRODUCT_DETAIL', 'http://kiss.api.niaobushi360.com/index.php?route=product/product/appGetProductInfo&product_id=%s&device=android&version=111');
 //新品到货
@@ -35,7 +35,7 @@ class KissbabyController extends BasicController{
         foreach($categoryList as $_cate){
             $_banner = empty($_cate['banner'][0]['image']) ? '' : str_replace('\\', '/', $_cate['banner'][0]['image']);
             if($_banner){
-                $_banner = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_banner, '/'));
+                $_banner = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_banner, '/'));
                 $this->__saveImage($_banner);
             }
             
@@ -58,7 +58,7 @@ class KissbabyController extends BasicController{
             echo 'update kissbaby category succ..., name:'.$_cate['name']."\n";
             foreach($_cate['children'] as $_subCate){
                 $_image = empty($_subCate['image']) ? '' : str_replace('\\', '/', $_subCate['image']);
-                $_image = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_image, '/'));
+                $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_image, '/'));
                 if($_image){
                     $this->__saveImage($_image);
                 }
@@ -131,15 +131,15 @@ class KissbabyController extends BasicController{
                     $detail = $detail['product'];
                     
                     if(!empty($detail['images'])){
-                        foreach($detail['images'] as $_image){
-                            $_image = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_image, '/'));
-                            $this->__saveImage(str_replace('image/',  '', $_image));
+                        foreach($detail['images'] as &$_image){
+                            $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_image, '/'));
+                            $this->__saveImage($_image);
                         }
                         
                         $detail['image'] = implode(',', $detail['images']);
                     }else{
-                        $detail['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($detail['image'], '/'));
-                        $this->__saveImage(str_replace('image/',  '', $detail['image']));
+                        $detail['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($detail['image'], '/'));
+                        $this->__saveImage($detail['image']);
                     }
                     
                     $_update = [
@@ -213,15 +213,14 @@ class KissbabyController extends BasicController{
         $detail = $detail['product'];
 
         if(!empty($detail['images'])){
-            foreach($detail['images'] as $_image){
-                $_image = preg_replace('/[^a-z0-9\/\.]/i', '', $_image);
-                $this->__saveImage(str_replace('image/',  '', trim($_image, '/')));
+            foreach($detail['images'] as &$_image){
+                $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], $_image);
+                $this->__saveImage($_image);
             }
 
             $detail['image'] = implode(',', $detail['images']);
         }else{
-            $detail['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($detail['image'], '/'));
-            $detail['image'] = str_replace('image/',  '', $detail['image']);
+            $detail['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($detail['image'], '/'));
             $this->__saveImage($detail['image']);
         }
 
@@ -293,8 +292,8 @@ class KissbabyController extends BasicController{
             //log_message('error', print_r($goodsList, true));exit;
             foreach($productList['product'] as $_product){
                 if(!empty($_product['image'])){
-                    $_product['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_product['image'], '/'));
-                    $this->__saveImage(str_replace('image/',  '', $_product['image']));
+                    $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
+                    $this->__saveImage($_product['image']);
                 }
                     
                 $_update = [
@@ -351,8 +350,7 @@ class KissbabyController extends BasicController{
                 continue;
             }
             
-            $_banner['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', $_banner['image']);
-            $_banner['image'] = str_replace('image/',  '', $_banner['image']);
+            $_banner['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], $_banner['image']);
             $this->__saveImage($_banner['image']);
             
             $_update[] = [
@@ -376,8 +374,7 @@ class KissbabyController extends BasicController{
         $_update = [];
         foreach($recommand['single_product_list'] as $_product){
             if(!empty($_product['image'])){
-                $_product['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_product['image'], '/'));
-                $_product['image'] = str_replace('image/',  '', $_product['image']);
+                $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
                 $this->__saveImage($_product['image']);
             }
 
@@ -412,8 +409,8 @@ class KissbabyController extends BasicController{
         $activityList = http($_tmp=['url'=>ACTIVITY_LIST]);
         foreach($activityList['sales'] as $_activity){
             if(!empty($_activity['banner_lg'])){
-                $_activity['banner_lg'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_activity['banner_lg'], '/'));
-                $this->__saveImage(str_replace('image/',  '', $_activity['banner_lg']));
+                $_activity['banner_lg'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_activity['banner_lg'], '/'));
+                $this->__saveImage($_activity['banner_lg']);
             }
 
             $_update = [
@@ -464,8 +461,8 @@ class KissbabyController extends BasicController{
                 //log_message('error', print_r($goodsList, true));exit;
                 foreach($productList['sale']['products'] as $_product){
                     if(empty($_product['image'])){
-                        $_product['image'] = preg_replace('/[^a-z0-9\/\.]/i', '', trim($_product['image'], '/'));
-                        $this->__saveImage(str_replace('image/',  '', $_product['image']));
+                        $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
+                        $this->__saveImage($_product['image']);
                     }
                     
                     $_update = [
@@ -482,15 +479,15 @@ class KissbabyController extends BasicController{
                     if(Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id')){
                         if(false===Kissbaby_ActivityProductModel::update($_update, $_where)){
                             log_message('error', '更新kissbaby活动商品失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
-                            echo '   update kissbaby activity product failed..., activity_name:'.$_activity['name']."\n";
+                            echo '   update kissbaby activity product failed..., name:'.$_product['name']."\n";
                             continue;
                         }
                         
-                        echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
+                        echo 'update kissbaby product detail succ..., name:'.$_product['name']."\n";
                     }else{
                         if(!Kissbaby_ActivityProductModel::insert($_update)){
                             log_message('error', '插入kissbaby活动商品失败, insert:'.print_r($_update, true));
-                            echo '   insert kissbaby activity product detail failed..., activity_name:'.$_activity['name']."\n";
+                            echo '   insert kissbaby activity product detail failed..., name:'.$_product['name']."\n";
                             continue;
                         }
                         
@@ -512,7 +509,7 @@ class KissbabyController extends BasicController{
      * @param string $_imagePath 图片路径
      * @return boolean
      */
-    private function __saveImage($_imagePath){
+    private function __saveImage(&$_imagePath){
         if(empty($_imagePath)){
             return true;
         }
@@ -540,6 +537,7 @@ class KissbabyController extends BasicController{
             return false;
         }
         
+        $_imagePath = str_replace(IMAGE_PATH, '', $_path);
         return true;
     }
 }

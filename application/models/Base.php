@@ -39,7 +39,7 @@ class BaseModel
      * @param mixed $group 分组
      * @return mixed
      */
-    public static function getRow($where, $field = '*', $limit=[], $order = '', $group = '')
+    public static function getRow($where=[], $field = '*', $limit=[], $order = '', $group = '')
     {
         $method = 'getList';
         if (method_exists(get_called_class(), $method)) {

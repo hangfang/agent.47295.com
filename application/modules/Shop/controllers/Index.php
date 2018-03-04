@@ -3,7 +3,13 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 class IndexController extends BasicController{
     public function indexAction(){
         $this->_view->assign('title', '精选推荐');
-        $this->_view->assign('data', Kissbaby_HomeRecommandProductModel::getList());
+        $this->_view->assign('homeRecommandProduct', Kissbaby_HomeRecommandProductModel::getList());
+        $this->_view->assign('homeRecommandActivity', Kissbaby_HomeRecommandActivityModel::getList());
+        return true;
+    }
+    
+    public function notFoundAction(){
+        $this->_view->assign('title', '页面发生错误');
         return true;
     }
 }
