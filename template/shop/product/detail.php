@@ -111,7 +111,7 @@ EOF;
             source_image_height: 1200,
             show_hint: true,
             click_callback: function(image_anchor, instance_id){
-alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
+//alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
             }
         });
 

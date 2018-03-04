@@ -4,11 +4,11 @@ class ProductController extends BasicController{
     public function detailAction(){
         $productId = $this->_request->getQuery('product_id');
         if(!$productId){
-            header('location: /shop/index/nofound');exit;
+            header('location: /shop/index/notfound');exit;
         }
         
         if(!$product = Kissbaby_ProductModel::getRow(['product_id'=>$productId])){
-            header('location: /shop/index/nofound');exit;
+            header('location: /shop/index/notfound');exit;
         }
         $this->_view->assign('title', '商品详情');
         $this->_view->assign('product', $product);
