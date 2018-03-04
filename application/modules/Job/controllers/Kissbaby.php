@@ -507,7 +507,7 @@ class KissbabyController extends BasicController{
         $_path = implode('/', $_path);
         
         
-        $_path = preg_replace('/[^0-9a-zA-Z\/\.]/', '', $_path);
+        $_path = preg_replace('/[^0-9a-zA-Z\/\.\\\]/', '', $_path);
         $_path = preg_replace('/\s/', '', $_path);
         $_path = IMAGE_PATH.$_path;
         $_path = str_replace('\\', '/', $_path);
