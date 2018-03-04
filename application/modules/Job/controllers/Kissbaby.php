@@ -35,7 +35,6 @@ class KissbabyController extends BasicController{
         foreach($categoryList as $_cate){
             $_banner = empty($_cate['banner'][0]['image']) ? '' : str_replace('\\', '/', $_cate['banner'][0]['image']);
             if($_banner){
-                $_banner = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_banner, '/'));
                 $this->__saveImage($_banner);
             }
             
@@ -57,10 +56,8 @@ class KissbabyController extends BasicController{
             
             echo 'update kissbaby category succ..., name:'.$_cate['name']."\n";
             foreach($_cate['children'] as $_subCate){
-                $_image = empty($_subCate['image']) ? '' : str_replace('\\', '/', $_subCate['image']);
-                $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_image, '/'));
-                if($_image){
-                    $this->__saveImage($_image);
+                if($_subCate['image']){
+                    $this->__saveImage($_subCate['image']);
                 }
             
                 $_replace = [
@@ -68,7 +65,7 @@ class KissbabyController extends BasicController{
                     'category_id'       =>  $_subCate['category_id'],
                     'category_name'     =>  $_subCate['name'],
                     'category_order'    =>  $_subCate['sort_order'],
-                    'category_image'    =>  $_image,
+                    'category_image'    =>  $_subCate['image'],
                     'category_banner'   =>  '',
                     'create_time'       =>  $now,
                     'ts'                =>  date('Y-m-d H:i:s', $now)
@@ -132,13 +129,11 @@ class KissbabyController extends BasicController{
                     
                     if(!empty($detail['images'])){
                         foreach($detail['images'] as &$_image){
-                            $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_image, '/'));
                             $this->__saveImage($_image);
                         }
                         
                         $detail['image'] = implode(',', $detail['images']);
                     }else{
-                        $detail['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($detail['image'], '/'));
                         $this->__saveImage($detail['image']);
                     }
                     
@@ -214,13 +209,11 @@ class KissbabyController extends BasicController{
 
         if(!empty($detail['images'])){
             foreach($detail['images'] as &$_image){
-                $_image = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], $_image);
                 $this->__saveImage($_image);
             }
 
             $detail['image'] = implode(',', $detail['images']);
         }else{
-            $detail['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($detail['image'], '/'));
             $this->__saveImage($detail['image']);
         }
 
@@ -292,7 +285,6 @@ class KissbabyController extends BasicController{
             //log_message('error', print_r($goodsList, true));exit;
             foreach($productList['product'] as $_product){
                 if(!empty($_product['image'])){
-                    $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
                     $this->__saveImage($_product['image']);
                 }
                     
@@ -350,7 +342,6 @@ class KissbabyController extends BasicController{
                 continue;
             }
             
-            $_banner['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], $_banner['image']);
             $this->__saveImage($_banner['image']);
             
             $_update[] = [
@@ -374,7 +365,6 @@ class KissbabyController extends BasicController{
         $_update = [];
         foreach($recommand['single_product_list'] as $_product){
             if(!empty($_product['image'])){
-                $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
                 $this->__saveImage($_product['image']);
             }
 
@@ -409,7 +399,6 @@ class KissbabyController extends BasicController{
         $activityList = http($_tmp=['url'=>ACTIVITY_LIST]);
         foreach($activityList['sales'] as $_activity){
             if(!empty($_activity['banner_lg'])){
-                $_activity['banner_lg'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_activity['banner_lg'], '/'));
                 $this->__saveImage($_activity['banner_lg']);
             }
 
@@ -461,7 +450,6 @@ class KissbabyController extends BasicController{
                 //log_message('error', print_r($goodsList, true));exit;
                 foreach($productList['sale']['products'] as $_product){
                     if(empty($_product['image'])){
-                        $_product['image'] = preg_replace(['/[^a-z0-9\/\.]/i', '/image\//'], ['', ''], trim($_product['image'], '/'));
                         $this->__saveImage($_product['image']);
                     }
                     

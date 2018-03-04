@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 include $viewPath.'header.php';
 ?>
 <style>
-    .menu_drop img {width:25.1rem; height:25.1rem;clear:both,display:block;}
+    .menu_drop img {width:25.1rem; height:25.1rem;clear:both;display:block;}
 </style>
 <div class="single_top">
 	 <div class="container"> 
@@ -11,11 +11,19 @@ include $viewPath.'header.php';
 				<div class="grid images_3_of_2">
 						<ul id="etalage">
                             <?php
+                                $_index = 0;
                                 foreach($product['product_image'] as $_image){
+                                    if($_index == 0){
+                                        $_extraPre = '<a href="javascript:void(0);">';
+                                        $_extraPost = '</a>';
+                                    }
+                                    
                                     echo <<<EOF
 <li>
+    {$_extraPre}
     <img class="etalage_thumb_image" src="{$_image}" class="img-responsive" />
     <img class="etalage_source_image" src="{$_image}" class="img-responsive" title="" />
+    {$_extraPost}
 </li>
 EOF;
                                 }
@@ -25,7 +33,7 @@ EOF;
 				  </div> 
 				  <div class="desc1 span_3_of_2">
 				  	<ul class="back">
-                        <li><i class="back_arrow"> </i>Back to <a href="/shop/category/product?category_id=<?php echo $product['category_id'];?>"><?php echo $category['category_name'];?></a></li>
+                        <li><i class="back_arrow"> </i>Back to <a href="/shop/category/product?category_id=<?php echo $product['category_id'];?>"><?php echo empty($category['category_name']) ? '未知分类' : $category['category_name'];?></a></li>
                     </ul>
 					<h1><?php echo $product['product_name'];?></h1>
 					<ul class="price_single">
@@ -71,27 +79,29 @@ EOF;
                 <?php echo $product['product_description'];?>
 	 		</div>
    </div>
+    <?php if($related){?>
    <h3 class="m_2">猜你喜欢</h3>
-	     <div class="container">
-          		<div class="box_3">
-                    <?php
-                        foreach($related as $_related){
-                            echo <<<EOF
+    <div class="container">
+        <div class="box_3">
+            <?php
+                foreach($related as $_related){
+                    echo <<<EOF
 <div class="col-md-3">
-    <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
-      <img src="{$_related['product_image'][0]}" class="img-responsive" alt="">
-   </a>
+<div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
+<img src="{$_related['product_image'][0]}" class="img-responsive" alt="">
+</a>
 </div>
 <h4><a href="/shop/product/detail?product_id={$_related['product_id']}">{$_related['product_name']}</a></h4>
 <p>$ {$_related['product_vip_price']}</p>
 </div>
 EOF;
-                        }
-                    ?>
-			        <div class="clearfix"> </div>
-          		</div>
-          	</div>
+                }
+            ?>
+            <div class="clearfix"> </div>
         </div>
+    </div>
+    <?php } ?>
+</div>
 <script>
     jQuery(document).ready(function($){
         $('#etalage').etalage({
@@ -101,7 +111,7 @@ EOF;
             source_image_height: 1200,
             show_hint: true,
             click_callback: function(image_anchor, instance_id){
-
+alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
             }
         });
 

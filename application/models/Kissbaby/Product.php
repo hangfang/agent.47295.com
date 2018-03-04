@@ -20,14 +20,14 @@ class Kissbaby_ProductModel extends BaseModel {
     public static function getList($where = array(), $field = '*', $limit = array(), $order = '', $group = '') {
         $productList = parent::getList($where, $field, $limit, $order, $group);
         if(!empty($productList)){
-            foreach($productList as $_product){
+            foreach($productList as &$_product){
                 $_product['product_image'] = explode(',', $_product['product_image']);
                 foreach($_product['product_image'] as &$_image){
                     $_image = KISSBABY_IMAGE_URL.$_image;
                 }
             }
         }
-        
+
         return $productList;
     }
     
@@ -36,7 +36,7 @@ class Kissbaby_ProductModel extends BaseModel {
         
         $id2Product = [];
         if(!empty($productList)){
-            foreach($productList as $_product){
+            foreach($productList as &$_product){
                 $_product['product_image'] = explode(',', $_product['product_image']);
                 foreach($_product['product_image'] as &$_image){
                     $_image = KISSBABY_IMAGE_URL.$_image;
