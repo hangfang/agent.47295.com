@@ -525,7 +525,7 @@ class KissbabyController extends BasicController{
             return true;
         }
         
-        $rt = file_put_contents($_path = $_path.DIRECTORY_SEPARATOR.md5($_fileName).'.'.array_pop($_tmp), $_content);
+        $rt = file_put_contents($_path = $_path.'/'.md5($_fileName).'.'.array_pop($_tmp), $_content);
         if(!$rt){
             log_message('error', __FUNCTION__.', 保存kissbaby图片失败, save path:'. $_path .' url:'.$_imagePath);
             return false;
