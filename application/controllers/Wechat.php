@@ -23,9 +23,11 @@ class WechatController extends Yaf_Controller_Abstract {
 
             
         if(empty($_SESSION['wechat']['access_token'])){
-            if(!in_array($actionName, ['login', 'code'])){
+            if(!in_array($actionName, ['login', 'code', 'register'])){
                 header('location: /wechat/auth/login?redirect_uri='. urlencode(BASE_URL.$this->_request->getRequestUri()));
                 exit;
+            }else{
+                return true;
             }
         }else if(time()-$_SESSION['wechat']['access_token_time']>7200){//access_token过期
             if(time()-$_SESSION['wechat']['refresh_token_time']<30*86400){//access_token过期
@@ -36,9 +38,12 @@ class WechatController extends Yaf_Controller_Abstract {
             exit;
         }
         
-        if(empty($_SESSION['user']['user_type']) || $_SESSION['user']['user_type']!=='admin'){
-            header('location: /shop/index/index');
-            exit;
+        if(!empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='seller'){
+            header('location: /shop/index/index');exit;
+        }elseif(!empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin'){
+            header('location: /wechat/account/index');exit;
+        }else{
+            header('location: /wechat/auth/index');exit;
         }
     }
     
@@ -84,7 +89,7 @@ class WechatController extends Yaf_Controller_Abstract {
                 $url = $tmp;
             }
         
-            header('refresh:3;url='.WECHAT_OPEN_HOST.'/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', WECHAT_APP_ID, urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url));
+            header('refresh:3;url='.WECHAT_OPEN_HOST.sprintf('/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect', WECHAT_APP_ID, urlencode(BASE_URL.'/wechat/auth/code?redirect_uri='.$url)));
             exit(isset($result['errmsg']) ? $result['errmsg'] : '微信授权失败');
         }
         
