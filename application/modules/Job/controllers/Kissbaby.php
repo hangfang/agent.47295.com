@@ -137,12 +137,13 @@ class KissbabyController extends BasicController{
                         $this->__saveImage($detail['image']);
                     }
                     
+                    $detail['description'] = empty($detail['description']) ? '' : str_replace('src=', 'class="lazy" data-original=', $detail['description']);
                     $_update = [
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
                         'product_name'   =>  $detail['name'],
                         'product_image'   =>  $detail['image'],
-                        'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
+                        'product_description'   =>  $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
                         'product_vip_price'   =>  $detail['vip_price'],
                         'product_tag'   =>  $detail['tag'],
@@ -216,13 +217,15 @@ class KissbabyController extends BasicController{
         }else{
             $this->__saveImage($detail['image']);
         }
+        
+        $detail['description'] = empty($detail['description']) ? '' : str_replace('src=', 'class="lazy" data-original=', $detail['description']);
 
         $_update = [
             'category_id'   =>  0,
             'product_id'   =>  $detail['product_id'],
             'product_name'   =>  $detail['name'],
             'product_image'   =>  $detail['image'],
-            'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
+            'product_description'   => $detail['description'],
             'product_sale_price'   =>  $detail['sale_price'],
             'product_vip_price'   =>  $detail['vip_price'],
             'product_tag'   =>  $detail['tag'],

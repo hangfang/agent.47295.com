@@ -10,11 +10,12 @@
 <link href="<?php echo $staticDir;?>css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Custom Theme files -->
-<link href="<?php echo $staticDir;?>css/style.css?v=20180305" rel='stylesheet' type='text/css' />
+<link href="<?php echo $staticDir;?>css/style.css?v=<?php echo date('Y-m-d H:i:s');?>" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
 <!--webfont-->
 <!--<link href='http://fonts.useso.com/css?family=Lato:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>-->
 <script type="text/javascript" src="<?php echo $staticDir;?>js/jquery-1.11.1.min.js"></script>
+<script src="<?php echo $staticDir;?>js/jquery.lazyload.js"></script>
 <!-- start menu -->
 <script src="<?php echo $staticDir;?>js/jquery.easydropdown.js"></script>
 <link href="<?php echo $staticDir;?>css/megamenu.css" rel="stylesheet" type="text/css" media="all" />

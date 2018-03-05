@@ -10,5 +10,10 @@
 	    </div>
 	</div>
 </div>
+<script>
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+</script>
 </body>
 </html>
