@@ -49,12 +49,26 @@ class KissbabyController extends BasicController{
                 'ts'                =>  date('Y-m-d H:i:s', $now)
             ];
             
-            if(!Kissbaby_CategoryModel::replace($_replace)){
-                log_message('error', $msg = __FUNCTION__.', 更新父分类失败. replace:'.print_r($_replace, true));
-                echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+            $_state = true;
+            if(!Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
+                if(!Kissbaby_CategoryModel::insert($_replace)){
+                    log_message('error', $msg = __FUNCTION__.', 插入父分类失败. replace:'.print_r($_replace, true));
+                    echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+                    $_state = false;
+                }
+            }else{
+                unset($_replace['create_time']);
+                if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_cate['category_id']])){
+                    log_message('error', $msg = __FUNCTION__.', 插更新父分类失败. replace:'.print_r($_replace, true));
+                    echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+                    $_state = false;
+                }
             }
             
-            echo 'update kissbaby category succ..., name:'.$_cate['name']."\n";
+            if($_state){
+                echo 'update kissbaby category succ..., name:'.$_cate['name']."\n";
+            }
+            
             foreach($_cate['children'] as $_subCate){
                 if($_subCate['image']){
                     $this->__saveImage($_subCate['image']);
@@ -70,13 +84,26 @@ class KissbabyController extends BasicController{
                     'create_time'       =>  $now,
                     'ts'                =>  date('Y-m-d H:i:s', $now)
                 ];
-            
-                if(!Kissbaby_CategoryModel::replace($_replace)){
-                    log_message('error', $msg = __FUNCTION__.', 更新子分类失败. replace:'.print_r($_replace, true));
-                    echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+                
+                $_state = true;
+                if(!Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']])){
+                    if(!Kissbaby_CategoryModel::insert($_replace)){
+                        log_message('error', $msg = __FUNCTION__.', 插入父分类失败. replace:'.print_r($_replace, true));
+                        echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+                        $_state = false;
+                    }
+                }else{
+                    unset($_replace['create_time']);
+                    if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_subCate['category_id']])){
+                        log_message('error', $msg = __FUNCTION__.', 插更新父分类失败. replace:'.print_r($_replace, true));
+                        echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
+                        $_state = false;
+                    }
                 }
                 
-                echo 'update kissbaby sub category succ..., name:'.$_subCate['name']."\n";
+                if($_state){
+                    echo 'update kissbaby sub category succ..., name:'.$_subCate['name']."\n";
+                }
             }
         }
         
@@ -142,7 +169,7 @@ class KissbabyController extends BasicController{
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
                         'product_name'   =>  $detail['name'],
-                        'product_image'   =>  $detail['image'],
+                        'product_image'   =>  empty($detail['image']) ? '' : $detail['image'],
                         'product_description'   =>  $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
                         'product_vip_price'   =>  $detail['vip_price'],

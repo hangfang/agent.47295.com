@@ -16,7 +16,8 @@ class ActivityController extends BasicController{
         }
         
         
-        $this->_view->assign('title', '活动商品');
+        $this->_view->assign('activity', $activity = Kissbaby_ActivityModel::getRow(['activity_id'=>$activityId]));
+        $this->_view->assign('title', $activity['activity_name']);
         $this->_view->assign('productList', $productList);
         return true;
     }
