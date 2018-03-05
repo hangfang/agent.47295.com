@@ -248,14 +248,34 @@ class Manage_MenuController extends BasicController {
                 ]
             ]
         ];
+        
+        $default = [
+            [
+                "type"=>"view", 
+                "name"=>"商城", 
+                "url"=>"http://agent.47295.com/shop/index/index", 
+            ], 
+            [
+                "type"=>"view", 
+                "name"=>"订单管理", 
+                "url"=>"http://agent.47295.com/shop/manage/orderlist", 
+                "sub_button"=>[ ]
+            ],
+            [
+                "type"=>"view", 
+                "name"=>"公众号管理", 
+                "url"=>"http://agent.47295.com/wechat/account/index", 
+                "sub_button"=>[ ]
+            ]
+        ];
         $menus = $this->_request->getPost('menu', $default);
         if(empty($menus)){
             lExit(502, '菜单数据格式错误');
         }
         
         $rules = [
-                //"tag_id"=>"2",//用户标签的id，可通过用户标签管理接口获取
-                "sex"=>"1",//性别：男（1）女（2），不填则不做匹配
+                "tag_id"=>"102",//用户标签的id，可通过用户标签管理接口获取
+                //"sex"=>"1",//性别：男（1）女（2），不填则不做匹配
                 "country"=>"中国",
                 "province"=>"广东",
                 "city"=>"深圳",
