@@ -44,7 +44,7 @@
     <div class="container">
         <div class="col-xs-9 header-bottom-left">
             <div class="col-xs-2 logo">
-                <h1><a href="/shop/index/index"><span>琳玲</span>Dai购</a></h1>
+                <h1><a href="/shop/index/index"><span>琳玲</span>港货</a></h1>
             </div>
             <div class="col-xs-7 menu">
                 <ul class="megamenu skyblue">
