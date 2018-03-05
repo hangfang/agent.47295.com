@@ -25,8 +25,9 @@ include $viewPath.'header.php';
                     }
 
                     $_product = $productList[$i];
-                    
+
                     $_imgSrc = empty($_product['product_image'][0]) ? '' : $_product['product_image'][0];
+                    $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<span><span class="amount">会员价:$'.$_product['product_vip_price'].'</span></span>' : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
@@ -40,7 +41,7 @@ include $viewPath.'header.php';
     <div class="shop-content" style="height: 50px;margin-top: .7rem;">
             <div><a href="/shop/product/detail?product_id={$_product['product_id']}" rel="tag" style="display: block;height: 20px;overflow: hidden;">{$_product['product_name']}</a></div>
             <h3><a href="/shop/product/detail?product_id={$_product['product_id']}">Non-charac</a></h3>
-            <span><span class="amount">会员价:\${$_product['product_vip_price']}</span></span>
+            {$_extra}
     </div>
 </div>
 EOF;

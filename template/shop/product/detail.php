@@ -37,7 +37,7 @@ EOF;
                     </ul>
 					<h1><?php echo $product['product_name'];?></h1>
 					<ul class="price_single">
-					  <li class="head"><h2>$<?php echo $product['product_vip_price'];?></h2></li>
+					  <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="head"><h2>$'.$product['product_vip_price'].'</h2></li>' : '';?>
 					  <li class="head_desc"><a href="javascript:void(0);"><?php echo $product['product_views'];?> reviews</a><img src="<?php echo $staticDir;?>images/review.png" alt=""/></li>
 					  <div class="clearfix"></div>
 					</ul>
@@ -85,6 +85,7 @@ EOF;
         <div class="box_3">
             <?php
                 foreach($related as $_related){
+                    $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<p>$ '.$_related['product_vip_price'].'</p>' : '';
                     echo <<<EOF
 <div class="col-md-3">
 <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
@@ -92,7 +93,7 @@ EOF;
 </a>
 </div>
 <h4><a href="/shop/product/detail?product_id={$_related['product_id']}">{$_related['product_name']}</a></h4>
-<p>$ {$_related['product_vip_price']}</p>
+{$_extra}
 </div>
 EOF;
                 }
