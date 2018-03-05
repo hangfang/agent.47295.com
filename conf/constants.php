@@ -39,8 +39,8 @@ define('WECHAT_API_HOST', 'https://api.weixin.qq.com');
 if(PHP_ENV==='product'){
     define('WECHAT_WEB_JS_DEBUG', false);//web JavaScript调试模式
     define('WECHAT_ENCPRYPT_TYPE', false);//消息加密方式
-    define('WECHAT_APP_ID', 'wxc170b80185652191');
-    define('WECHAT_APP_SECRET', '588a521441c177d77f7f5b40750e0a8f');
+    define('WECHAT_APP_ID', 'wx3779049492b4a7ad');
+    define('WECHAT_APP_SECRET', 'b500556d6ff2af79022c373b6384b988');
     define('WECHAT_TOKEN', 'AgentWangLinLing');
     define('WECHAT_ENCODING_AES_KEY', 'WskaczySJfTf5Jx5iteiSdpSNXpUETVxMtlXhwMuij9');
 }else{
