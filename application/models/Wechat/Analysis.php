@@ -14,14 +14,11 @@ class Wechat_AnalysisModel extends BaseModel{
         $contents = trim(str_replace(array('，', ','), array(' ', ' '), $contents));
         $contents = explode(' ', $contents);
         
-        $wechat = get_var_from_conf('wechat');
         $mediamsgformat = get_var_from_conf('mediamsgformat');
         //echo '';exit;//输出空字符，微信不做任何反应
         switch(count($contents)){
             case 1:
-                if(in_array(strtolower($contents[0]), $wechat['kf'])){
-                    self::kfSessionCreate($msgXml);
-                }elseif(isset($mediamsgformat[strtolower($contents[0])])){
+                if(isset($mediamsgformat[strtolower($contents[0])])){
                     Wechat_DiyModel::responseMediaMsg($msgXml);
                 }else{
                     Wechat_DiyModel::unrecognize($contents[0], $msgXml);

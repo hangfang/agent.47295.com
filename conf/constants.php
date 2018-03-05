@@ -44,7 +44,8 @@ if(PHP_ENV==='product'){
     define('WECHAT_TOKEN', 'AgentWangLinLing');
     define('WECHAT_ENCODING_AES_KEY', 'WskaczySJfTf5Jx5iteiSdpSNXpUETVxMtlXhwMuij9');
     
-    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g', '']);//管理员的openid
+    define('WECHAT_OPENID', 'gh_a103c9f558fa');//公众号的openid
+    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g']);//管理员的openid
 }else{
     define('WECHAT_WEB_JS_DEBUG', true);//web JavaScript调试模式
     define('WECHAT_ENCPRYPT_TYPE', false);//消息加密方式
@@ -53,7 +54,8 @@ if(PHP_ENV==='product'){
     define('WECHAT_TOKEN', 'AgentWangLinLing');
     define('WECHAT_ENCODING_AES_KEY', false);
     
-    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g', '']);//管理员的openid
+    define('WECHAT_OPENID', 'gh_d48b747c4a68');//公众号的openid
+    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g']);//管理员的openid
 }
 
 define('WECHAT_HK_ACCOUNT', 'WangLin-ling');
