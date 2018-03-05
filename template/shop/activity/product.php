@@ -14,17 +14,17 @@ include $viewPath.'header.php';
 	</div>
 </div>
 <div class="content_top">
-	<h3 class="m_1" style="display:none;">新品到货</h3>
+	<h3 class="m_1" style="display:none;">活动商品</h3>
 	<div class="container" id="container">
 	   <div class="box_1">
 	       <div class="col-md-7-bak">
                <?php 
-                for($i=0,$len=count($latestProduct); $i<$len; $i++){
+                for($i=0,$len=count($productList); $i<$len; $i++){
                     if(($i+1)%3==0){
                         echo '<div class="section group">';
                     }
 
-                    $_product = $latestProduct[$i];
+                    $_product = $productList[$i];
                     if(!empty($_product['product_image'])){
                         $_product['product_image'] = explode(',', $_product['product_image']);
                         $_product['product_image'] = $_product['product_image'][0];

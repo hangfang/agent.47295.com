@@ -2,7 +2,7 @@
 <html>
 <head>
 <title><?php echo $title;?></title>
-<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="<?php echo KISSBABY_KEYWORD;?>" />
 <meta name="description" content="<?php echo KISSBABY_DESCRIPTION;?>" />
@@ -50,7 +50,7 @@
                 <ul class="megamenu skyblue">
                     <li class="<?php echo $moduleName=='shop' && $controllerName=='index' && $actionName=='index' ? 'active' : '';?> grid"><a class="color1" href="/shop/index/index">精品推荐</a></li>
                     <li class="<?php echo $moduleName=='shop' && $controllerName=='product' && $actionName=='latest' ? 'active' : '';?> grid"><a class="color2" href="/shop/product/latest">新品到货</a></li>
-                    <li class="<?php echo $moduleName=='shop' && $controllerName=='activity' && $actionName=='index' ? 'active' : '';?> grid"><a class="color4" href="/shop/activity/recommand">限时活动</a></li>				
+                    <li class="<?php echo $moduleName=='shop' && $controllerName=='activity' && $actionName=='index' ? 'active' : '';?> grid"><a class="color4" href="/shop/activity/index">限时活动</a></li>				
                     <li class="<?php echo $moduleName=='shop' && $controllerName=='category' && $actionName=='index' ? 'active' : '';?> grid"><a class="color5" href="/shop/category/index">商品分类</a></li>
                 </ul> 
             </div>

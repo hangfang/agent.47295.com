@@ -452,7 +452,7 @@ class KissbabyController extends BasicController{
                 
                 //log_message('error', print_r($goodsList, true));exit;
                 foreach($productList['sale']['products'] as $_product){
-                    if(empty($_product['image'])){
+                    if(!empty($_product['image'])){
                         $this->__saveImage($_product['image']);
                     }
                     
@@ -510,7 +510,7 @@ class KissbabyController extends BasicController{
         $_path = implode('/', $_path);
         
         
-        $_path = preg_replace('/[^0-9a-zA-Z\/\.\\\]/', '', $_path);
+        $_path = preg_replace('/[^0-9a-zA-Z_\/\.\\\]/', '', $_path);
         $_path = preg_replace('/\s/', '', $_path);
         $_path = IMAGE_PATH.$_path;
         $_path = str_replace('\\', '/', $_path);

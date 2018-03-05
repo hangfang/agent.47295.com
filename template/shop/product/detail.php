@@ -88,7 +88,7 @@ EOF;
                     echo <<<EOF
 <div class="col-md-3">
 <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
-<img src="{$_related['product_image'][0]}" class="img-responsive" alt="">
+<img data-original="{$_related['product_image'][0]}" class="lazy img-responsive" alt="">
 </a>
 </div>
 <h4><a href="/shop/product/detail?product_id={$_related['product_id']}">{$_related['product_name']}</a></h4>
