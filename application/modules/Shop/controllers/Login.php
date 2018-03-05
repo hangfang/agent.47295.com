@@ -87,4 +87,9 @@ class LoginController extends BasicController{
         $_SESSION['user'] = $user;
         lExit(0, '登录成功');
     }
+    
+    public function logoutAction(){
+        session_destroy();
+        header('location: /');exit;;
+    }
 }

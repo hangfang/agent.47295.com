@@ -10,7 +10,7 @@ class AuthController extends WechatController {
      */
     public function indexAction(){
         $url = $this->_request->getQuery('redirect_uri');
-var_dump($_SESSION);exit;
+
         if(isset($_SESSION['user']) && $_SESSION['user']['user_type']=='seller'){
             $url = $url ? $url : '/shop/index/index';
             header('location: '.$url);exit;
