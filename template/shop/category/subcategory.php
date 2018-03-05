@@ -14,7 +14,7 @@ include $viewPath.'header.php';
 	</div>
 </div>
 <div class="content_top">
-	<h3 class="m_1" style="display:none;">一级分类</h3>
+	<h3 class="m_1" style="display:none;">二级分类</h3>
 	<div class="container">
 	   <div class="box_1">
 	       <div class="col-md-7-bak">
@@ -25,19 +25,19 @@ include $viewPath.'header.php';
                     }
 
                     $_category = $categoryList[$i];
-                    $_imgSrc = !empty($_category['category_banner']) ? KISSBABY_IMAGE_URL.$_category['category_banner'] : '';
+                    $_imgSrc = !empty($_category['category_image']) ? KISSBABY_IMAGE_URL.$_category['category_image'] : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
-            <a href="/shop/category/subcategory?category_id={$_category['category_id']}">
+            <a href="/shop/category/product?category_id={$_category['category_id']}">
                 <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button " style="background:transparent;border:none;"></a>
         </div>
     </div>
     <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-            <div><a href="/shop/category/subcategory?category_id={$_category['category_id']}" rel="tag">{$_category['category_name']}</a></div>
+            <div><a href="/shop/category/product?category_id={$_category['category_id']}" rel="tag">{$_category['category_name']}</a></div>
     </div>
 </div>
 EOF;

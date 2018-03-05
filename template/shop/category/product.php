@@ -25,14 +25,8 @@ include $viewPath.'header.php';
                     }
 
                     $_product = $productList[$i];
-                    if(!empty($_product['product_image'])){
-                        $_product['product_image'] = explode(',', $_product['product_image']);
-                        $_product['product_image'] = $_product['product_image'][0];
-                    }else{
-                        $_product['product_image'] = '';
-                    }
                     
-                    $_imgSrc = $_product['product_image'] ? KISSBABY_IMAGE_URL.$_product['product_image'] : '';
+                    $_imgSrc = empty($_product['product_image'][0]) ? '' : $_product['product_image'][0];
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">

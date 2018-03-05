@@ -17,7 +17,7 @@ class ProductController extends BasicController{
         
         Kissbaby_ProductModel::update(['product_views'=>++$product['product_views']], ['product_id'=>$productId]);
         
-        $this->_view->assign('title', '商品详情');
+        $this->_view->assign('title', $product['product_name']);
         $this->_view->assign('product', $product);
         $this->_view->assign('related', Kissbaby_ProductModel::getList(['category_id'=>$product['category_id'], 'product_id!='=>$productId], '*', '0,4'));
         $this->_view->assign('category', Kissbaby_CategoryModel::getRow(['category_id'=>$product['category_id']]));
