@@ -41,9 +41,13 @@ class WechatController extends Yaf_Controller_Abstract {
         if(!empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='seller'){
             header('location: /shop/index/index');exit;
         }elseif(!empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin'){
-            header('location: /wechat/account/index');exit;
+            if($moduleName!='wechat' && $controllerName!=='account' && $actionName!=='index'){
+                header('location: /wechat/account/index');exit;
+            }
         }else{
-            header('location: /wechat/auth/index');exit;
+            if($moduleName!='wechat' && $controllerName!=='auth' && $actionName!=='index'){
+                header('location: /wechat/auth/index');exit;
+            }
         }
     }
     
