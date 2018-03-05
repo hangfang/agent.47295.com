@@ -16,7 +16,7 @@ $msgformat['msg_kfsession_create_succ'] = <<<EOF
 EOF;
 
 $msgformat['msg_invite'] = <<<EOF
-感谢关注琳玲Dai购
+感谢关注琳玲港货
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
         2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
         3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
@@ -26,7 +26,7 @@ $msgformat['msg_invite'] = <<<EOF
 EOF;
 
 $msgformat['msg_unrecognized'] = <<<EOF
-感谢关注琳玲Dai购
+感谢关注琳玲港货
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
         2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
         3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
