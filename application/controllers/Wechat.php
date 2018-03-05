@@ -16,6 +16,9 @@ class WechatController extends Yaf_Controller_Abstract {
         $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
         $this->setViewpath($viewpath);
         $this->_view->assign('viewPath', $viewpath);
+        $this->_view->assign('moduleName', $moduleName);
+        $this->_view->assign('controllerName', $controllerName);
+        $this->_view->assign('actionName', $actionName);
         $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
 
             

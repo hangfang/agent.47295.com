@@ -55,7 +55,7 @@ class AuthController extends WechatController {
         $_SESSION['wechat']['refresh_token'] = $result['refresh_token'];
         $_SESSION['wechat']['refresh_token_time'] = time()-50;//30天内有效，用来刷新access_token
         $_SESSION['wechat']['openid'] = $result['openid'];
-        $_SESSION['wechat']['unionid'] = $result['unionid'];
+        //$_SESSION['wechat']['unionid'] = $result['unionid'];
 
         $user = Agent_UserModel::getRow(['user_openid'=>$result['openid']], 'id,user_name,user_mobile,user_pwd,user_openid,user_status,create_time,ts');
         if($user){
