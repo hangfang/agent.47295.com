@@ -6,9 +6,6 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 class Manage_AccountController extends BasicController {
     public function init(){
         parent::init();
-        if(!Wechat_MsgModel::initDomain()){
-            lExit(502, '当前企业未接入微信公众号');
-        }
     }
     
     /**

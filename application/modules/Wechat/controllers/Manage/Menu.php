@@ -119,7 +119,7 @@ class Manage_MenuController extends BasicController {
             ],
                         [
                 "type"=>"view", 
-                "name"=>"个人中心", 
+                "name"=>"账户中心", 
                 "url"=>"http://agent.47295.com/shop/account/index", 
                 "sub_button"=>[ ]
             ]

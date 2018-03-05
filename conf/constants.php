@@ -18,7 +18,7 @@ define('PRICE_PRECISION', 2);
 // 百分比精度
 define('PERCENT_PRECISION', 4);
 
-define('SERVICE_TEL', '15914186940');
+define('SERVICE_TEL', '+86 15914186940');
 
 //短信验证码有效期,10分钟
 define('SMS_TOKEN_LIFT_TIME', 600);
@@ -43,16 +43,19 @@ if(PHP_ENV==='product'){
     define('WECHAT_APP_SECRET', 'b500556d6ff2af79022c373b6384b988');
     define('WECHAT_TOKEN', 'AgentWangLinLing');
     define('WECHAT_ENCODING_AES_KEY', 'WskaczySJfTf5Jx5iteiSdpSNXpUETVxMtlXhwMuij9');
+    
+    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g', '']);//管理员的openid
 }else{
     define('WECHAT_WEB_JS_DEBUG', true);//web JavaScript调试模式
     define('WECHAT_ENCPRYPT_TYPE', false);//消息加密方式
     define('WECHAT_APP_ID', 'wxda5cc06be9c200f6');
     define('WECHAT_APP_SECRET', '8d3f59778c0c214088c886845d57d8ce');
-    define('WECHAT_TOKEN', 'zhugedaodian');
+    define('WECHAT_TOKEN', 'AgentWangLinLing');
     define('WECHAT_ENCODING_AES_KEY', false);
+    
+    define('WECHAT_ADMIN_OPENID', ['ohwjvw1QPmm0YLy3yKhjGYg4qS_g', '']);//管理员的openid
 }
 
-define('WECHAT_ADMIN_OPENID', 'ohwjvw1QPmm0YLy3yKhjGYg4qS_g');
 define('WECHAT_HK_ACCOUNT', 'WangLin-ling');
 
 /*新浪ip查询*/
