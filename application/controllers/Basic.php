@@ -19,6 +19,7 @@ class BasicController extends Yaf_Controller_Abstract {
         $moduleName = strtolower($this->_request->module);
         $controllerName = strtolower($this->_request->controller);
         $actionName = strtolower($this->_request->action);
+        
         if(Yaf_Registry::get('app')->environ()!=='develop' && $moduleName=='index' && $controllerName=='test'){
             lExit($this->_error[3]);
         }
@@ -27,23 +28,27 @@ class BasicController extends Yaf_Controller_Abstract {
             if($moduleName==='job'){
                 lExit($this->_error[3]);
             }
-
-            if($moduleName==='index' || $moduleName==='weapp' || $moduleName==='shop'){
-                header('content-type:text/html;charset=utf-8', true);
-                $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
-                $this->setViewpath($viewpath);
-                $this->_view->assign('viewPath', $viewpath);
-                $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
-                return true;
-            }
-
-            Yaf_Dispatcher::getInstance()->autoRender(false);
-
-            if(BaseModel::whiteList($moduleName.'_'.$controllerName.'_'.$actionName)){
-                return true;
-            }
             
-            //BaseModel::accessible();//校验登录
+            
+            header('content-type:text/html;charset=utf-8', true);
+            $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
+            $this->setViewpath($viewpath);
+            $this->_view->assign('viewPath', $viewpath);
+            $this->_view->assign('moduleName', $moduleName);
+            $this->_view->assign('controllerName', $controllerName);
+            $this->_view->assign('actionName', $actionName);
+            $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
+
+            if(in_array($controllerName, ['login', 'auth']) || in_array($actionName, ['notfound'])){
+                return true;
+            }else if(empty($_SESSION['user'])){
+                if(!empty($_SERVER['HTTP_USER_AGENT']) && stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'micromessenger')!==false){
+                    header('location: /wechat/auth/index');exit;
+                }else{
+                    header('location: /shop/login/index');exit;
+                }
+            }
+            return true;
         }else{//命令行下
             Yaf_Dispatcher::getInstance()->autoRender(FALSE);
             

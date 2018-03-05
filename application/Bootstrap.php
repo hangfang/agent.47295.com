@@ -112,6 +112,7 @@ EOF;
         ini_set('session.save_handler', $arrConfig['application']['session']['save_handler']);
         ini_set('session.save_path', $arrConfig['application']['session']['save_path']);
         ini_set('session.gc_maxlifetime', $arrConfig['application']['session']['gc_maxlifetime']);
+        ini_set('session.cookie_lifetime', $arrConfig['application']['session']['gc_maxlifetime']);
         Yaf_Session::getInstance()->start();
     }
     

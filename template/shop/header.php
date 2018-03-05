@@ -10,7 +10,7 @@
 <link href="<?php echo $staticDir;?>css/bootstrap.css" rel='stylesheet' type='text/css' />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <!-- Custom Theme files -->
-<link href="<?php echo $staticDir;?>css/style.css?v=2018030322" rel='stylesheet' type='text/css' />
+<link href="<?php echo $staticDir;?>css/style.css?v=20180305" rel='stylesheet' type='text/css' />
 <!-- Custom Theme files -->
 <!--webfont-->
 <!--<link href='http://fonts.useso.com/css?family=Lato:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>-->
@@ -43,14 +43,14 @@
     <div class="container">
         <div class="col-xs-9 header-bottom-left">
             <div class="col-xs-2 logo">
-                <h1><a href="/agent/index/index"><span>琳玲</span>Dai购</a></h1>
+                <h1><a href="/shop/index/index"><span>琳玲</span>Dai购</a></h1>
             </div>
             <div class="col-xs-7 menu">
                 <ul class="megamenu skyblue">
-                    <li class="active grid"><a class="color1" href="/shop/index/index">精品推荐</a></li>
-                    <li class="grid"><a class="color2" href="/shop/product/recommand">热销爆款</a></li>
-                    <li><a class="color4" href="/shop/activity/recommand">限时活动</a></li>				
-                    <li><a class="color5" href="/shop/category/index">商品分类</a></li>
+                    <li class="<?php echo $moduleName=='shop' && $controllerName=='index' && $actionName=='index' ? 'active' : '';?> grid"><a class="color1" href="/shop/index/index">精品推荐</a></li>
+                    <li class="<?php echo $moduleName=='shop' && $controllerName=='product' && $actionName=='latest' ? 'active' : '';?> grid"><a class="color2" href="/shop/product/latest">新品到货</a></li>
+                    <li class="<?php echo $moduleName=='shop' && $controllerName=='activity' && $actionName=='index' ? 'active' : '';?> grid"><a class="color4" href="/shop/activity/recommand">限时活动</a></li>				
+                    <li class="<?php echo $moduleName=='shop' && $controllerName=='category' && $actionName=='index' ? 'active' : '';?> grid"><a class="color5" href="/shop/category/index">商品分类</a></li>
                 </ul> 
             </div>
 		</div>

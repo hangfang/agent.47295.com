@@ -4,12 +4,23 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 class WechatController extends Yaf_Controller_Abstract {
 
     public function init(){
-        if(strtolower($this->_request->controller)==='msg'){
+        $moduleName = strtolower($this->_request->module);
+        $controllerName = strtolower($this->_request->controller);
+        $actionName = strtolower($this->_request->action);
+        
+        if($controllerName==='msg'){
             return true;
         }
         
+        header('content-type:text/html;charset=utf-8', true);
+        $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
+        $this->setViewpath($viewpath);
+        $this->_view->assign('viewPath', $viewpath);
+        $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
+
+            
         if(empty($_SESSION['wechat']['access_token'])){
-            if(!in_array(strtolower($this->_request->action), ['login', 'code'])){
+            if(!in_array($actionName, ['login', 'code'])){
                 header('location: /wechat/auth/login?redirect_uri='. urlencode(BASE_URL.$this->_request->getRequestUri()));
                 exit;
             }

@@ -131,7 +131,7 @@ body a{
 	text-decoration:none;
 }
 .header_bottom {
-	padding:2em 0;
+	padding:.5em 0;
 }
 /*--menu--*/
 /* dCodes Framework:(c) TemplateAccess */
@@ -1418,7 +1418,7 @@ ul.footer_social li a i:hover{
 }
 /*--single--*/
 .single_top {
-	margin:3em 0;
+	margin:0.5em 0;
 }
 ul.back{
 	padding:0;
@@ -2101,8 +2101,9 @@ p.cart {
 	color:#df1f26;
 	font-size: 1em;
 	padding-bottom: 5px;
-	margin: 0;
+	margin: 0 .5rem 0 0;
 	font-weight:600;
+        float:left;
 }
 .register-top-grid div, .register-bottom-grid div {
 	width: 48%;
@@ -2115,7 +2116,7 @@ p.cart {
 	padding-bottom: 0.2em;
 	display: block;
 }
-.register-top-grid input[type="text"], .register-bottom-grid input[type="text"] {
+.register-top-grid input[type="text"], .register-bottom-grid input[type="text"], .register-top-grid input[type="tel"], .register-bottom-grid input[type="tel"] , .register-top-grid input[type="password"], .register-bottom-grid input[type="password"] {
 	border: 1px solid #EEE;
 	outline-color:#FF5B36;
 	width: 96%;
@@ -2148,7 +2149,9 @@ p.cart {
 	-webkit-transition: 0.5s all;
 	-moz-transition: 0.5s all;
 	-o-transition: 0.5s all;
-	clear: both;
+	float:left;
+        position:relative;
+        top:-0.2rem;
 }
 .checkbox i {
 	position: absolute;
@@ -2192,7 +2195,7 @@ p.cart {
 .register-but{
 	margin-top:1em;
 }
-.register-but form input[type="submit"] {
+.register-but input[type="submit"] {
 	background:#df1f26;
 	color: #FFF;
 	font-size: 0.8em;
@@ -2210,7 +2213,7 @@ p.cart {
 	background:#000;
 }
 .register-bottom-grid {
-	margin-top:3em;
+	/*margin-top:3em;*/
 }
 .checkout{
 	padding:3em 0 0 0;

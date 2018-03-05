@@ -876,26 +876,20 @@ if(!function_exists('lExit')){
     function lExit($code=[], $msg=null){
         header('content-type:application/json;charset=utf-8', true);
         if(is_object($code) || is_array($code)){
-            $body4log = json_encode(['response'=>['data'=>$code]], JSON_UNESCAPED_UNICODE);//保存加密前的数据，写入日志
-            $body = json_encode([
-				'response' => ['data'=>$code],
-				'state'=>true
-			],JSON_UNESCAPED_UNICODE);
-		}else if(is_bool($code)){
-            $body4log = $body = json_encode(['response'=>['data'=>$code], 'state'=>true], JSON_UNESCAPED_UNICODE);
-        }else{
+            $body = json_encode(['data'=>$code, 'rtn'=>0],JSON_UNESCAPED_UNICODE);
+		}else{
             if(is_null($msg)){
                 $error = get_var_from_conf('error');
                 if(isset($error[$code])){
-                    $body4log = $body = json_encode(['error'=>['code'=>$code, 'message'=>$error[$code]['message']]], JSON_UNESCAPED_UNICODE);
+                    $body = json_encode(['rtn'=>$code, 'error_msg'=>$error[$code]['message']], JSON_UNESCAPED_UNICODE);
                 }else{
-                    $body4log = $body = json_encode(['response'=>['data'=>$code], 'state'=>true], JSON_UNESCAPED_UNICODE);
+                    $body = json_encode(['rtn'=>502, 'error_msg'=>$code], JSON_UNESCAPED_UNICODE);
                 }
             }else{
-                $body4log = $body = json_encode(['error'=>['code'=>$code, 'message'=>$msg]], JSON_UNESCAPED_UNICODE);
+                $body = json_encode(['rtn'=>$code, 'error_msg'=>$msg], JSON_UNESCAPED_UNICODE);
             }
         }
-        log_message('all', 'request_id:'.Yaf_Registry::get('request_id')."\tip:". ip_address() ."\n    ".'response:'.$body4log."\n");
+        log_message('all', 'request_id:'.Yaf_Registry::get('request_id')."\tip:". ip_address() ."\n    ".'response:'.$body."\n");
 		exit($body);
     }
 }

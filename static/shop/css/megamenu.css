@@ -64,7 +64,8 @@ skyblue .megapanel img:hover,.skyblue form.contact input[type="text"]:focus,.sky
 	}
 }
 @media(max-width:768px){
-	.megamenu>li{display:block;width:100%;border-bottom:solid 1px rgba(0,0,0,0.1);box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box}
+	.megamenu>li{display:block;width:100%;/*border-bottom:solid 1px rgba(0,0,0,0.1);*/box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box}
+        .megamenu li a {padding:2px 25px !important;}
 	.megamenu>li:hover,.megamenu>li.active{border-top:0}
 	.megamenu>li>a{padding:15px 25px}
 	.megamenu>li:hover>a,.megamenu>li.active>a{padding:15px 25px}

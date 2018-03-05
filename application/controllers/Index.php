@@ -14,6 +14,8 @@ class IndexController extends BasicController {
      * 对于如下的例子, 当访问http://yourhost/sample/index/index/index/name/root 的时候, 你就会发现不同
      */
 	public function indexAction() {
+        header('location: /shop/index/index');exit;
+        
         $data = array();
         $data['title'] = 'WeApp首页';
         $data['class'] = 'app';

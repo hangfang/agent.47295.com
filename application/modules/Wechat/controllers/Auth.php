@@ -10,85 +10,16 @@ class AuthController extends WechatController {
      */
     public function indexAction(){
         $url = $this->_request->getQuery('redirect_uri');
-
+        
         if(isset($_SESSION['user']) && $_SESSION['user_type']=='seller'){
-            $url = $url ? $url : '/wechat/user/index';
+            $url = $url ? $url : '/shop/index/index';
             header('location: '.$url);exit;
-        }else if(isset($_SESSION['member']) && $_SESSION['user_type']=='vip'){
-            $url = $url ? $url : '/wechat/member/index';
-            header('location: /wechat/member/index');exit;
-        }
-        
-        /*---start---查询会员---start---*/
-        $members = Operation_ClientsVipsRefModel::getList(['openid'=>$_SESSION['wechat']['openid']], 'shop_id,client_id,vips_id,vip_id,vip_type');
-        if($members){
-            $id2vip = Operation_ClientsVipsModel::getIndexedList(['id'=>array_column($members, 'vips_id')], 'id', 'id,vip_mobile');
-            $clientIds = array_unique(array_column($members, 'client_id'));
-            $shopIds = array_unique(array_column($members, 'shop_id'));
-            $companys = Operation_ClientsCompanyModel::getIndexedList(['client_id'=>$clientIds], 'client_id');
-            $shops = Operation_ClientsShopsModel::getList(['client_id'=>$clientIds, 'shop_id'=>$shopIds], 'client_id,shop_id,shop_name,shop_phone,shop_phone400,shop_address');
-            
-            $memberList = [];echo 111;
-            foreach($members as $_member){
-                BaseModel::setDomain(BaseModel::id2Domain($_member['client_id']));
-                $tmp = G3_MmsMemberModel::getRow(['memberMobile'=>$id2vip[$_member['vips_id']][0]['vip_mobile']], 'memberId,memberCode,memberName,memberMobile,memberShop,memberCreate,memberType,memberIntegral,memberItgRetail');
-                if(!$tmp){
-                    continue;
-                }
-                
-                $tmp['client_id'] = $_member['client_id'];
-                $tmp['shop_id'] = $_member['shop_id'];
-                $tmp['client'] = $companys[$_member['client_id']][0];
-                foreach($shops as $_shop){
-                    if($_shop['shop_id']==$_member['shop_id'] && $_shop['client_id']==$_member['client_id']){
-                        $tmp['shop'] = $_shop;
-                        break;
-                    }
-                }
-                $memberList[] = $tmp;
-            }
-            $_SESSION['member']['list'] = $memberList;
-        }
-        /*---end---查询会员---end---*/
-        
-        /*---start---查询员工---start---*/
-        $users = Operation_ClientsUsersModel::getList(['openid'=>$_SESSION['wechat']['openid']]);//上线前，clients_users须添加openid字段
-        if($users){
-            $clientIds = array_unique(array_column($users, 'client_id'));
-            $shopIds = array_unique(array_column($users, 'shop_id'));
-            $companys = Operation_ClientsCompanyModel::getIndexedList(['client_id'=>$clientIds], 'client_id');//查询公司信息
-            $shops = Operation_ClientsShopsModel::getList(['client_id'=>$clientIds, 'shop_id'=>$shopIds]);
-            foreach($users as &$_user){
-                $_user['client'] = $companys[$_user['client_id']][0];
-                foreach($shops as $_shop){
-                    if($_shop['shop_id']==$_user['shop_id'] && $_shop['client_id']==$_user['client_id']){
-                        $_user['shop'] = $_shop;
-                        break;
-                    }
-                }
-            }
-            $_SESSION['user']['list'] = $users;
-        }
-        /*---end---查询员工---end---*/
-        
-        if($members && $users){
-            $url = $url ? $url : '/wechat/auth/select';
+        }else if(isset($_SESSION['user']) && $_SESSION['user_type']=='admin'){
+            $url = $url ? $url : '/shop/manage/index';
             header('location: '.$url);exit;
         }
         
-        if($members){
-            $_SESSION['user_type'] = 'vip';
-            $url = $url ? $url : '/wechat/member/index';
-            header('location: '.$url);exit;
-        }
-        
-        if($users){
-            $_SESSION['user_type'] = 'seller';
-            $url = $url ? $url : '/wechat/user/index';
-            header('location: '.$url);exit;
-        }
-        
-        $url = $url ? $url : '/wechat/auth/bind';
+        $url = $url ? $url : '/wechat/auth/register';
         header('location: '.$url);exit;
     }
     
@@ -118,12 +49,6 @@ class AuthController extends WechatController {
         $code = $this->_request->getQuery('code');
         $state = $this->_request->getQuery('state');
         
-        $url = '/wechat/auth/index';
-        $tmp = $this->_request->getQuery('redirect_uri');
-        if($tmp && strpos($tmp, $url)===false){
-            $url .= '?redirect_uri='.urlencode($tmp);
-        }
-        
         $result = $this->getAccessToken($code, $state);
         $_SESSION['wechat']['access_token'] = $result['access_token'];
         $_SESSION['wechat']['access_token_time'] = time()-50;//防止刚好7200秒，导致token过期
@@ -132,80 +57,111 @@ class AuthController extends WechatController {
         $_SESSION['wechat']['openid'] = $result['openid'];
         $_SESSION['wechat']['unionid'] = $result['unionid'];
 
+        $user = Agent_UserModel::getRow(['user_openid'=>$result['openid']], 'id,user_name,user_mobile,user_pwd,user_openid,user_status,create_time,ts');
+        if($user){
+            $url = '/wechat/auth/index';
+            $_SESSION['user'] = $user;
+            $_SESSION['user']['user_type'] = in_array($user['openid'], WECHAT_ADMIN_OPENID) ? 'admin' : 'seller';
+        }else{
+            $url = '/wechat/auth/register';
+        }
+        
+        
+        $tmp = $this->_request->getQuery('redirect_uri');
+        if($tmp && strpos($tmp, $url)===false){
+            $url .= '?redirect_uri='.urlencode($tmp);
+        }
+        
         header('location: '.$url);exit;
     }
     
     /**
-     * @todo 绑定账号：会员or销售
-     * @param string type 绑定类型vip/seller (vip)
-     * @param string mobile 手机号码
-     * @param string password 密码 (123456)
+     * @todo 绑定账号的页面
      * @author fanghang@fujiacaifu.com
      */
-    public function bindAction(){
-        $type = $this->_request->getPost('type');
-        if(!in_array($type, ['vip', 'seller'])){
-            lExit('绑定类型错误，必须为会员、店员二选一');
-        }
-        
-        $mobile = $this->_request->getPost('mobile');
-        if(!preg_match(PHONE_REG, $mobile)){
-            lExit('手机号码错误');
-        }
-        
-        $password = $this->_request->getPost('password');
-        if(empty($password)){
-            lExit('密码不能为空');
-        }
-        
-        if($type==='vip'){
-            $clientsVips = Operation_ClientsVipsModel::getRow(['vip_mobile'=>$mobile]);
-            if(!$clientsVips){
-                lExit('客户不存在');
-            }
-            
-            $clientsVipsRef = Operation_ClientsVipsRefModel::getList(['vips_id'=>$clientsVips['id'], 'vip_name'=>$password], 'vip_name');
-            if(!$clientsVipsRef){
-                lExit('客户名称验证失败');
-            }
-            
-            if(Operation_ClientsVipsRefModel::update(['openid'=>$_SESSION['wechat']['openid']], ['vips_id'=>$clientsVips['id']])===false){
-                lExit('会员账号绑定失败');
-            }
-            
-            $_SESSION['user_type'] = $type;
-            lExit(0, '会员账号绑定成功');
-        }
-        
-        $clientsTmpUser = Operation_ClientsTmpUsersModel::getRow(['mobile'=>$mobile]);
-        if(!$clientsTmpUser){
-            lExit('员工不存在');
-        }
-
-        if($clientsTmpUser['password']!=md5($password)){
-            lExit('员工密码验证失败');
-        }
-
-        if(Operation_ClientsUsersModel::update(['openid'=>$_SESSION['wechat']['openid']], ['user_tel'=>$mobile])===false){
-            lExit('员工账号绑定失败');
-        }
-
-        $_SESSION['user_type'] = $type;
-        lExit(0, '员工账号绑定成功');
+    public function registerAction(){
+        $this->_view->assign('staticDir', '/static/shop/');
+        $this->_view->assign('title', '绑定账号');
+        //echo $this->render('/template/wechat/auth/register.php');
+        return true;
     }
     
     /**
-     * @todo 选择账户角色
-     * @param string user_type 角色名字 (seller|vip)
+     * @todo 绑定账号
+     * @param string user_name 真实姓名
+     * @param string user_mobile 手机号码
+     * @param string user_pwd 密码 (123456)
+     * @author fanghang@fujiacaifu.com
      */
-    public function selectAction(){
-        $userType = $this->_request->getPost('user_type');
-        if(!in_array($userType, ['seller', 'vip'])){
-            lExit(502, '角色必须为店员或者会员');
+    public function doRegisterAction(){
+        $userName = $this->_request->getPost('user_name');
+        if(!$userName || strlen($userName)<2){
+            lExit('真实性不能少于2个字符');
         }
         
-        $_SESSION['user_type'] = $userType;
-        lExit();
+        $userMobile = $this->_request->getPost('user_mobile');
+        if(!preg_match(PHONE_REG, $userMobile)){
+            lExit('手机号码错误');
+        }
+        
+        $userPwd = $this->_request->getPost('user_pwd');
+        if(!$userPwd || strlen($userPwd) <6 ){
+            lExit('密码少于6个字符');
+        }
+        
+        if(Agent_UserModel::getRow(['user_mobile'=>$userMobile], 'id')){
+            lExit('手机号码已被注册');
+        }
+        
+        $insert = [
+                'user_name'=>$userName,
+                'user_mobile'=>$userMobile,
+                'user_pwd'=>md5($userPwd),
+                'user_status'=>'NORMAL',
+                'user_openid'=>$_SESSION['wechat']['openid'],
+                'create_time'=>time(),
+                'ts'=>date('Y-m-d H:i:s')
+            ];
+        if(!$userId = Agent_UserModel::insert($insert)){
+            lExit('账号注册失败');
+        }
+        
+        $insert['id'] = $userId;
+        $_SESSION['user'] = $insert;
+        lExit(0, '账号注册成功');
+    }
+    
+    /**
+     * @todo 绑定账号
+     * @param string user_mobile 手机号码
+     * @param string user_pwd 密码 (123456)
+     * @author fanghang@fujiacaifu.com
+     */
+    public function bindAction(){
+        $userMobile = $this->_request->getPost('user_mobile');
+        if(!preg_match(PHONE_REG, $userMobile)){
+            lExit('手机号码错误');
+        }
+        
+        $userPwd = $this->_request->getPost('user_pwd');
+        if(empty($userPwd)){
+            lExit('密码不能为空');
+        }
+        
+        if(md5($userPwd)!=$_SESSION['user']['user_pwd']){
+            lExit('密码不匹配');
+        }
+        
+        if(!Agent_UserModel::getRow(['user_mobile'=>$userMobile], 'id')){
+            lExit('手机号码未注册');
+        }
+        
+        if(!Agent_UserModel::update(['user_openid'=>$_SESSION['wechat']['openid']], ['user_mobile'=>$userMobile])){
+            lExit('绑定账号失败');
+        }
+        
+        $_SESSION['user']['user_openid'] = $_SESSION['wechat']['openid'];
+        lExit(0, '账号绑定成功');
     }
     
     /**
