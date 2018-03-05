@@ -1701,6 +1701,7 @@ ul.single_social li a:hover {
 	height: auto;
 	padding: 0;
 	list-style: none;
+        overflow-x: hidden;
 }
 ul.menu_drop li.item1{
 	background:#FDA5AA;
