@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @todo 微信用户标签
  */
-class Manage_TagController extends BasicController {
+class Manage_TagController extends WechatController {
     public function init(){
         parent::init();
     }

@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @todo 微信菜单管理
  */
-class Manage_MenuController extends BasicController {
+class Manage_MenuController extends WechatController {
     public function init(){
         parent::init();
     }
@@ -114,7 +114,7 @@ class Manage_MenuController extends BasicController {
             [
                 "type"=>"view", 
                 "name"=>"查询订单", 
-                "url"=>"http://agent.47295.com/shop/order/latest", 
+                "url"=>"http://agent.47295.com/shop/order/index", 
                 "sub_button"=>[ ]
             ],
                         [

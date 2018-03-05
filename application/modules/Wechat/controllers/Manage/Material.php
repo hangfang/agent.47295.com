@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @todo 微信素材管理
  */
-class Manage_MaterialController extends BasicController {
+class Manage_MaterialController extends WechatController {
     public function init(){
         parent::init();
     }

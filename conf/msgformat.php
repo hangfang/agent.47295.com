@@ -18,8 +18,8 @@ EOF;
 $msgformat['msg_invite'] = <<<EOF
 感谢关注琳玲Dai购
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>
-        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>
-        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
+        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>
+        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
@@ -28,8 +28,8 @@ EOF;
 $msgformat['msg_unrecognized'] = <<<EOF
 感谢关注琳玲Dai购
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>
-        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>
-        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
+        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>
+        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
@@ -55,8 +55,8 @@ EOF;
 $msgformat['msg_welcome_back'] = <<<EOF
 老朋友，琳玲港货欢迎您
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>
-        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>
-        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
+        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>
+        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
@@ -65,8 +65,8 @@ EOF;
 $msgformat['msg_welcome_newbeing'] = <<<EOF
 感谢关注琳玲港货
         1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>
-        2.<a href="http://agent.47295.com/shop/order/list">查询订单</a>
-        3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
+        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>
+        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>

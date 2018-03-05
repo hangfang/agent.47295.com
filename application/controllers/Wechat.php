@@ -35,6 +35,11 @@ class WechatController extends Yaf_Controller_Abstract {
             header('location: /wechat/auth/login?redirect_uri='. urlencode(BASE_URL.$this->_request->getRequestUri()));
             exit;
         }
+        
+        if(empty($_SESSION['user']['user_type']) || $_SESSION['user']['user_type']!=='admin'){
+            header('location: /shop/index/index');
+            exit;
+        }
     }
     
     /**

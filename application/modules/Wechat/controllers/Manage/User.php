@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 /**
  * @todo 微信用户管理
  */
-class Manage_UserController extends BasicController {
+class Manage_UserController extends WechatController {
     public function init(){
         parent::init();
     }
