@@ -1,5 +1,6 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
+$SERVICE_TEL = SERVICE_TEL;
 
 $msgformat = array();
 
@@ -7,7 +8,7 @@ $msgformat['msg_kfsession_create_fail'] = <<<EOF
 很抱歉，客服正忙
     推荐方案：
     1、稍后再次尝试接入
-    2、<a href='tel:{SERVICE_TEL}'>拨打客服电话</a>
+    2、<a href='tel:{$SERVICE_TEL}'>拨打客服电话</a>
 EOF;
 
 $msgformat['msg_kfsession_create_succ'] = <<<EOF
@@ -21,7 +22,7 @@ $msgformat['msg_invite'] = <<<EOF
         3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
-    2.致电<a href="tel:{SERVICE_TEL}">{SERVICE_TEL}</a>
+    2.致电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
 EOF;
 
 $msgformat['msg_unrecognized'] = <<<EOF
@@ -31,7 +32,7 @@ $msgformat['msg_unrecognized'] = <<<EOF
         3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
-    2.致电<a href="tel:{SERVICE_TEL}">{SERVICE_TEL}</a>
+    2.致电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
 EOF;
         
 $msgformat['msg_to_large'] = <<<EOF
@@ -58,7 +59,7 @@ $msgformat['msg_welcome_back'] = <<<EOF
         3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
-    2.致电<a href="tel:{SERVICE_TEL}">{SERVICE_TEL}</a>
+    2.致电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
 EOF;
 
 $msgformat['msg_welcome_newbeing'] = <<<EOF
@@ -68,7 +69,7 @@ $msgformat['msg_welcome_newbeing'] = <<<EOF
         3.<a href="http://agent.47295.com/shop/order/list">账户中心</a>
 联系我们
     1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>
-    2.致电<a href="tel:{SERVICE_TEL}">{SERVICE_TEL}</a>
+    2.致电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>
 EOF;
 
 $msgformat['transfer_customer_service_format'] = <<<EOF
