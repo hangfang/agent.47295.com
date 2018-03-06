@@ -283,12 +283,17 @@ class Wechat_ApiModel extends BaseModel{
         $rt = http($args);
 
         if(isset($rt['errcode']) && $rt['errcode']>0){
-            $rt['errmsg'] = isset(self::$_error[$rt['errcode']]) ? self::$_error[$rt['errcode']] : $rt['errmsg'];
+            if(isset(self::$_error[$rt['errcode']])){
+                $return = self::$_error[$rt['errcode']];
+            }else{
+                $return = ['rtn'=>$rt['errcode'], 'error_msg'=>$rt['errmsg']];
+            }
+            
             if(!Operation_WechatTemplateMessageModel::update(['status'=>'FAILED', 'return'=>json_encode($rt)], ['id'=>$msgId])){
                 log_message('error', __FUNCTION__.', 更新模版消息状态, INIT=>FAILED,失败, $msgId: '. print_r($msgId, true));
             }
             log_message('error', __FUNCTION__.', push template msg failed, msg: '. print_r($rt, true));
-            return false;
+            return $return;
         }
         
         if(!Operation_WechatTemplateMessageModel::update(['status'=>'SUCC', 'return'=>json_encode($rt)], ['id'=>$msgId])){
