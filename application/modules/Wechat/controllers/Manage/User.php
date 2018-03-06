@@ -9,7 +9,7 @@ class Manage_UserController extends WechatController {
     }
     
     public function indexAction(){
-        $openIdList = Wechat_ApiModel::getUsers($this->_request->getPost('next_openid'));
+        $openIdList = Wechat_ApiModel::getUsers($this->_request->getQuery('next_openid'));
         $userList = [];
         if($openIdList['count']>0){
             $tmp = [];
@@ -32,7 +32,7 @@ class Manage_UserController extends WechatController {
      * @param string remark 粉丝的备注名
      */
     public function updateRemarkAction(){
-        $openId = $this->_request->getPost('openid');
+        $openId = $this->_request->getQuery('openid');
         if(empty($openId)){
             lExit(502, '粉丝的openid不能为空');
         }
@@ -67,12 +67,12 @@ class Manage_UserController extends WechatController {
      *    }
      */
     public function getUserInfoAction(){
-        $openId = $this->_request->getPost('openid');
+        $openId = $this->_request->getQuery('openid');
         if(empty($openId)){
             lExit(502, '粉丝的openid不能为空');
         }
         
-        $lang = $this->_request->getPost('lang');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+        $lang = $this->_request->getQuery('lang');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
         
         lExit(Wechat_ApiModel::getUserInfo($openId, $lang));
     }
@@ -100,7 +100,7 @@ class Manage_UserController extends WechatController {
      * }
      */
     public function batchGetUserInfoAction(){
-        $userList = $this->_request->getPost('user_list');
+        $userList = $this->_request->getQuery('user_list');
         if(empty($userList)){
             lExit(502, '粉丝的列表不能为空');
         }
@@ -113,7 +113,7 @@ class Manage_UserController extends WechatController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getUsersAction(){
-        $openIdList = Wechat_ApiModel::getUsers($this->_request->getPost('next_openid'));
+        $openIdList = Wechat_ApiModel::getUsers($this->_request->getQuery('next_openid'));
         $userList = [];
         if($openIdList['count']>0){
             $tmp = [];
@@ -131,7 +131,7 @@ class Manage_UserController extends WechatController {
      * @param string begin_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getBlackListAction(){
-        $beginOpenid = $this->_request->getPost('begin_openid');
+        $beginOpenid = $this->_request->getQuery('begin_openid');
         lExit(Wechat_ApiModel::getBlackList($beginOpenid));
     }
     
@@ -140,7 +140,7 @@ class Manage_UserController extends WechatController {
      * @param string openid_list 粉丝的openid列表
      */
     public function batchBlackListAction(){
-        $openIdList = $this->_request->getPost('openid_list');
+        $openIdList = $this->_request->getQuery('openid_list');
         if(empty($openIdList)){
             lExit(502, '粉丝的列表不能为空');
         }
@@ -153,7 +153,7 @@ class Manage_UserController extends WechatController {
      * @param string openid_list 粉丝的openid列表
      */
     public function batchUnblackListAction(){
-        $openIdList = $this->_request->getPost('openid_list');
+        $openIdList = $this->_request->getQuery('openid_list');
         if(empty($openIdList)){
             lExit(502, '粉丝的列表不能为空');
         }

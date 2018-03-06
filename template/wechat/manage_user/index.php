@@ -32,7 +32,7 @@ EOF;
             if(tmp < 1.05 && total>count){
                 $.ajax({
                     url:'/wechat/manage_user/getusers',
-                    type:'POST',
+                    type:'get',
                     dataType:'json',
                     data:{'next_openid':next_openid},
                     beforeSend:function(){

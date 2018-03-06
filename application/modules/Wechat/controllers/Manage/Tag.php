@@ -20,7 +20,7 @@ class Manage_TagController extends WechatController {
      * @param string name 标签名字
      */
     public function createTagAction(){
-        $name = trim($this->_request->getPost('name'));
+        $name = trim($this->_request->getQuery('name'));
         if(empty($name)){
             lExit(502, '标签名字不能为空');
         }
@@ -36,12 +36,12 @@ class Manage_TagController extends WechatController {
      * @param string name 标签名字
      */
     public function updateTagAction(){
-        $id = trim($this->_request->getPost('id'));
+        $id = trim($this->_request->getQuery('id'));
         if(empty($id)){
             lExit(502, '标签id不能为空');
         }
         
-        $name = trim($this->_request->getPost('name'));
+        $name = trim($this->_request->getQuery('name'));
         if(empty($name)){
             lExit(502, '标签名字不能为空');
         }
@@ -57,7 +57,7 @@ class Manage_TagController extends WechatController {
      * @param string name 标签名字
      */
     public function deleteTagAction(){
-        $id = trim($this->_request->getPost('id'));
+        $id = trim($this->_request->getQuery('id'));
         if(empty($id)){
             lExit(502, '标签id不能为空');
         }
@@ -70,11 +70,11 @@ class Manage_TagController extends WechatController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getTagUsersAction(){
-        $tagId = trim($this->_request->getPost('id'));
+        $tagId = trim($this->_request->getQuery('id'));
         if(empty($tagId)){
             lExit(502, '标签id不能为空');
         }
-        $nextOpenId = trim($this->_request->getPost('next_openid'));
+        $nextOpenId = trim($this->_request->getQuery('next_openid'));
         
         lExit(Wechat_ApiModel::getTagUsers($tagId, $nextOpenId));
     }
@@ -85,12 +85,12 @@ class Manage_TagController extends WechatController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function batchTaggingAction(){
-        $tagId = trim($this->_request->getPost('id'));
+        $tagId = trim($this->_request->getQuery('id'));
         if(empty($tagId)){
             lExit(502, '标签id不能为空');
         }
         
-        $openidList = $this->_request->getPost('openid');
+        $openidList = $this->_request->getQuery('openid');
         if(empty($openidList)){
             lExit(502, '粉丝openid不能为空');
         }
@@ -106,13 +106,13 @@ class Manage_TagController extends WechatController {
      */
     public function batchUntaggingAction(){
         $params = [];
-        $tmp = trim($this->_request->getPost('id'));
+        $tmp = trim($this->_request->getQuery('id'));
         if(empty($tmp)){
             lExit(502, '标签id不能为空');
         }
         $params['tagid'] = $tmp;
         
-        $tmp = $this->_request->getPost('openid');
+        $tmp = $this->_request->getQuery('openid');
         if(empty($tmp)){
             lExit(502, '粉丝openid不能为空');
         }
@@ -127,7 +127,7 @@ class Manage_TagController extends WechatController {
      * @param string openid 粉丝的openid
      */
     public function getUserTagsAction(){
-        $openId = $this->_request->getPost('openid');
+        $openId = $this->_request->getQuery('openid');
         if(empty($openId)){
             lExit(502, '粉丝openid不能为空');
         }

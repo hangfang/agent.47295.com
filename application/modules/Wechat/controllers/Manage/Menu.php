@@ -328,7 +328,7 @@ class Manage_MenuController extends WechatController {
      * @param string menuid 个性化菜单id
      */
     public function deleteConditionalAction(){
-        $menuId = $this->_request->getPost('menuid');
+        $menuId = $this->_request->getQuery('menuid');
         if(empty($menuId)){
             lExit(502, '菜单id不能为空');
         }
@@ -340,7 +340,7 @@ class Manage_MenuController extends WechatController {
      * @param string user_id 粉丝的openid或者微信号
      */
     public function tryConditionalAction(){
-        $userId = $this->_request->getPost('user_id');
+        $userId = $this->_request->getQuery('user_id');
         if(empty($userId)){
             lExit(502, '粉丝的openid或者微信号不能为空');
         }

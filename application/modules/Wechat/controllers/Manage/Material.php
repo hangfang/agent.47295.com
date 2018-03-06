@@ -69,15 +69,15 @@ class Manage_MaterialController extends WechatController {
      *   {"errcode":40007,"errmsg":"invalid media_id"}
      */
     public function batchGetAction(){
-        $type = $this->_request->getPost('type');
+        $type = $this->_request->getQuery('type');
         if(!in_array($type, ['image', 'video', 'voice', 'news'])){
             lExit(502, '素材的类型错误,必须为图片（image）、视频（video）、语音 （voice）、图文（news）');
         }
         
-        $offset = intval($this->_request->getPost('offset', 0));
+        $offset = intval($this->_request->getQuery('offset', 0));
         $offset = $offset<0 ? 0 : $offset;
         
-        $length = intval($this->_request->getPost('length'));
+        $length = intval($this->_request->getQuery('length'));
         $length = $length<=0 ? 10 : $offset;
         if($length<1 || $length>20){
             lExit(502, '素材数量取值在1到20之间');
@@ -128,7 +128,7 @@ class Manage_MaterialController extends WechatController {
      *   }
      */
     public function getDetailAction(){
-        $mediaId = $this->_request->getPost('media_id');
+        $mediaId = $this->_request->getQuery('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id非法');
         }
@@ -158,7 +158,7 @@ class Manage_MaterialController extends WechatController {
         {"errcode":40007,"errmsg":"invalid media_id"}
      */
     public function getMediaAction(){
-        $mediaId = $this->_request->getPost('media_id');
+        $mediaId = $this->_request->getQuery('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id非法');
         }
@@ -368,7 +368,7 @@ class Manage_MaterialController extends WechatController {
      *  }
      */
     public function delAction(){
-        $mediaId = $this->_request->getPost('media_id');
+        $mediaId = $this->_request->getQuery('media_id');
         if(empty($mediaId)){
             lExit(502, '素材id不能为空');
         }
