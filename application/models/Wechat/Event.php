@@ -27,14 +27,7 @@ class Wechat_EventModel extends BaseModel{
     * @todo 取消订阅的事件推送
     */
     public static function eventUnsubscribe($msgXml){
-        $user = Agent_UserModel::getRow(['user_openid'=>$msgXml['FromUserName']]);
-        if($user){
-            if(!Agent_UserModel::update($update=['user_subscribe'=>0, 'user_unsubscribe_time'=>date('Y-m-d H:i:s')], $where=['user_openid'=>$msgXml['FromUserName']])){
-                log_message('error', __FUNCTION__.', 更新用户为取消关注，失败。 update: '.print_r($update, true).' where: '.print_r($where, true));
-            }
-        }
-        $rt = Wechat_MsgModel::unsubscribe($msgXml['FromUserName']);
-        
+        Wechat_MsgModel::unsubscribe($msgXml['FromUserName']);
         echo '';exit;//输出空字符，微信不做任何反应
     }
 
