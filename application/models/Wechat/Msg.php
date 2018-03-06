@@ -212,16 +212,22 @@ EOF;
         exit($msg);
     }
 
-    public static function subscribe($openid){
-        log_message('info', 'user['. $openid .'] subscribe');
+    public static function subscribe($openId){
+        log_message('info', 'user['. $openId .'] subscribe');
     }
 
-    public static function unsubscribe($openid){
-        log_message('info', 'user['. $openid .'] unsubscribe');
+    public static function unsubscribe($openId){
+        log_message('info', 'user['. $openId .'] unsubscribe');
+        
+        if(Agent_UserModel::getRow(['user_openid'=>$openid])){
+            if(!Agent_UserModel::update($update=['user_subscribe'=>0, 'user_unsubscribe_time'=>date('Y-m-d H:i:s')], $where=['user_openid'=>$openId])){
+                log_message('error', __FUNCTION__.', 更新用户为取消关注，失败。 update: '.print_r($update, true).' where: '.print_r($where, true));
+            }
+        }
     }
 
-    public static function getUser($openid){
-        return Wechat_UserModel::getRow(['openid'=>$openid]);
+    public static function getUser($openId){
+        return Agent_UserModel::getRow(['user_openid'=>$openId]);
     }
 
     public static function kfSessionCreate($msgXml){
