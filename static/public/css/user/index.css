@@ -1,7 +1,7 @@
 body {background-color: #efeff4;}
  p { font-size:14px;}
 
- #container {margin-top: 10px; padding: 0px;}
+ #container {margin-top: 0px; padding: 0px;}
  .weui_panel_hd {text-align: center;}
  .panel1 .weui_panel_bd {background:url(/static/public/img/user/bg.png) no-repeat; height: 115px}
  .head-img {position: absolute; top: 1.65rem; left: 4.62rem; width: 75px; height: 75px; border-radius: 39px; background-color: #fff;}
