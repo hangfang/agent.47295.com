@@ -274,7 +274,7 @@ class Manage_MenuController extends WechatController {
         }
         
         $rules = [
-                "tag_id"=>"2",//用户标签的id，可通过用户标签管理接口获取
+                "tag_id"=>"102",//用户标签的id，可通过用户标签管理接口获取
                 //"sex"=>"1",//性别：男（1）女（2），不填则不做匹配
                 "country"=>"中国",
                 "province"=>"广东",
