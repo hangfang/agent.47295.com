@@ -108,19 +108,19 @@ class Manage_MenuController extends WechatController {
             [
                 "type"=>"view", 
                 "name"=>"我要下单", 
-                "url"=>"http://agent.47295.com/shop/index/index", 
+                "url"=>BASE_URL."/shop/index/index", 
                 "sub_button"=>[ ]
             ], 
             [
                 "type"=>"view", 
                 "name"=>"查询订单", 
-                "url"=>"http://agent.47295.com/shop/order/index", 
+                "url"=>BASE_URL."/shop/order/index", 
                 "sub_button"=>[ ]
             ],
                         [
                 "type"=>"view", 
                 "name"=>"账户中心", 
-                "url"=>"http://agent.47295.com/shop/account/index", 
+                "url"=>BASE_URL."/shop/account/index", 
                 "sub_button"=>[ ]
             ]
         ];
@@ -253,18 +253,18 @@ class Manage_MenuController extends WechatController {
             [
                 "type"=>"view", 
                 "name"=>"商城", 
-                "url"=>"http://agent.47295.com/shop/index/index", 
+                "url"=>BASE_URL."/shop/index/index", 
             ], 
             [
                 "type"=>"view", 
                 "name"=>"订单管理", 
-                "url"=>"http://agent.47295.com/shop/manage/orderlist", 
+                "url"=>BASE_URL."/shop/manage/orderlist", 
                 "sub_button"=>[ ]
             ],
             [
                 "type"=>"view", 
                 "name"=>"公众号管理", 
-                "url"=>"http://agent.47295.com/wechat/account/index", 
+                "url"=>BASE_URL."/wechat/manage_account/index", 
                 "sub_button"=>[ ]
             ]
         ];

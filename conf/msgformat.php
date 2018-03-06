@@ -1,6 +1,7 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
 $SERVICE_TEL = SERVICE_TEL;
+$SERVER_NAME = SERVER_NAME;
 
 $msgformat = array();
 
@@ -17,21 +18,21 @@ EOF;
 
 $msgformat['msg_invite'] = <<<EOF
 感谢关注琳玲港货\n
-        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
-        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
-        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
+        1.<a href="{$SERVER_NAME}/shop/index/index">我要下单</a>\n
+        2.<a href="{$SERVER_NAME}/shop/order/index">查询订单</a>\n
+        3.<a href="{$SERVER_NAME}/shop/account/index">账户中心</a>\n
 联系我们\n
-    1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
+    1.微信号<a href="{$SERVER_NAME}/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>\n
 EOF;
 
 $msgformat['msg_unrecognized'] = <<<EOF
 感谢关注琳玲港货\n
-        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
-        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
-        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
+        1.<a href="{$SERVER_NAME}/shop/index/index">我要下单</a>\n
+        2.<a href="{$SERVER_NAME}/shop/order/index">查询订单</a>\n
+        3.<a href="{$SERVER_NAME}/shop/account/index">账户中心</a>\n
 联系我们\n
-    1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
+    1.微信号<a href="{$SERVER_NAME}/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>\n
 EOF;
         
@@ -54,21 +55,21 @@ EOF;
 
 $msgformat['msg_welcome_back'] = <<<EOF
 老朋友，琳玲港货欢迎您\n
-        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
-        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
-        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
+        1.<a href="{$SERVER_NAME}/shop/index/index">我要下单</a>\n
+        2.<a href="{$SERVER_NAME}/shop/order/index">查询订单</a>\n
+        3.<a href="{$SERVER_NAME}/shop/account/index">账户中心</a>\n
 联系我们\n
-    1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
+    1.微信号<a href="{$SERVER_NAME}/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>\n
 EOF;
 
 $msgformat['msg_welcome_newbeing'] = <<<EOF
 感谢关注琳玲港货\n
-        1.<a href="http://agent.47295.com/shop/index/index">我要下单</a>\n
-        2.<a href="http://agent.47295.com/shop/order/index">查询订单</a>\n
-        3.<a href="http://agent.47295.com/shop/account/index">账户中心</a>\n
+        1.<a href="{$SERVER_NAME}/shop/index/index">我要下单</a>\n
+        2.<a href="{$SERVER_NAME}/shop/order/index">查询订单</a>\n
+        3.<a href="{$SERVER_NAME}/shop/account/index">账户中心</a>\n
 联系我们\n
-    1.微信号<a href="http://agent.47295.com/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
+    1.微信号<a href="{$SERVER_NAME}/static/shop/images/WangLin-ling.jpg">WangLin-ling</a>\n
     2.致  电<a href="tel:{$SERVICE_TEL}">{$SERVICE_TEL}</a>\n
 EOF;
 

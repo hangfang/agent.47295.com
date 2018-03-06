@@ -1,6 +1,6 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
-define('BASE_URL', 'http://agent.47295.com');//当前系统地址
+define('BASE_URL', 'http://'.SERVER_NAME);//当前系统地址
 
 //OSS配置
 define('OSS_BUCKET', 'saas-static');
