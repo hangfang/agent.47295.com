@@ -29,10 +29,6 @@ class BasicController extends Yaf_Controller_Abstract {
                 lExit($this->_error[3]);
             }
             
-            if($moduleName==='index'){
-                return true;
-            }
-            
             header('content-type:text/html;charset=utf-8', true);
             $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
             $this->setViewpath($viewpath);
@@ -42,7 +38,10 @@ class BasicController extends Yaf_Controller_Abstract {
             $this->_view->assign('actionName', $actionName);
             $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
 
-            if(in_array($controllerName, ['login', 'auth']) || in_array($actionName, ['notfound'])){
+            
+            if($moduleName==='index'){
+                return true;
+            }else if(in_array($controllerName, ['login', 'auth']) || in_array($actionName, ['notfound'])){
                 return true;
             }else if(empty($_SESSION['user'])){
                 if(!empty($_SERVER['HTTP_USER_AGENT']) && stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'micromessenger')!==false){
