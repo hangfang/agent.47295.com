@@ -8,6 +8,24 @@ class Manage_UserController extends WechatController {
         parent::init();
     }
     
+    public function indexAction(){
+        $openIdList = Wechat_ApiModel::getUsers($this->_request->getPost('next_openid'));
+        $userList = [];
+        if($openIdList['count']>0){
+            $tmp = [];
+            foreach($openIdList['data']['openid'] as $_openId){
+                $tmp[] = ['openid'=>$_openId, 'lang'=>'zh_CN'];
+            }
+            $tmp && $userList = Wechat_ApiModel::batchGetUserInfo($tmp)['user_info_list'];
+        }
+        
+        $this->_view->assign('title', '粉丝管理');
+        $this->_view->assign('userList', $userList);
+        $this->_view->assign('nextOpenId', $openIdList['next_openid']);
+        $this->_view->display(BASE_PATH.'/template/wechat/manage_user/index.php');
+        return false;
+    }
+    
     /**
      * @todo 更新用户备注名
      * @param string openid 粉丝的openid
@@ -95,8 +113,17 @@ class Manage_UserController extends WechatController {
      * @param string next_openid 第一个拉取的OPENID，不填默认从头开始拉取
      */
     public function getUsersAction(){
-        $nextOpenid = $this->_request->getPost('next_openid');
-        lExit(Wechat_ApiModel::getUsers($nextOpenid));
+        $openIdList = Wechat_ApiModel::getUsers($this->_request->getPost('next_openid'));
+        $userList = [];
+        if($openIdList['count']>0){
+            $tmp = [];
+            foreach($openIdList['data']['openid'] as $_openId){
+                $tmp[] = ['openid'=>$_openId, 'lang'=>'zh_CN'];
+            }
+            $tmp && $userList = Wechat_ApiModel::batchGetUserInfo($tmp)['user_info_list'];
+        }
+        
+        lExit($userList);
     }
     
     /**

@@ -8,6 +8,12 @@ class Manage_AccountController extends WechatController {
         parent::init();
     }
     
+    public function indexAction(){
+        $this->_view->assign('title', '公众号管理');
+        $this->_view->display(BASE_PATH.'/template/wechat/manage_account/index.php');
+        return false;
+    }
+    
     /**
      * @todo 生成临时二维码
      * @param string scene_str 场景id.1~64位
