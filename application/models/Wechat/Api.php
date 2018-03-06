@@ -408,7 +408,7 @@ class Wechat_ApiModel extends BaseModel{
     public static function getTagUsers($tagId, $nextOpenId=null){
         $params = ['tagid'=>$tagId];
         !is_null($nextOpenId) && $params['next_openid'] = $nextOpenId;
-        return self::request('usr/tag/get', $params);
+        return self::request('user/tag/get', $params);
     }
     
     /**
