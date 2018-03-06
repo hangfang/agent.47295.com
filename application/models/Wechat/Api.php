@@ -461,9 +461,14 @@ class Wechat_ApiModel extends BaseModel{
         $rt = http($args);
         
         if(isset($rt['errcode']) && $rt['errcode']>0){
-            $rt['errmsg'] = isset(self::$_error[$rt['errcode']]) ? self::$_error[$rt['errcode']] : $rt['errmsg'];
+            if(isset(self::$_error[$rt['errcode']])){
+                $return = self::$_error[$rt['errcode']];
+            }else{
+                $return = ['rtn'=>$rt['errcode'], 'error_msg'=>$rt['errmsg']];
+            }
+            
             log_message('error', __FUNCTION__.', get data from wechat failed, msg: '. print_r($rt, true));
-            return false;
+            return $return;
         }
         
         return $rt;
