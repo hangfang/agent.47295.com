@@ -148,18 +148,19 @@ class AuthController extends WechatController {
             lExit('密码不能为空');
         }
         
-        if(md5($userPwd)!=$_SESSION['user']['user_pwd']){
-            lExit('密码不匹配');
+        if(!$user=Agent_UserModel::getRow(['user_mobile'=>$userMobile])){
+            lExit('手机号码未注册');
         }
         
-        if(!Agent_UserModel::getRow(['user_mobile'=>$userMobile], 'id')){
-            lExit('手机号码未注册');
+        if(md5($userPwd)!=$user['user_pwd']){
+            lExit('密码不匹配');
         }
         
         if(!Agent_UserModel::update(['user_openid'=>$_SESSION['wechat']['openid']], ['user_mobile'=>$userMobile])){
             lExit('绑定账号失败');
         }
         
+        $_SESSION['user'] = $user;
         $_SESSION['user']['user_openid'] = $_SESSION['wechat']['openid'];
         lExit(0, '账号绑定成功');
     }
