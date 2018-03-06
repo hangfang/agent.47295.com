@@ -29,6 +29,9 @@ class BasicController extends Yaf_Controller_Abstract {
                 lExit($this->_error[3]);
             }
             
+            if($moduleName==='index'){
+                return true;
+            }
             
             header('content-type:text/html;charset=utf-8', true);
             $viewpath = BASE_PATH.'/template/'.$moduleName.'/';
