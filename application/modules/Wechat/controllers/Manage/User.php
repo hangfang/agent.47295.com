@@ -72,7 +72,7 @@ class Manage_UserController extends WechatController {
             lExit(502, '粉丝的openid不能为空');
         }
         
-        $lang = $this->_request->getQuery('lang');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
+        $lang = $this->_request->getQuery('lang', 'zh_CN');//返回国家地区语言版本，zh_CN 简体，zh_TW 繁体，en 英语
         
         lExit(Wechat_ApiModel::getUserInfo($openId, $lang));
     }
