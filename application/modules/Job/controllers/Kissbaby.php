@@ -115,7 +115,7 @@ class KissbabyController extends BasicController{
      * 将kissbaby商品详情的图片替换到oss
      */
     public function updateProductImgAction(){
-        $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_description');
+        $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description');
         $index = 0;
         $total = count($productList);
         foreach($productList as $_product){
