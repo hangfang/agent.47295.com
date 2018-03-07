@@ -166,8 +166,10 @@ class KissbabyController extends BasicController{
                     }
                     
                     if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
-                        for($i=1,$len=count($matches); $i<$matches; $i++){
-                            $this->__saveImage($matches[$i]);
+                        for($i=1,$len=count($matches[1]); $i<$len; $i++){
+                            $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
+                            $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
+                            $this->__saveImage($matches[1][$i]);
                         }
 
                         $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
