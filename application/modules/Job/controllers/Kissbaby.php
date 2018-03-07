@@ -116,7 +116,7 @@ class KissbabyController extends BasicController{
      */
     public function updateProductImgAction(){
         $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description');
-        $index = 0;
+        $index = 1;
         $total = count($productList);
         foreach($productList as $_product){
                     
@@ -150,6 +150,8 @@ class KissbabyController extends BasicController{
             }else{
                 echo $index.'/'.$total.'  product update succ..., name:'.$_product['product_name']."\n";
             }
+            
+            $index++;
         }
     }
     
