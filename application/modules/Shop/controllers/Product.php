@@ -15,8 +15,6 @@ class ProductController extends BasicController{
             header('location: /shop/index/notfound');exit;
         }
         
-        $product['product_description'] = str_replace('{CDN_URL}', CDN_URL, $product['product_description']);
-        
         Kissbaby_ProductModel::update(['product_views'=>++$product['product_views']], ['product_id'=>$productId]);
         
         $this->_view->assign('title', $product['product_name']);

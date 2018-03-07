@@ -10,8 +10,10 @@ class Kissbaby_ProductModel extends BaseModel {
         if(!empty($product['product_image'])){
             $product['product_image'] = explode(',', $product['product_image']);
             foreach($product['product_image'] as &$_image){
-                $_image = KISSBABY_IMAGE_URL.$_image;
+                $_image = CDN_URL.$_image;
             }
+            
+            $product['product_description'] = str_replace('{CDN_URL}', CDN_URL, $product['product_description']);
         }
         
         return $product;
@@ -23,8 +25,10 @@ class Kissbaby_ProductModel extends BaseModel {
             foreach($productList as &$_product){
                 $_product['product_image'] = explode(',', $_product['product_image']);
                 foreach($_product['product_image'] as &$_image){
-                    $_image = KISSBABY_IMAGE_URL.$_image;
+                    $_image = CDN_URL.$_image;
                 }
+                
+                $_product['product_description'] = str_replace('{CDN_URL}', CDN_URL, $_product['product_description']);
             }
         }
 
@@ -39,9 +43,11 @@ class Kissbaby_ProductModel extends BaseModel {
             foreach($productList as &$_product){
                 $_product['product_image'] = explode(',', $_product['product_image']);
                 foreach($_product['product_image'] as &$_image){
-                    $_image = KISSBABY_IMAGE_URL.$_image;
+                    $_image = CDN_URL.$_image;
                 }
                 
+                
+                $_product['product_description'] = str_replace('{CDN_URL}', CDN_URL, $_product['product_description']);
                 if(empty($id2Product[$_product['product_id']])){
                     $id2Product[$_product['product_id']] = [];
                 }
