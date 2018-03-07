@@ -8,25 +8,7 @@ define('OSS_ACCESS_ID', '3IYCIDFZcGbGpnUX');
 define('OSS_ACCESS_KEY', 'AjWQTwY1fq6puNswqPoB0BnXVg1TZI');
 define('OSS_ENDPOINT', 'oss-cn-shenzhen.aliyuncs.com');
 define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
-define('CDN_URL', 'http://cdn.47295.com/');
-define('KISSBABY_CDN_URL', 'http://cdn.47295.com/upload/kissbaby/');
-
-//商品重量精度
-define('WEIGHT_PRECISION', 3);
-
-//商品零售价精度
-define('PRICE_PRECISION', 2);
-
-// 百分比精度
-define('PERCENT_PRECISION', 4);
-
-define('SERVICE_TEL', '+86 15914186940');
-
-//短信验证码有效期,10分钟
-define('SMS_TOKEN_LIFT_TIME', 600);
-
-//简单判断手机号码正则
-define('PHONE_REG', '/^1[\d]{10}$/');
+define('CDN_URL', 'http://oss.47295.com/upload/kissbaby/');
 
 //邮箱配置
 define('MAIL_CHANNEL', 'exmail');

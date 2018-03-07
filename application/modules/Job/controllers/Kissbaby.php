@@ -173,8 +173,8 @@ class KissbabyController extends BasicController{
                         }
 
                         $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-                        $detail['description'] = str_replace(H5_HTTP_SERVER, KISSBABY_CDN_URL, $detail['description']);
-                        $detail['description'] = str_replace(H5_HTTP_SERVER_, KISSBABY_CDN_URL, $detail['description']);
+                        $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
+                        $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
                     }else{
                         $detail['description'] = '';
                     }
@@ -267,8 +267,8 @@ class KissbabyController extends BasicController{
             }
             
             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER, KISSBABY_CDN_URL, $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER_, KISSBABY_CDN_URL, $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
         }else{
             $detail['description'] = '';
         }
