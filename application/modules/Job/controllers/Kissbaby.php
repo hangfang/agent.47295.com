@@ -130,18 +130,18 @@ class KissbabyController extends BasicController{
                 $this->__saveImage($_product['product_image']);
             }
             
-            if(!empty($_product['description']) && preg_match_all('/src\="([^"]+)"/i', $_product['description'], $matches)){
+            if(!empty($_product['product_description']) &&  strpos($_product['product_description'], '{CDN}')===false && preg_match_all('/src\="([^"]+)"/i', $_product['product_description'], $matches)){
                 for($i=1,$len=count($matches[1]); $i<$len; $i++){
                     $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
                     $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
                     $this->__saveImage($matches[1][$i]);
                 }
 
-                $_product['description'] = str_replace('src=', 'class="lazy" data-original=', $_product['description']);
-                $_product['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $_product['description']);
-                $_product['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $_product['description']);
+                $_product['product_description'] = str_replace('src=', 'class="lazy" data-original=', $_product['product_description']);
+                $_product['product_description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $_product['product_description']);
+                $_product['product_description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $_product['product_description']);
             }else{
-                $_product['description'] = '';
+                $_product['product_description'] = empty($_product['product_description']) ? '' : $_product['product_description'];
             }
             
             if(!Kissbaby_ProductModel::update($_update=['product_image'=>$_product['product_image'], 'product_description'=>$_product['product_description']], $_where=['id'=>$_product['id']])){
