@@ -16,6 +16,8 @@ define('ALIYUN_MAIL_ACCESS_KEY_ID', 'LTAIJtec1o9LM09B');
 define('ALIYUN_MAIL_ACCESS_KEY', '89DFImZx8v4p46dhexaknzssL6Akrz');
 define('MAIL_STAT', ['to'=>['295296780@qq.com'=>'王琳玲'], 'bc'=>['470739703@qq.com'=>'方航']]);
 
+define('PHONE_REG', '/^1[\d]{10}$/');
+
 
 define('WECHAT_OPEN_HOST', 'https://open.weixin.qq.com');
 define('WECHAT_API_HOST', 'https://api.weixin.qq.com');
