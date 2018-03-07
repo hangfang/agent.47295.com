@@ -312,7 +312,7 @@ class KissbabyController extends BasicController{
      * 从kissbaby获取新品到货列表
      */
     public function getLatestProductAction(){
-        if(false===Kissbaby_ProductModel::delete()){
+        if(false===Kissbaby_LatestProductModel::delete()){
             log_message('error', '删除kissbaby新品到货失败');
             echo '   delete kissbaby latest product failed...'."\n";
             exit;
