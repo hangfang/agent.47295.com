@@ -114,11 +114,22 @@ class KissbabyController extends BasicController{
     /**
      * 将kissbaby商品详情的图片替换到oss
      */
-    public function updateProductDescriptionAction(){
+    public function updateProductImgAction(){
         $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_description');
         $index = 0;
         $total = count($productList);
         foreach($productList as $_product){
+                    
+            if(!empty($_product['images'])){
+                foreach($_product['images'] as &$_image){
+                    $this->__saveImage($_image);
+                }
+
+                $_product['image'] = implode(',', $_product['images']);
+            }else{
+                $this->__saveImage($_product['image']);
+            }
+            
             if(!empty($_product['description']) && preg_match_all('/src\="([^"]+)"/i', $_product['description'], $matches)){
                 for($i=1,$len=count($matches[1]); $i<$len; $i++){
                     $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
@@ -133,7 +144,7 @@ class KissbabyController extends BasicController{
                 $_product['description'] = '';
             }
             
-            if(!Kissbaby_ProductModel::update($_update=['product_description'=>$_product['product_description']], $_where=['id'=>$_product['id']])){
+            if(!Kissbaby_ProductModel::update($_update=['product_image'=>$_product['product_image'], 'product_description'=>$_product['product_description']], $_where=['id'=>$_product['id']])){
                 log_message('error', __FUNCTION__.', 更新商品图片为oss地址失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
                 echo $index.'/'.$total.'  product update failed..., name:'.$_product['product_name']."\n";
             }else{
@@ -186,23 +197,14 @@ class KissbabyController extends BasicController{
                     
                     $detail = $detail['product'];
                     
-                    if(!empty($detail['images'])){
-                        foreach($detail['images'] as &$_image){
-                            $this->__saveImage($_image);
-                        }
-                        
-                        $detail['image'] = implode(',', $detail['images']);
-                    }else{
-                        $this->__saveImage($detail['image']);
-                    }
-                    
+                    $detail['image'] = empty($detail['image']) ? '' : $detail['image'];
                     $detail['description'] = empty($detail['description']) ? '' : $detail['description'];
                     
                     $_update = [
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
                         'product_name'   =>  $detail['name'],
-                        'product_image'   =>  empty($detail['image']) ? '' : $detail['image'],
+                        'product_image'   =>  $detail['image'],
                         'product_description'   =>  $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
                         'product_vip_price'   =>  $detail['vip_price'],
