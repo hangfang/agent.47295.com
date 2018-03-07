@@ -120,14 +120,14 @@ class KissbabyController extends BasicController{
         $total = count($productList);
         foreach($productList as $_product){
                     
-            if(!empty($_product['images'])){
-                foreach($_product['images'] as &$_image){
+            if(!empty($_product['product_image'])){
+                foreach($_product['product_image'] as &$_image){
                     $this->__saveImage($_image);
                 }
 
-                $_product['image'] = implode(',', $_product['images']);
+                $_product['product_image'] = implode(',', $_product['product_image']);
             }else{
-                $this->__saveImage($_product['image']);
+                $this->__saveImage($_product['product_image']);
             }
             
             if(!empty($_product['description']) && preg_match_all('/src\="([^"]+)"/i', $_product['description'], $matches)){
