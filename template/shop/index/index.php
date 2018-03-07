@@ -32,13 +32,12 @@ include $viewPath.'header.php';
                         $_product['product_image'] = '';
                     }
                     
-                    $_imgSrc = $_product['product_image'] ? KISSBABY_IMAGE_URL.$_product['product_image'] : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/product/detail?product_id={$_product['product_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_product['product_image']}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button "></a>
         </div>

@@ -25,13 +25,12 @@ include $viewPath.'header.php';
                     }
 
                     $_category = $categoryList[$i];
-                    $_imgSrc = !empty($_category['category_banner']) ? KISSBABY_IMAGE_URL.$_category['category_banner'] : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/category/subcategory?category_id={$_category['category_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_category['category_banner']}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button " style="background:transparent;border:none;"></a>
         </div>
