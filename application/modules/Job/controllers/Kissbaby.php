@@ -18,6 +18,7 @@ define('ACTIVITY_PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?rout
 
 //图片的域名
 define('H5_HTTP_SERVER', 'http://7xl26a.com2.z0.glb.qiniucdn.com/image/');
+define('H5_HTTP_SERVER_', 'http://7xl26a.com2.z0.glb.qiniucdn.com//image/');
 define('IMAGE_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'kissbaby'.DIRECTORY_SEPARATOR);
 define('IMAGE_URL', BASE_URL.'/upload/kissbaby/');
 class KissbabyController extends BasicController{
@@ -164,7 +165,18 @@ class KissbabyController extends BasicController{
                         $this->__saveImage($detail['image']);
                     }
                     
-                    $detail['description'] = empty($detail['description']) ? '' : str_replace('src=', 'class="lazy" data-original=', $detail['description']);
+                    if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
+                        for($i=1,$len=count($matches); $i<$matches; $i++){
+                            $this->__saveImage($matches[$i]);
+                        }
+
+                        $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
+                        $detail['description'] = str_replace(H5_HTTP_SERVER, KISSBABY_CDN_URL, $detail['description']);
+                        $detail['description'] = str_replace(H5_HTTP_SERVER_, KISSBABY_CDN_URL, $detail['description']);
+                    }else{
+                        $detail['description'] = '';
+                    }
+                    
                     $_update = [
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
@@ -245,7 +257,19 @@ class KissbabyController extends BasicController{
             $this->__saveImage($detail['image']);
         }
         
-        $detail['description'] = empty($detail['description']) ? '' : str_replace('src=', 'class="lazy" data-original=', $detail['description']);
+        if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
+            for($i=1,$len=count($matches[1]); $i<$len; $i++){
+                $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
+                $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
+                $this->__saveImage($matches[1][$i]);
+            }
+            
+            $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER, KISSBABY_CDN_URL, $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER_, KISSBABY_CDN_URL, $detail['description']);
+        }else{
+            $detail['description'] = '';
+        }
 
         $_update = [
             'category_id'   =>  0,
@@ -562,6 +586,9 @@ class KissbabyController extends BasicController{
         }
         
         $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
+        
+        $oss = new Oss_Client(OSS_ACCESS_ID, OSS_ACCESS_KEY, OSS_ENDPOINT);
+        $oss->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
         return true;
     }
 }
