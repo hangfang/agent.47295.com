@@ -146,12 +146,13 @@ class KissbabyController extends BasicController{
     public function updateProductImgAction(){
         $limit = 10;
         $offset = 0;
-        $total = count(Kissbaby_ProductModel::count());
+        $total = Kissbaby_ProductModel::count();
         do{
             $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset]);
             foreach($productList as $_product){
                 $_update = [];
                 if(!empty($_product['product_image']) && strpos($_product['product_image'], '{CDN_URL}')===false){
+                    $_product['product_image'] = explode(',', $_product['product_image']);
                     foreach($_product['product_image'] as &$_image){
                         if(strpos($_image, H5_HTTP_SERVER)!==false || strpos($_image, H5_HTTP_SERVER_)!==false){
                             $_image = str_replace(H5_HTTP_SERVER, '', $_image);
