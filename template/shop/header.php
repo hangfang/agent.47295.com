@@ -25,6 +25,10 @@
 <script src="<?php echo $staticDir;?>js/jquery.etalage.min.js"></script>
 </head>
 <body>
+<script>
+    var STATIC_CDN_URL = '<?php echo STATIC_CDN_URL;?>';
+    var IMG_CDN_URL = '<?php echo IMG_CDN_URL;?>';
+</script>
 <div class="header_top">
 	<div class="container">
 		<div class="one-fifth column row_1">

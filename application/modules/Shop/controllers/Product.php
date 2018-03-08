@@ -29,8 +29,16 @@ class ProductController extends BasicController{
      * @return boolean
      */
     public function latestAction(){
+        $limit = ['limit'=>10];
+        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+        $productList = Kissbaby_LatestProductModel::getList([], '*', $limit);
+        
+        if($this->_request->isXmlHttpRequest()){
+            lExit($productList);
+        }
+        
         $this->_view->assign('title', '新品到货');
-        $this->_view->assign('latestProduct', Kissbaby_LatestProductModel::getList([], '*', '0,12'));
+        $this->_view->assign('latestProduct', $productList);
         return true;
     }
 }
