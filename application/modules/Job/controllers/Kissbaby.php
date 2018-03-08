@@ -59,9 +59,9 @@ class KissbabyController extends BasicController{
             
             $_state = true;
             if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
-                if(!empty($_update['category_banner'])){
-                    $this->__saveImage($_update['category_banner']);
-                    $_update['category_banner'] = '{CDN_URL}'.$_update['category_banner'];
+                if(!empty($_replace['category_banner'])){
+                    $this->__saveImage($_replace['category_banner']);
+                    $_replace['category_banner'] = '{CDN_URL}'.$_replace['category_banner'];
                 }
                 
                 if(!Kissbaby_CategoryModel::insert($_replace)){
@@ -71,9 +71,9 @@ class KissbabyController extends BasicController{
                 }
             }else{
                 unset($_replace['create_time']);
-                if(!empty($_update['category_banner']) && $_update['category_banner']!==str_replace('{CDN_URL}', '', $categoryInfo['category_banner'])){
-                    $this->__saveImage($_update['category_banner']);
-                    $_update['category_banner'] = '{CDN_URL}'.$_update['category_banner'];
+                if(!empty($_replace['category_banner']) && $_replace['category_banner']!==str_replace('{CDN_URL}', '', $categoryInfo['category_banner'])){
+                    $this->__saveImage($_replace['category_banner']);
+                    $_replace['category_banner'] = '{CDN_URL}'.$_replace['category_banner'];
                 }
                             
                 if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_cate['category_id']])){
