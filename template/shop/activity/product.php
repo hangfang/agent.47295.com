@@ -33,7 +33,7 @@ include $viewPath.'header.php';
                         $_product['product_image'] = '';
                     }
                     
-                    $_product['product_image'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_activity['product_image']);
+                    $_product['product_image'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_product['product_image']);
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<span><span class="amount">会员价:$'.$_product['product_vip_price'].'</span></span>' : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">

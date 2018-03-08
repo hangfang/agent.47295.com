@@ -58,7 +58,7 @@ class KissbabyController extends BasicController{
             ];
             
             $_state = true;
-            if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
+            if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']], 'category_banner')){
                 if(!empty($_replace['category_banner'])){
                     $this->__saveImage($_replace['category_banner']);
                     $_replace['category_banner'] = '{CDN_URL}'.$_replace['category_banner'];
@@ -104,7 +104,7 @@ class KissbabyController extends BasicController{
                 ];
                 
                 $_state = true;
-                if(!$subCategory=Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']])){
+                if(!$subCategory=Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']], 'category_image')){
                     if(!empty($_replace['category_image'])){
                         $this->__saveImage($_replace['category_image']);
                         $_replace['category_image'] = '{CDN_URL}'.$_replace['category_image'];
