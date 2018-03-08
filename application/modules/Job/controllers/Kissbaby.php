@@ -235,14 +235,6 @@ class KissbabyController extends BasicController{
                     ];
                     
                     if(Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id')){
-                        if(false===Kissbaby_ProductModel::update($_update, $_where=['product_id'=>$detail['product_id']])){
-                            log_message('error', '更新kissbaby商品详情失败, update:'.print_r($_update, true).', where:'.print_r($_where, true).', url:'.print_r($_tmpPrd['url'], true));
-                            echo '   update kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
-                            continue;
-                        }
-                        
-                        echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
-                    }else{
                         
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
@@ -259,7 +251,15 @@ class KissbabyController extends BasicController{
                             echo ' product_image not changed...'."\n";
                             unset($_update['product_image']);
                         }
-                            
+                        
+                        if(false===Kissbaby_ProductModel::update($_update, $_where=['product_id'=>$detail['product_id']])){
+                            log_message('error', '更新kissbaby商品详情失败, update:'.print_r($_update, true).', where:'.print_r($_where, true).', url:'.print_r($_tmpPrd['url'], true));
+                            echo '   update kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
+                            continue;
+                        }
+                        
+                        echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
+                    }else{
                         if(!Kissbaby_ProductModel::insert($_update)){
                             log_message('error', '插入kissbaby商品详情失败, insert:'.print_r($_update, true).', url:'.print_r($_tmpPrd['url'], true));
                             echo '   insert kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
