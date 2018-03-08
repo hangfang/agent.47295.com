@@ -2,7 +2,7 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH.'/application/views/common/weui/header.php';
 ?>
-<link rel='stylesheet' href='/static/public/css/map/txmap.css?v=20160426'/>
+<link rel='stylesheet' href='/static/public/css/map/txmap.css?v=<?php echo STATIC_VERSION;?>'/>
 </div>
 <div id="top-panel">
     <div class="weui_cells">
@@ -26,7 +26,7 @@ include BASE_PATH.'/application/views/common/weui/header.php';
     </div>
 </div>
 <script src="http://map.qq.com/api/js?v=2.exp&key=J7CBZ-YV43X-PVS4E-ZGYVP-KF2T3-A3BQZ&libraries=place,drawing"></script>
-<script src="/static/weui/js/jweixin-1.1.0.js?v=2016-04-07"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/weui/js/jweixin-1.1.0.js?v=2016-04-07"></script>
 <script>
     var openInWechat = navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger" ? true : false;
     if(openInWechat){
@@ -40,5 +40,5 @@ include BASE_PATH.'/application/views/common/weui/header.php';
         });
     }
 </script>
-<script src="/static/public/js/map/txmap.js?v=2016-04-07"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/map/txmap.js?v=<?php echo STATIC_VERSION;?>"></script>
 <?php include BASE_PATH.'/application/views/common/weui/footer.php';?>

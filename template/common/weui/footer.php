@@ -83,25 +83,25 @@
             <div class="weui_tabbar">
                 <a href="/wechat/manage_user/index" class="weui_tabbar_item <?php if($controllerName==='manage_user'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
-                        <img src="/static/weui/images/icon_nav_actionSheet.png" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_actionSheet.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">粉丝</p>
                 </a>
                 <a href="/wechat/manage_menu/index" id="contact" class="weui_tabbar_item <?php if($controllerName==='manage_menu'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
-                        <img src="/static/weui/images/icon_nav_article.png" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">菜单</p>
                 </a>
                 <a href="/wechat/manage_material/index" class="weui_tabbar_item <?php if($controllerName==='manage_material'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
-                        <img src="/static/weui/images/icon_nav_msg.png" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">素材</p>
                 </a>
                 <a href="/wechat/manage_account/index" class="weui_tabbar_item <?php if($controllerName==='manage_account'){echo 'weui_bar_item_on';}?>">
                     <div class="weui_tabbar_icon">
-                        <img src="/static/weui/images/icon_nav_panel.png" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_panel.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">管理中心</p>
                 </a>

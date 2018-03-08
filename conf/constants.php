@@ -2,13 +2,17 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 define('BASE_URL', 'http://'.SERVER_NAME);//当前系统地址
 
+//静态文件版本号
+define('STATIC_VERSION', '######');
+
 //OSS配置
 define('OSS_BUCKET', 'agent-47295');
 define('OSS_ACCESS_ID', '3IYCIDFZcGbGpnUX');
 define('OSS_ACCESS_KEY', 'AjWQTwY1fq6puNswqPoB0BnXVg1TZI');
 define('OSS_ENDPOINT', 'oss-cn-shenzhen.aliyuncs.com');
 define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
-define('CDN_URL', 'http://oss.47295.com/upload/kissbaby/');
+define('IMG_CDN_URL', PHP_ENV==='product' ? 'http://oss.47295.com/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');
+define('STATIC_CDN_URL', PHP_ENV==='product'? 'http://static.47295.com/' : BASE_URL);
 
 define('SERVICE_TEL', '+86 15914186940');
 
@@ -67,4 +71,3 @@ define('TENCENT_MAP_APP_URL', 'http://apis.map.qq.com/ws');
 //kissbaby
 define('KISSBABY_KEYWORD', '港货 母婴 药品 奶粉 辅食 奶瓶 化妆品 美颜 保养 包包');
 define('KISSBABY_DESCRIPTION', '归功化妆品、母婴等产品香港代购服务');
-define('KISSBABY_IMAGE_URL', PHP_ENV==='product'? CDN_URL.'/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');

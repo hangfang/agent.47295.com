@@ -8,7 +8,7 @@ class Kissbaby_CategoryModel extends BaseModel {
     public static function getRow($where = array(), $field = '*', $limit = array(), $order = '', $group = '') {
         $category = parent::getRow($where, $field, $limit, $order, $group);
         if(!empty($category['category_image'])){
-            $category['category_image'] = CDN_URL.$category['category_image'];
+            $category['category_image'] = IMG_CDN_URL.$category['category_image'];
         }
         
         return $category;
@@ -18,8 +18,8 @@ class Kissbaby_CategoryModel extends BaseModel {
         $categoryList = parent::getList($where, $field, $limit, $order, $group);
         if(!empty($categoryList)){
             foreach($categoryList as &$_category){
-                $_category['category_image'] = CDN_URL.$_category['category_image'];
-                $_category['category_banner'] = CDN_URL.$_category['category_banner'];
+                $_category['category_image'] = IMG_CDN_URL.$_category['category_image'];
+                $_category['category_banner'] = IMG_CDN_URL.$_category['category_banner'];
             }
         }
 
@@ -32,8 +32,8 @@ class Kissbaby_CategoryModel extends BaseModel {
         $id2Category = [];
         if(!empty($categoryList)){
             foreach($categoryList as &$_category){
-                $_category['category_image'] = CDN_URL.$_category['category_image'];
-                $_category['category_banner'] = CDN_URL.$_category['category_banner'];
+                $_category['category_image'] = IMG_CDN_URL.$_category['category_image'];
+                $_category['category_banner'] = IMG_CDN_URL.$_category['category_banner'];
                 if(empty($id2Category[$_category['category_id']])){
                     $id2Category[$_category['category_id']] = [];
                 }

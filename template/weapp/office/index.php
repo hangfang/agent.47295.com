@@ -23,5 +23,5 @@ include BASE_PATH . '/application/views/common/weui/header.php';
     </div>
 </div>
 
-<script type="text/javascript" src="/static/public/js/office/index.js?d=20160110"></script>
+<script type="text/javascript" src="<?php echo STATIC_CDN_URL;?>static/public/js/office/index.js?v=<?php echo STATIC_VERSION;?>"></script>
 <?php include BASE_PATH . '/application/views/common/weui/footer.php'; ?>

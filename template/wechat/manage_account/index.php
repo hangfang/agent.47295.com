@@ -2,13 +2,13 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH.'/template/common/weui/header.php';
 ?>
-<link rel="stylesheet" href="/static/public/css/user/index.css?v=20160426"/>
+<link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/public/css/user/index.css?v=<?php echo STATIC_VERSION;?>"/>
 <div class="weui_panel panel1" style="margin-top: 0;">
 <!--    <div class="weui_panel_hd">个人中心</div>-->
     <div class="weui_panel_bd">
         <div class="weui_media_box weui_media_text">
             <div class="head-img">
-                <img src="/static/public/img/user/head-img.png" width="75" height="75">
+                <img src="<?php echo STATIC_CDN_URL;?>static/public/img/user/head-img.png?v=<?php echo STATIC_VERSION;?>" width="75" height="75">
             </div>
             <div class="head-dsb">
                 <p class="dsb-name">--凌乱</p>
@@ -115,5 +115,5 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
-<script src="/static/public/js/user/index.js?v=20160420"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/user/index.js?v=<?php echo STATIC_VERSION;?>"></script>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>

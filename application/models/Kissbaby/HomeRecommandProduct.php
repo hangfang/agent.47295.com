@@ -8,7 +8,7 @@ class Kissbaby_HomeRecommandProductModel extends BaseModel {
     public static function getRow($where = array(), $field = '*', $limit = array(), $order = '', $group = '') {
         $product = parent::getRow($where, $field, $limit, $order, $group);
         if(!empty($product['product_image'])){
-            $product['product_image'] = CDN_URL.$product['product_image'];
+            $product['product_image'] = IMG_CDN_URL.$product['product_image'];
         }
         
         return $product;
@@ -18,7 +18,7 @@ class Kissbaby_HomeRecommandProductModel extends BaseModel {
         $productList = parent::getList($where, $field, $limit, $order, $group);
         if(!empty($productList)){
             foreach($productList as &$_product){
-                $_product['product_image'] = CDN_URL.$_product['product_image'];
+                $_product['product_image'] = IMG_CDN_URL.$_product['product_image'];
             }
         }
 
@@ -31,7 +31,7 @@ class Kissbaby_HomeRecommandProductModel extends BaseModel {
         $id2Product = [];
         if(!empty($productList)){
             foreach($productList as &$_product){
-                $_product['product_image'] = CDN_URL.$_product['product_image'];
+                $_product['product_image'] = IMG_CDN_URL.$_product['product_image'];
                 if(empty($id2Product[$_product['product_id']])){
                     $id2Product[$_product['product_id']] = [];
                 }

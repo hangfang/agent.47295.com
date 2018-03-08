@@ -3,7 +3,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH.'/application/views/common/weui/header.php';
 ?>
 </div>
-<link rel='stylesheet' href='/static/public/css/map/index.css?v=20160426'/>
+<link rel='stylesheet' href='/static/public/css/map/index.css?v=<?php echo STATIC_VERSION;?>'/>
 <div id="top-panel">
     <div class="weui_cells">
         <div class="weui_cell_bd weui_cell_primary">
@@ -26,7 +26,7 @@ include BASE_PATH.'/application/views/common/weui/header.php';
 <!--加载检索信息窗口-->
 <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.js"></script>
 <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.4/src/SearchInfoWindow_min.css" />
-<script src="/static/weui/js/jweixin-1.1.0.js?v=2016-04-07"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/weui/js/jweixin-1.1.0.js?v=2016-04-07"></script>
 <script>
     var openInWechat = navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger" ? true : false;
     if(openInWechat){
@@ -40,5 +40,5 @@ include BASE_PATH.'/application/views/common/weui/header.php';
         });
     }
 </script>
-<script src="/static/public/js/map/index.js?v=2016-04-07"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/map/index.js?v=<?php echo STATIC_VERSION;?>"></script>
 <?php include BASE_PATH.'/application/views/common/weui/footer.php';?>
