@@ -33,7 +33,7 @@ include $viewPath.'header.php';
                         $_product['product_image'] = '';
                     }
                     
-                    $_imgSrc = empty($_product['product_image']) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_product['product_image']);
+                    $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image']);
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">

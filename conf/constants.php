@@ -1,8 +1,14 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
-define('BASE_URL', 'http://'.SERVER_NAME);//当前系统地址
 
-//静态文件版本号
+/**
+ * @var string 当前系统域名
+ */
+define('BASE_URL', 'http://'.SERVER_NAME);
+
+/**
+ * @var string 静态文件版本号
+ */
 define('STATIC_VERSION', '######');
 
 //OSS配置
@@ -11,15 +17,28 @@ define('OSS_ACCESS_ID', '3IYCIDFZcGbGpnUX');
 define('OSS_ACCESS_KEY', 'AjWQTwY1fq6puNswqPoB0BnXVg1TZI');
 define('OSS_ENDPOINT', 'oss-cn-shenzhen.aliyuncs.com');
 define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
+
+/**
+ * @var string 图片文件CDN域名
+ */
 define('IMG_CDN_URL', PHP_ENV==='product' ? 'http://oss.47295.com/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');
+
+/**
+ * @var string 静态文件CDN域名
+ */
 define('STATIC_CDN_URL', PHP_ENV==='product'? 'http://static.47295.com/' : BASE_URL);
 
-define('SERVICE_TEL', '+86 15914186940');
+/**
+ * @var string CDN域名占位符
+ */
+define('CDN_URL_PLACEHOLDER', CDN_URL_PLACEHOLDER);
 
 //短信验证码有效期,10分钟
 define('SMS_TOKEN_LIFT_TIME', 600);
 
-//简单判断手机号码正则
+/**
+ * @var string 简单判断手机号码正则
+ */
 define('PHONE_REG', '/^1[\d]{10}$/');
 
 //邮箱配置
@@ -54,7 +73,15 @@ if(PHP_ENV==='product'){
     define('WECHAT_ADMIN_OPENID', ['ovzFrwIgjd9soE7SzlM_jo_Otuw0']);//管理员的openid
 }
 
+/**
+ * @var string 业务员微信号
+ */
 define('WECHAT_HK_ACCOUNT', 'WangLin-ling');
+
+/**
+ * @var string 业务员电话
+ */
+define('SERVICE_TEL', '+86 15914186940');
 
 /*新浪ip查询*/
 define('SINA_IP_LOOKUP_API_URL', 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=%s');

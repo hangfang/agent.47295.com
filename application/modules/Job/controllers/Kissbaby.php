@@ -61,7 +61,7 @@ class KissbabyController extends BasicController{
             if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']], 'category_banner')){
                 if(!empty($_replace['category_banner'])){
                     $this->__saveImage($_replace['category_banner']);
-                    $_replace['category_banner'] = '{CDN_URL}'.$_replace['category_banner'];
+                    $_replace['category_banner'] = CDN_URL_PLACEHOLDER.$_replace['category_banner'];
                 }
                 
                 if(!Kissbaby_CategoryModel::insert($_replace)){
@@ -71,9 +71,9 @@ class KissbabyController extends BasicController{
                 }
             }else{
                 unset($_replace['create_time']);
-                if(!empty($_replace['category_banner']) && $_replace['category_banner']!==str_replace('{CDN_URL}', '', $categoryInfo['category_banner'])){
+                if(!empty($_replace['category_banner']) && $_replace['category_banner']!==str_replace(CDN_URL_PLACEHOLDER, '', $categoryInfo['category_banner'])){
                     $this->__saveImage($_replace['category_banner']);
-                    $_replace['category_banner'] = '{CDN_URL}'.$_replace['category_banner'];
+                    $_replace['category_banner'] = CDN_URL_PLACEHOLDER.$_replace['category_banner'];
                 }
                             
                 if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_cate['category_id']])){
@@ -107,7 +107,7 @@ class KissbabyController extends BasicController{
                 if(!$subCategory=Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']], 'category_image')){
                     if(!empty($_replace['category_image'])){
                         $this->__saveImage($_replace['category_image']);
-                        $_replace['category_image'] = '{CDN_URL}'.$_replace['category_image'];
+                        $_replace['category_image'] = CDN_URL_PLACEHOLDER.$_replace['category_image'];
                     }
                     
                     if(!Kissbaby_CategoryModel::insert($_replace)){
@@ -117,9 +117,9 @@ class KissbabyController extends BasicController{
                     }
                 }else{
                     unset($_replace['create_time']);
-                    if(!empty($_replace['category_image']) && $_replace['category_image']!==str_replace('{CDN_URL}', '', $subCategory['category_image'])){
+                    if(!empty($_replace['category_image']) && $_replace['category_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $subCategory['category_image'])){
                         $this->__saveImage($_replace['category_image']);
-                        $_replace['category_image'] = '{CDN_URL}'.$_replace['category_image'];
+                        $_replace['category_image'] = CDN_URL_PLACEHOLDER.$_replace['category_image'];
                     }
                     
                     if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_subCate['category_id']])){
@@ -151,21 +151,21 @@ class KissbabyController extends BasicController{
             $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset]);
             foreach($productList as $_product){
                 $_update = [];
-                if(!empty($_product['product_image']) && strpos($_product['product_image'], '{CDN_URL}')===false){
+                if(!empty($_product['product_image']) && strpos($_product['product_image'], CDN_URL_PLACEHOLDER)===false){
                     $_product['product_image'] = explode(',', $_product['product_image']);
                     foreach($_product['product_image'] as &$_image){
-                        if(strpos($_image, H5_HTTP_SERVER)!==false || strpos($_image, H5_HTTP_SERVER_)!==false){
+                        if(strpos($_image, CDN_URL_PLACEHOLDER)===false){
                             $_image = str_replace(H5_HTTP_SERVER, '', $_image);
                             $_image = str_replace(H5_HTTP_SERVER_, '', $_image);
                             $this->__saveImage($_image);
-                            $_image = '{CDN_URL}'.$_image;
+                            $_image = CDN_URL_PLACEHOLDER.$_image;
                         }
                     }
 
                     $_update['product_image'] = implode(',', $_product['product_image']);
                 }
 
-                if(!empty($_product['product_description']) &&  strpos($_product['product_description'], '{CDN_URL}')===false && preg_match_all('/src\="([^"]+)"/i', $_product['product_description'], $matches)){
+                if(!empty($_product['product_description']) &&  strpos($_product['product_description'], CDN_URL_PLACEHOLDER)===false && preg_match_all('/src\="([^"]+)"/i', $_product['product_description'], $matches)){
                     for($i=1,$len=count($matches[1]); $i<$len; $i++){
                         $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
                         $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
@@ -174,8 +174,8 @@ class KissbabyController extends BasicController{
                     unset($matches);
                     
                     $_product['product_description'] = str_replace('src=', 'class="lazy" data-original=', $_product['product_description']);
-                    $_product['product_description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $_product['product_description']);
-                    $_product['product_description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $_product['product_description']);
+                    $_product['product_description'] = str_replace(H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $_product['product_description']);
+                    $_product['product_description'] = str_replace(H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $_product['product_description']);
                     
                     $_update['product_description'] = $_product['product_description'];
                 }
@@ -260,8 +260,8 @@ class KissbabyController extends BasicController{
                         
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
+                            $detail['description'] = str_replace(H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
+                            $detail['description'] = str_replace(H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
                             
                             if($detail['description']==$_product['product_description']){
                                 echo ' product_description not changed...'."\n";
@@ -269,7 +269,7 @@ class KissbabyController extends BasicController{
                             }
                         }
                         
-                        if($detail['image']==str_replace('{CDN_URL}', '', $_product['product_image'])){
+                        if($detail['image']==str_replace(CDN_URL_PLACEHOLDER, '', $_product['product_image'])){
                             echo ' product_image not changed...'."\n";
                             unset($_update['product_image']);
                         }
@@ -357,8 +357,8 @@ class KissbabyController extends BasicController{
             }
             
             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
+            $detail['description'] = str_replace(H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
         }else{
             $detail['description'] = '';
         }
@@ -445,7 +445,7 @@ class KissbabyController extends BasicController{
                 if(!$productInfo=Kissbaby_LatestProductModel::getRow(['product_id'=>$_update['product_id']], 'product_image')){
                     if(!empty($_update['product_image'])){
                         $this->__saveImage($_update['product_image']);
-                        $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
+                        $_update['product_image'] = CDN_URL_PLACEHOLDER.$_update['product_image'];
                     }
                     
                     if(!Kissbaby_LatestProductModel::insert($_update)){
@@ -455,9 +455,9 @@ class KissbabyController extends BasicController{
                     }
                 }else{
                     unset($_update['create_time']);
-                    if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
+                    if(!empty($_update['product_image']) && $_update['product_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $productInfo['product_image'])){
                         $this->__saveImage($_update['product_image']);
-                        $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
+                        $_update['product_image'] = CDN_URL_PLACEHOLDER.$_update['product_image'];
                     }
                     
                     if(!Kissbaby_LatestProductModel::update($_update)){
@@ -506,7 +506,7 @@ class KissbabyController extends BasicController{
             }
             
             $this->__saveImage($_banner['image']);
-            $_banner['image'] = '{CDN_URL}'.$_banner['image'];
+            $_banner['image'] = CDN_URL_PLACEHOLDER.$_banner['image'];
             
             $_update[] = [
                 'activity_id'       =>  $matches[1],
@@ -530,7 +530,7 @@ class KissbabyController extends BasicController{
         foreach($recommand['single_product_list'] as $_product){
             if(!empty($_product['image'])){
                 $this->__saveImage($_product['image']);
-                $_product['image'] = '{CDN_URL}'.$_product['image'];
+                $_product['image'] = CDN_URL_PLACEHOLDER.$_product['image'];
             }
 
             $_update[] = [
@@ -580,7 +580,7 @@ class KissbabyController extends BasicController{
             if(!$activityInfo=Kissbaby_ActivityModel::getRow(['activity_id'=>$_activity['sale_id']], 'activity_id,activity_image')){
                 if(!empty($_update['activity_image'])){
                     $this->__saveImage($_update['activity_image']);
-                    $_update['activity_image'] = '{CDN_URL}'.$_update['activity_image'];
+                    $_update['activity_image'] = CDN_URL_PLACEHOLDER.$_update['activity_image'];
                 }
                 
                 if(false===Kissbaby_ActivityModel::insert($_update)){
@@ -589,9 +589,9 @@ class KissbabyController extends BasicController{
                     continue;
                 }
             }else{
-                if(!empty($_update['activity_image']) && $_update['activity_image']!==str_replace('{CDN_URL}', '', $activityInfo['activity_image'])){
+                if(!empty($_update['activity_image']) && $_update['activity_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $activityInfo['activity_image'])){
                     $this->__saveImage($_update['activity_image']);
-                    $_update['activity_image'] = '{CDN_URL}'.$_update['activity_image'];
+                    $_update['activity_image'] = CDN_URL_PLACEHOLDER.$_update['activity_image'];
                 }
                 
                 if(false===Kissbaby_ActivityModel::update($_update, ['activity_id'=>$_activity['sale_id']])){
@@ -633,9 +633,9 @@ class KissbabyController extends BasicController{
                     ];
                     
                     if($productInfo=Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id,product_image')){
-                        if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
+                        if(!empty($_update['product_image']) && $_update['product_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $productInfo['product_image'])){
                             $this->__saveImage($_update['product_image']);
-                            $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
+                            $_update['product_image'] = CDN_URL_PLACEHOLDER.$_update['product_image'];
                         }
                         
                         if(false===Kissbaby_ActivityProductModel::update($_update, $_where)){
@@ -648,7 +648,7 @@ class KissbabyController extends BasicController{
                     }else{
                         if(!empty($_update['product_image'])){
                             $this->__saveImage($_update['product_image']);
-                            $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
+                            $_update['product_image'] = CDN_URL_PLACEHOLDER.$_update['product_image'];
                         }
                         
                         if(!Kissbaby_ActivityProductModel::insert($_update)){

@@ -13,7 +13,7 @@ class Kissbaby_ProductModel extends BaseModel {
 //                $_image = IMG_CDN_URL.$_image;
 //            }
 //            
-//            $product['product_description'] = str_replace('{CDN_URL}', IMG_CDN_URL, $product['product_description']);
+//            $product['product_description'] = str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);
 //        }
 //        
 //        return $product;
@@ -28,7 +28,7 @@ class Kissbaby_ProductModel extends BaseModel {
 //                    $_image = IMG_CDN_URL.$_image;
 //                }
 //                
-//                $_product['product_description'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_product['product_description']);
+//                $_product['product_description'] = str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_description']);
 //            }
 //        }
 //
@@ -47,7 +47,7 @@ class Kissbaby_ProductModel extends BaseModel {
 //                }
 //                
 //                
-//                $_product['product_description'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_product['product_description']);
+//                $_product['product_description'] = str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_description']);
 //                if(empty($id2Product[$_product['product_id']])){
 //                    $id2Product[$_product['product_id']] = [];
 //                }

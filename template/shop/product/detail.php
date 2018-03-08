@@ -18,7 +18,7 @@ include $viewPath.'header.php';
                                         $_extraPost = '</a>';
                                     }
                                     
-                                    $_image = empty($_image) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_image);
+                                    $_image = empty($_image) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_image);
                                     echo <<<EOF
 <li>
     {$_extraPre}
@@ -87,7 +87,7 @@ EOF;
             <?php
                 foreach($related as $_related){
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<p>$ '.$_related['product_vip_price'].'</p>' : '';
-                    $_imgSrc = empty($_related['product_image'][0]) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_related['product_image'][0]);
+                    $_imgSrc = empty($_related['product_image'][0]) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_related['product_image'][0]);
                     echo <<<EOF
 <div class="col-md-3">
 <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">

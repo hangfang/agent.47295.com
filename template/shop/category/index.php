@@ -26,7 +26,7 @@ include $viewPath.'header.php';
                     }
 
                     $_category = $categoryList[$i];
-                    $_imgSrc = empty($_category['category_banner']) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_category['category_banner']);
+                    $_imgSrc = empty($_category['category_banner']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_category['category_banner']);
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
