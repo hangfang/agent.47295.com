@@ -703,6 +703,7 @@ class KissbabyController extends BasicController{
             $ch = curl_init(H5_HTTP_SERVER.$_imagePath);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             $_content = curl_exec($ch);
+            curl_close($ch);
         }catch(Exception $e){
             log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.H5_HTTP_SERVER.$_imagePath);
             return true;
