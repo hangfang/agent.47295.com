@@ -21,8 +21,12 @@ define('H5_HTTP_SERVER', 'http://7xl26a.com2.z0.glb.qiniucdn.com/image/');
 define('H5_HTTP_SERVER_', 'http://7xl26a.com2.z0.glb.qiniucdn.com//image/');
 define('IMAGE_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'kissbaby'.DIRECTORY_SEPARATOR);
 define('IMAGE_URL', BASE_URL.'/upload/kissbaby/');
-define('OSS_CLIENT', new Oss_Client(OSS_ACCESS_ID, OSS_ACCESS_KEY, OSS_ENDPOINT));
+
 class KissbabyController extends BasicController{
+    public function init(){
+        self::$_OSS_CLIENT = new Oss_Client(OSS_ACCESS_ID, OSS_ACCESS_KEY, OSS_ENDPOINT);
+    }
+    
     /**
      * 从kissbaby更新商品分类
      */
@@ -613,8 +617,7 @@ class KissbabyController extends BasicController{
         
         $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
         
-        $oss = OSS_CLIENT;
-        $oss->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
+        self::$_OSS_CLIENT->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
         return true;
     }
 }
