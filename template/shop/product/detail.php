@@ -78,7 +78,7 @@ EOF;
 			  </ul>
 			 </div>
 			 <div class="menu_drop" style="margin-top:1.8rem;">
-                <?php echo $product['product_description'];?>
+                <?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);?>
 	 		</div>
    </div>
     <?php if($related){?>
