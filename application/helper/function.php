@@ -889,7 +889,7 @@ if(!function_exists('lExit')){
                 $body = json_encode(['rtn'=>$code, 'error_msg'=>$msg], JSON_UNESCAPED_UNICODE);
             }
         }
-        log_message('all', 'request_id:'.Yaf_Registry::get('request_id')."\tip:". ip_address() ."\n    ".'response:'.$body."\n");
+        log_message('all', Yaf_Registry::get('log_message_all')."\t".'response:'.$body."\n");
 		exit($body);
     }
 }

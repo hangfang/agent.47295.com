@@ -14,13 +14,9 @@ class LogPlugin extends Yaf_Plugin_Abstract {
         $get = $request->getQuery();
         $cookie = $_COOKIE;
         
-        $requestStr = 'get:'.json_encode($get, JSON_UNESCAPED_UNICODE)."\n    ".'post:'.json_encode($post, JSON_UNESCAPED_UNICODE)."\n    ".'cookie:'.json_encode($cookie, JSON_UNESCAPED_UNICODE);
+        $requestStr = 'ip:'.ip_address()."\t".'get:'.json_encode($get, JSON_UNESCAPED_UNICODE)."\t".'post:'.json_encode($post, JSON_UNESCAPED_UNICODE)."\t".'cookie:'.json_encode($cookie, JSON_UNESCAPED_UNICODE);
         
-        $requestId = md5($requestStr.microtime(true));
-        Yaf_Registry::set('request_id', $requestId);
-        
-        $requestStr = 'request_id:'.$requestId."\n    ".$requestStr."\n";
-        log_message('all', $requestStr);
+        Yaf_Registry::set('log_message_all', $requestStr);
 	}
 
     public function routerShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
@@ -41,5 +37,6 @@ class LogPlugin extends Yaf_Plugin_Abstract {
 
     public function dispatchLoopShutdown(Yaf_Request_Abstract $request, Yaf_Response_Abstract $response) {
         //echo '<p>dispatchLoopShutdown</p>';
+        log_message('all', Yaf_Registry::get('log_message_all'));
     }
 }
