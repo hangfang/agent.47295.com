@@ -23,8 +23,13 @@ define('IMAGE_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.
 define('IMAGE_URL', BASE_URL.'/upload/kissbaby/');
 
 class KissbabyController extends BasicController{
-    public function init(){
-        self::$_OSS_CLIENT = new Oss_Client(OSS_ACCESS_ID, OSS_ACCESS_KEY, OSS_ENDPOINT);
+    private static $_OSS_CLIENT = null;
+    public static function getOssInstance(){
+        if(self::$_OSS_CLIENT instanceof Oss_Client){
+            return self::$_OSS_CLIENT;
+        }
+        
+        return self::$_OSS_CLIENT = new Oss_Client(OSS_ACCESS_ID, OSS_ACCESS_KEY, OSS_ENDPOINT);
     }
     
     /**
@@ -617,7 +622,7 @@ class KissbabyController extends BasicController{
         
         $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
         
-        self::$_OSS_CLIENT->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
+        self::getOssInstance()->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
         return true;
     }
 }
