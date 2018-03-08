@@ -448,6 +448,8 @@ class KissbabyController extends BasicController{
                         echo '   insert kissbaby latest product failed..., name:'.$_product['name']."\n";
                         continue;
                     }
+
+                    echo '  insert kissbaby latest product succ..., name:'.$_product['name']."\n";
                 }else{
                     unset($_update['create_time']);
                     if(!empty($_update['product_image']) && $_update['product_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $productInfo['product_image'])){
@@ -460,9 +462,9 @@ class KissbabyController extends BasicController{
                         echo '   update kissbaby latest product failed..., name:'.$_product['name']."\n";
                         continue;
                     }
-                }
 
-                echo '  insert kissbaby latest product succ..., name:'.$_product['name']."\n";
+                    echo '  update kissbaby latest product succ..., name:'.$_product['name']."\n";
+                }
             }
             
             echo 'latest product succ..., page:'.$_page."\n";
