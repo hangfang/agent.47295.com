@@ -31,7 +31,7 @@ define('STATIC_CDN_URL', PHP_ENV==='product'? 'http://static.47295.com/' : BASE_
 /**
  * @var string CDN域名占位符
  */
-define('CDN_URL_PLACEHOLDER', CDN_URL_PLACEHOLDER);
+define('CDN_URL_PLACEHOLDER', '{CDN_URL}');
 
 //短信验证码有效期,10分钟
 define('SMS_TOKEN_LIFT_TIME', 600);
