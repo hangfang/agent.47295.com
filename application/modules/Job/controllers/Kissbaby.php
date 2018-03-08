@@ -131,19 +131,18 @@ class KissbabyController extends BasicController{
         do{
             $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset]);
             foreach($productList as $_product){
-                
-                if(!empty($_product['product_image'])){
+                $_update = [];
+                if(!empty($_product['product_image']) && strpos($_product['product_image'], '{CDN_URL}')===false){
                     foreach($_product['product_image'] as &$_image){
                         if(strpos($_image, H5_HTTP_SERVER)!==false || strpos($_image, H5_HTTP_SERVER_)!==false){
                             $_image = str_replace(H5_HTTP_SERVER, '', $_image);
                             $_image = str_replace(H5_HTTP_SERVER_, '', $_image);
                             $this->__saveImage($_image);
+                            $_image = '{CDN_URL}'.$_image;
                         }
                     }
 
-                    $_product['product_image'] = implode(',', $_product['product_image']);
-                }else{
-                    $_product['product_image'] = '';
+                    $_update['product_image'] = implode(',', $_product['product_image']);
                 }
 
                 if(!empty($_product['product_description']) &&  strpos($_product['product_description'], '{CDN_URL}')===false && preg_match_all('/src\="([^"]+)"/i', $_product['product_description'], $matches)){
@@ -157,15 +156,19 @@ class KissbabyController extends BasicController{
                     $_product['product_description'] = str_replace('src=', 'class="lazy" data-original=', $_product['product_description']);
                     $_product['product_description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $_product['product_description']);
                     $_product['product_description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $_product['product_description']);
-                }else{
-                    $_product['product_description'] = empty($_product['product_description']) ? '' : $_product['product_description'];
+                    
+                    $_update['product_description'] = $_product['product_description'];
                 }
-
-                if(!Kissbaby_ProductModel::update($_update=['product_image'=>$_product['product_image'], 'product_description'=>$_product['product_description']], $_where=['id'=>$_product['id']])){
-                    log_message('error', __FUNCTION__.', 更新商品图片为oss地址失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
-                    echo $offset.'/'.$total.'  product update failed..., name:'.$_product['product_name']."\n";
+                
+                if($_update){
+                    if(!Kissbaby_ProductModel::update($_update, $_where=['id'=>$_product['id']])){
+                        log_message('error', __FUNCTION__.', 更新商品图片为oss地址失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
+                        echo $offset.'/'.$total.'  product update failed..., name:'.$_product['product_name']."\n";
+                    }else{
+                        echo $offset.'/'.$total.'  product update succ..., name:'.$_product['product_name']."\n";
+                    }
                 }else{
-                    echo $offset.'/'.$total.'  product update succ..., name:'.$_product['product_name']."\n";
+                    echo $offset.'/'.$total.'  product not change..., name:'.$_product['product_name']."\n";
                 }
                 
                 unset($_product, $_update, $_where);
@@ -246,7 +249,18 @@ class KissbabyController extends BasicController{
                             }
                         }
                         
-                        if($detail['image']==$_product['product_image']){
+                        if(!empty($detail['image'])){
+                            $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
+                            $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
+                            $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
+                            
+                            if($detail['description']==$_product['product_description']){
+                                echo ' product_description not changed...'."\n";
+                                unset($_update['product_description']);
+                            }
+                        }
+                        
+                        if($detail['image']==str_replace('{CDN_URL}', '', $_product['product_image'])){
                             echo ' product_image not changed...'."\n";
                             unset($_update['product_image']);
                         }
@@ -259,15 +273,6 @@ class KissbabyController extends BasicController{
                         
                         echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
                     }else{
-                    
-                        $_update['product_image'] = empty($_update['product_image']) ? [] : explode(',', $_update['product_image']);
-                        foreach($_update['product_image'] as &$_image){
-                            if(strpos($_image, H5_HTTP_SERVER)===false && strpos($_image, H5_HTTP_SERVER_)===false){
-                                $_image = H5_HTTP_SERVER.$_image;
-                            }
-                        }
-                        $_update['product_image'] = implode(',', $_update['product_image']);
-                        
                         if(!Kissbaby_ProductModel::insert($_update)){
                             log_message('error', '插入kissbaby商品详情失败, insert:'.print_r($_update, true).', url:'.print_r($_tmpPrd['url'], true));
                             echo '   insert kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
