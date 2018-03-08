@@ -566,7 +566,7 @@ class KissbabyController extends BasicController{
             $_update = [
                 'activity_id'   =>  $_activity['sale_id'],
                 'activity_name'   =>  $_activity['name'],
-                'activity_image'   =>  empty($_activity['banner_lg']) ? '' : '{CDN_URL}'.$_activity['banner_lg'],
+                'activity_image'   =>  empty($_activity['banner_lg']) ? '' : $_activity['banner_lg'],
                 'start_time'   =>  $_activity['date_start'],
                 'end_time'   =>  $_activity['date_end'],
                 'activity_status'   =>  $_activity['status'],
