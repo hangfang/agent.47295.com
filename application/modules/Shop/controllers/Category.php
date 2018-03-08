@@ -8,15 +8,18 @@ class CategoryController extends BasicController{
     public function productAction(){
         $categoryId = $this->_request->getQuery('category_id');
         if(!$categoryId){
-            header('location: /shop/index/notfound');exit;
+            header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
         }
+        
+        if(!$category = Kissbaby_CategoryModel::getRow(['category_id'=>$categoryId])){
+            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
+        }
+        $this->_view->assign('category', $category);
         
         if(!$productList = Kissbaby_ProductModel::getList(['category_id'=>$categoryId])){
-            header('location: /shop/index/notfound');exit;
+            header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
         }
         
-        
-        $this->_view->assign('category', $category = Kissbaby_CategoryModel::getRow(['category_id'=>$categoryId]));
         $this->_view->assign('title', $category['category_name']);
         $this->_view->assign('productList', $productList);
         return true;
@@ -28,7 +31,12 @@ class CategoryController extends BasicController{
      */
     public function indexAction(){
         $this->_view->assign('title', '一级分类');
-        $this->_view->assign('categoryList', Kissbaby_CategoryModel::getList(['parent_id'=>0], '*', '', 'category_order asc'));
+        
+        if(!$categoryList = Kissbaby_CategoryModel::getList(['parent_id'=>0], '*', '', 'category_order asc')){
+            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
+        }
+        
+        $this->_view->assign('categoryList', $categoryList);
         return true;
     }
     
@@ -39,11 +47,15 @@ class CategoryController extends BasicController{
     public function subCategoryAction(){
         $categoryId = $this->_request->getQuery('category_id');
         if(!$categoryId){
-            header('location: /shop/index/notfound');exit;
+            header('location: /shop/index/notfound?code=404&title=异常&msg=非法请求');exit;
+        }
+        
+        if(!$categoryList = Kissbaby_CategoryModel::getList(['parent_id'=>$categoryId], '*', '', 'category_order asc')){
+            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
         }
         
         $this->_view->assign('title', '二级分类');
-        $this->_view->assign('categoryList', Kissbaby_CategoryModel::getList(['parent_id'=>$categoryId], '*', '', 'category_order asc'));
+        $this->_view->assign('categoryList', $categoryList);
         return true;
     }
 }

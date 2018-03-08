@@ -12,6 +12,7 @@ include $viewPath.'header.php';
 						<ul id="etalage">
                             <?php
                                 $_index = 0;
+                                $product['product_image'] = empty($product['product_image']) ? [] : explode(',', $product['product_image']);
                                 foreach($product['product_image'] as $_image){
                                     if($_index == 0){
                                         $_extraPre = '<a href="javascript:void(0);">';

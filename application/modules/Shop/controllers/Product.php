@@ -8,11 +8,11 @@ class ProductController extends BasicController{
     public function detailAction(){
         $productId = $this->_request->getQuery('product_id');
         if(!$productId){
-            header('location: /shop/index/notfound');exit;
+            header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
         }
         
         if(!$product = Kissbaby_ProductModel::getRow(['product_id'=>$productId])){
-            header('location: /shop/index/notfound');exit;
+            header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
         }
         
         Kissbaby_ProductModel::update(['product_views'=>++$product['product_views']], ['product_id'=>$productId]);
