@@ -52,6 +52,6 @@ class IndexController extends BasicController {
     }
     
     public function updateAction(){
-        lExit(passthru('/usr/local/sbin/update.sh'));exit;
+        lExit(shell_exec('/usr/local/sbin/update.sh'));exit;
     }
 }
