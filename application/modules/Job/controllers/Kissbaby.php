@@ -131,15 +131,19 @@ class KissbabyController extends BasicController{
         do{
             $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset]);
             foreach($productList as $_product){
-
+                
                 if(!empty($_product['product_image'])){
                     foreach($_product['product_image'] as &$_image){
-                        $this->__saveImage($_image);
+                        if(strpos($_image, H5_HTTP_SERVER)!==false || strpos($_image, H5_HTTP_SERVER_)!==false){
+                            $_image = str_replace(H5_HTTP_SERVER, '', $_image);
+                            $_image = str_replace(H5_HTTP_SERVER_, '', $_image);
+                            $this->__saveImage($_image);
+                        }
                     }
 
                     $_product['product_image'] = implode(',', $_product['product_image']);
                 }else{
-                    $this->__saveImage($_product['product_image']);
+                    $_product['product_image'] = '';
                 }
 
                 if(!empty($_product['product_description']) &&  strpos($_product['product_description'], '{CDN_URL}')===false && preg_match_all('/src\="([^"]+)"/i', $_product['product_description'], $matches)){
@@ -213,18 +217,13 @@ class KissbabyController extends BasicController{
                         continue;
                     }
                     
-                    
                     $detail = $detail['product'];
-                    
-                    $detail['image'] = empty($detail['image']) ? '' : $detail['image'];
-                    $detail['description'] = empty($detail['description']) ? '' : $detail['description'];
-                    
                     $_update = [
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
                         'product_name'   =>  $detail['name'],
                         'product_image'   =>  $detail['image'],
-                        'product_description'   =>  $detail['description'],
+                        'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
                         'product_vip_price'   =>  $detail['vip_price'],
                         'product_tag'   =>  $detail['tag'],
@@ -260,6 +259,15 @@ class KissbabyController extends BasicController{
                         
                         echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
                     }else{
+                    
+                        $_update['image'] = empty($_update['image']) ? [] : explode(',', $_update['image']);
+                        foreach($_update['image'] as &$_image){
+                            if(strpos($_image, H5_HTTP_SERVER)===false && strpos($_image, H5_HTTP_SERVER_)===false){
+                                $_image = H5_HTTP_SERVER.$_image;
+                            }
+                        }
+                        $_update['image'] = implode(',', $_update['image']);
+                        
                         if(!Kissbaby_ProductModel::insert($_update)){
                             log_message('error', '插入kissbaby商品详情失败, insert:'.print_r($_update, true).', url:'.print_r($_tmpPrd['url'], true));
                             echo '   insert kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
