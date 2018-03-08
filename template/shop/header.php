@@ -38,6 +38,50 @@
          </div>
          <div class="cssmenu">
 			<ul>
+			    <li class="active"><a href="/shop/product/search">热门搜索</a></li> 
+			    <li class="active" style="position:relative;">
+                    <a href="javascript:void(0);" id="shopping-cart">购物车
+                    <div class="col-xs-3 header-bottom-right" style="margin: 0px;z-index: 9999;display: none;position: absolute;top:-8px;left:-5px;">
+                        <ul class="icon1 sub-icon1 profile_img">
+                             <li><a class="active-icon c1" href="javascript:void(0);" style="transform: scale(0.5);display:none;"> </a>
+                                <ul class="sub-icon1 list">
+                                  <h3>我的宝贝</h3>
+                                  <div class="shopping_cart">
+                                      <div class="cart_box">
+                                         <div class="message">
+                                             <div class="alert-close"> </div> 
+                                            <div class="list_img"><img src="<?php echo $staticDir;?>images/14.jpg" class="img-responsive" alt=""/></div>
+                                            <div class="list_desc"><h4><a href="#">velit esse molestie</a></h4>1 x<span class="actual">
+                                             $12.00</span></div>
+                                              <div class="clearfix"></div>
+                                          </div>
+                                        </div>
+                                        <div class="cart_box1">
+                                          <div class="message1">
+                                             <div class="alert-close1"> </div> 
+                                            <div class="list_img"><img src="<?php echo $staticDir;?>images/15.jpg" class="img-responsive" alt=""/></div>
+                                            <div class="list_desc"><h4><a href="#">velit esse molestie</a></h4>1 x<span class="actual">
+                                             $12.00</span></div>
+                                              <div class="clearfix"></div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="total_left">总价 : </div>
+                                        <div class="total_right">$250.00</div>
+                                        <div class="clearfix"> </div>
+                                    </div>
+                                    <div class="login_buttons">
+                                      <div class="check_button"><a href="javascript:void(0);">清空</a></div>
+                                      <div class="login_button"><a href="/shop/order/cart">下单</a></div>
+                                      <div class="clearfix"></div>
+                                    </div>
+                                  <div class="clearfix"></div>
+                                </ul>
+                             </li>
+                        </ul>
+                    </div></a>
+                </li> 
 			    <li class="active"><a href="/shop/account/index">我的账户</a></li> 
 			</ul>
 		 </div>
@@ -59,52 +103,6 @@
                 </ul> 
             </div>
 		</div>
-	    <div class="col-xs-3 header-bottom-right">
-	       <ul class="icon1 sub-icon1 profile_img">
-					 <li><a class="active-icon c1" href="#"> </a>
-						<ul class="sub-icon1 list">
-						  <h3>Recently added items(2)</h3>
-						  <div class="shopping_cart">
-							  <div class="cart_box">
-							   	 <div class="message">
-							   	     <div class="alert-close"> </div> 
-					                <div class="list_img"><img src="<?php echo $staticDir;?>images/14.jpg" class="img-responsive" alt=""/></div>
-								    <div class="list_desc"><h4><a href="#">velit esse molestie</a></h4>1 x<span class="actual">
-		                             $12.00</span></div>
-		                              <div class="clearfix"></div>
-	                              </div>
-	                            </div>
-	                            <div class="cart_box1">
-								  <div class="message1">
-							   	     <div class="alert-close1"> </div> 
-					                <div class="list_img"><img src="<?php echo $staticDir;?>images/15.jpg" class="img-responsive" alt=""/></div>
-								    <div class="list_desc"><h4><a href="#">velit esse molestie</a></h4>1 x<span class="actual">
-		                             $12.00</span></div>
-		                              <div class="clearfix"></div>
-	                              </div>
-	                            </div>
-	                        </div>
-	                        <div class="total">
-	                        	<div class="total_left">CartSubtotal : </div>
-	                        	<div class="total_right">$250.00</div>
-	                        	<div class="clearfix"> </div>
-	                        </div>
-                            <div class="login_buttons">
-							  <div class="check_button"><a href="checkout.html">Check out</a></div>
-							  <div class="login_button"><a href="login.html">Login</a></div>
-							  <div class="clearfix"></div>
-						    </div>
-					      <div class="clearfix"></div>
-						</ul>
-					 </li>
-		      </ul>
-              <div class="search">	  
-				<input type="text" name="s" class="textbox" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}">
-				<input type="submit" value="Subscribe" id="submit" name="submit">
-				<div id="response"> </div>
-		     </div>
-             <div class="clearfix"></div>
-          </div>
         <div class="clearfix"></div>
 	 </div>
 </div>

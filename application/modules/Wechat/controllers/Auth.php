@@ -152,6 +152,10 @@ class AuthController extends WechatController {
             lExit('手机号码未注册');
         }
         
+        if($user['user_openid']){
+            lExit('手机号已绑定其他微信号');
+        }
+        
         if(md5($userPwd)!=$user['user_pwd']){
             lExit('密码不匹配');
         }
