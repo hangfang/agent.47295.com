@@ -45,9 +45,6 @@ class KissbabyController extends BasicController{
         $now = time();
         foreach($categoryList as $_cate){
             $_banner = empty($_cate['banner'][0]['image']) ? '' : str_replace('\\', '/', $_cate['banner'][0]['image']);
-            if($_banner){
-                $this->__saveImage($_banner);
-            }
             
             $_replace = [
                 'parent_id'         =>  $_cate['parent_id'],
@@ -61,14 +58,24 @@ class KissbabyController extends BasicController{
             ];
             
             $_state = true;
-            if(!Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
+            if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
                 if(!Kissbaby_CategoryModel::insert($_replace)){
+                    if(!empty($_update['category_banner'])){
+                        $this->__saveImage($_update['category_banner']);
+                        $_update['category_banner'] = '{CDN}'.$_update['category_banner'];
+                    }
+                    
                     log_message('error', $msg = __FUNCTION__.', 插入父分类失败. replace:'.print_r($_replace, true));
                     echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
                     $_state = false;
                 }
             }else{
                 unset($_replace['create_time']);
+                if(!empty($_update['category_banner']) && $_update['category_banner']!==str_replace('{CDN_URL}', '', $categoryInfo['category_banner'])){
+                    $this->__saveImage($_update['category_banner']);
+                    $_update['category_banner'] = '{CDN}'.$_update['category_banner'];
+                }
+                            
                 if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_cate['category_id']])){
                     log_message('error', $msg = __FUNCTION__.', 插更新父分类失败. replace:'.print_r($_replace, true));
                     echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
@@ -249,17 +256,6 @@ class KissbabyController extends BasicController{
                             }
                         }
                         
-                        if(!empty($detail['image'])){
-                            $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER, '{CDN_URL}', $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER_, '{CDN_URL}', $detail['description']);
-                            
-                            if($detail['description']==$_product['product_description']){
-                                echo ' product_description not changed...'."\n";
-                                unset($_update['product_description']);
-                            }
-                        }
-                        
                         if($detail['image']==str_replace('{CDN_URL}', '', $_product['product_image'])){
                             echo ' product_image not changed...'."\n";
                             unset($_update['product_image']);
@@ -273,6 +269,15 @@ class KissbabyController extends BasicController{
                         
                         echo 'update kissbaby product detail succ..., name:'.$detail['name']."\n";
                     }else{
+                        if(!empty($_update['image'])){
+                            $_update['image'] = explode(',', $_update['image']);
+                            foreach($_update['image'] as &$_image){
+                                if(strpos($_update['image'], H5_HTTP_SERVER)===false && strpos($_update['image'], H5_HTTP_SERVER_)===false){
+                                    $_image = H5_HTTP_SERVER.$_image;
+                                }
+                            }
+                            $_update['image'] = implode(',', $_update['image']);
+                        }
                         if(!Kissbaby_ProductModel::insert($_update)){
                             log_message('error', '插入kissbaby商品详情失败, insert:'.print_r($_update, true).', url:'.print_r($_tmpPrd['url'], true));
                             echo '   insert kissbaby product detail failed..., url:'.$_tmpPrd['url']."\n";
@@ -410,10 +415,6 @@ class KissbabyController extends BasicController{
             $_total = $productList['total'];
             //log_message('error', print_r($goodsList, true));exit;
             foreach($productList['product'] as $_product){
-                if(!empty($_product['image'])){
-                    $this->__saveImage($_product['image']);
-                }
-                    
                 $_update = [
                     'product_id'   =>  $_product['product_id'],
                     'product_name'   =>  $_product['name'],
@@ -425,11 +426,30 @@ class KissbabyController extends BasicController{
                     'create_time'   =>  time(),
                     'ts'   =>  date('Y-m-d H:i:s'),
                 ];
-
-                if(!Kissbaby_LatestProductModel::insert($_update)){
-                    log_message('error', '插入kissbaby新品到货失败, insert:'.print_r($_update, true));
-                    echo '   insert kissbaby latest product failed..., name:'.$_product['name']."\n";
-                    continue;
+                
+                if(!$productInfo=Kissbaby_LatestProductModel::getRow(['product_id'=>$_update['product_id']], 'product_image')){
+                    if(!empty($_update['product_image'])){
+                        $this->__saveImage($_update['product_image']);
+                        $_update['product_image'] = '{CDN}'.$_update['product_image'];
+                    }
+                    
+                    if(!Kissbaby_LatestProductModel::insert($_update)){
+                        log_message('error', '插入kissbaby新品到货失败, insert:'.print_r($_update, true));
+                        echo '   insert kissbaby latest product failed..., name:'.$_product['name']."\n";
+                        continue;
+                    }
+                }else{
+                    unset($_update['create_time']);
+                    if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
+                        $this->__saveImage($_update['product_image']);
+                        $_update['product_image'] = '{CDN}'.$_update['product_image'];
+                    }
+                    
+                    if(!Kissbaby_LatestProductModel::update($_update)){
+                        log_message('error', '更新kissbaby新品到货失败, insert:'.print_r($_update, true));
+                        echo '   update kissbaby latest product failed..., name:'.$_product['name']."\n";
+                        continue;
+                    }
                 }
 
                 echo '  insert kissbaby latest product succ..., name:'.$_product['name']."\n";
@@ -469,6 +489,7 @@ class KissbabyController extends BasicController{
             }
             
             $this->__saveImage($_banner['image']);
+            $_banner['image'] = '{CDN}'.$_banner['image'];
             
             $_update[] = [
                 'activity_id'       =>  $matches[1],
@@ -492,6 +513,7 @@ class KissbabyController extends BasicController{
         foreach($recommand['single_product_list'] as $_product){
             if(!empty($_product['image'])){
                 $this->__saveImage($_product['image']);
+                $_product['image'] = '{CDN}'.$_product['image'];
             }
 
             $_update[] = [
@@ -524,14 +546,11 @@ class KissbabyController extends BasicController{
     public function getActivityAction(){
         $activityList = http($_tmp=['url'=>ACTIVITY_LIST]);
         foreach($activityList['sales'] as $_activity){
-            if(!empty($_activity['banner_lg'])){
-                $this->__saveImage($_activity['banner_lg']);
-            }
 
             $_update = [
                 'activity_id'   =>  $_activity['sale_id'],
                 'activity_name'   =>  $_activity['name'],
-                'activity_image'   =>  empty($_activity['banner_lg']) ? '' : $_activity['banner_lg'],
+                'activity_image'   =>  empty($_activity['banner_lg']) ? '' : '{CDN_URL}'.$_activity['banner_lg'],
                 'start_time'   =>  $_activity['date_start'],
                 'end_time'   =>  $_activity['date_end'],
                 'activity_status'   =>  $_activity['status'],
@@ -541,13 +560,23 @@ class KissbabyController extends BasicController{
                 'ts'            =>  date('Y-m-d H:i:s')
             ];
                 
-            if(!Kissbaby_ActivityModel::getRow(['activity_id'=>$_activity['sale_id']], 'activity_id')){
+            if(!$activityInfo=Kissbaby_ActivityModel::getRow(['activity_id'=>$_activity['sale_id']], 'activity_id,activity_image')){
+                if(!empty($_update['activity_image'])){
+                    $this->__saveImage($_update['activity_image']);
+                    $_update['activity_image'] = '{CDN}'.$_update['activity_image'];
+                }
+                
                 if(false===Kissbaby_ActivityModel::insert($_update)){
                     log_message('error', '删除kissbaby活动失败');
                     echo 'insert kissbaby activity failed...'."\n";
                     continue;
                 }
             }else{
+                if(!empty($_update['activity_image']) && $_update['activity_image']!==str_replace('{CDN_URL}', '', $activityInfo['activity_image'])){
+                    $this->__saveImage($_update['activity_image']);
+                    $_update['activity_image'] = '{CDN}'.$_update['activity_image'];
+                }
+                
                 if(false===Kissbaby_ActivityModel::update($_update, ['activity_id'=>$_activity['sale_id']])){
                     log_message('error', '更新kissbaby活动失败');
                     echo 'update kissbaby activity failed...'."\n";
@@ -590,8 +619,13 @@ class KissbabyController extends BasicController{
                         'ts'   =>  date('Y-m-d H:i:s')
                     ];
                     
-                    if(Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id')){
+                    if($productInfo=Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id')){
                         if(false===Kissbaby_ActivityProductModel::update($_update, $_where)){
+                            if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
+                                $this->__saveImage($_update['product_image']);
+                                $_update['product_image'] = '{CDN}'.$_update['product_image'];
+                            }
+                            
                             log_message('error', '更新kissbaby活动商品失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
                             echo '   update kissbaby activity product failed..., name:'.$_product['name']."\n";
                             continue;
@@ -599,6 +633,11 @@ class KissbabyController extends BasicController{
                         
                         echo 'update kissbaby product detail succ..., name:'.$_product['name']."\n";
                     }else{
+                        if(!empty($_update['product_image'])){
+                            $this->__saveImage($_update['product_image']);
+                            $_update['product_image'] = '{CDN}'.$_update['product_image'];
+                        }
+                        
                         if(!Kissbaby_ActivityProductModel::insert($_update)){
                             log_message('error', '插入kissbaby活动商品失败, insert:'.print_r($_update, true));
                             echo '   insert kissbaby activity product detail failed..., name:'.$_product['name']."\n";
