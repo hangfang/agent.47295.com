@@ -620,10 +620,6 @@ class KissbabyController extends BasicController{
                 
                 //log_message('error', print_r($goodsList, true));exit;
                 foreach($productList['sale']['products'] as $_product){
-                    if(!empty($_product['image'])){
-                        $this->__saveImage($_product['image']);
-                    }
-                    
                     $_update = [
                         'activity_id'   =>  $_activity['sale_id'],
                         'product_id'   =>  $_product['product_id'],
