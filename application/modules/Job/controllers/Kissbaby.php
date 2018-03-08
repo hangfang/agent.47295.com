@@ -234,7 +234,7 @@ class KissbabyController extends BasicController{
                         'ts'   =>  empty($detail['date_modified']) ? date('Y-m-d H:i:s') : $detail['date_modified'],
                     ];
                     
-                    if(Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id')){
+                    if($_product=Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id,product_image,product_description')){
                         
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
