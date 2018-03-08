@@ -59,12 +59,12 @@ class KissbabyController extends BasicController{
             
             $_state = true;
             if(!$categoryInfo = Kissbaby_CategoryModel::getRow(['category_id'=>$_cate['category_id']])){
+                if(!empty($_update['category_banner'])){
+                    $this->__saveImage($_update['category_banner']);
+                    $_update['category_banner'] = '{CDN}'.$_update['category_banner'];
+                }
+                
                 if(!Kissbaby_CategoryModel::insert($_replace)){
-                    if(!empty($_update['category_banner'])){
-                        $this->__saveImage($_update['category_banner']);
-                        $_update['category_banner'] = '{CDN}'.$_update['category_banner'];
-                    }
-                    
                     log_message('error', $msg = __FUNCTION__.', 插入父分类失败. replace:'.print_r($_replace, true));
                     echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
                     $_state = false;
@@ -104,7 +104,12 @@ class KissbabyController extends BasicController{
                 ];
                 
                 $_state = true;
-                if(!Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']])){
+                if(!$subCategory=Kissbaby_CategoryModel::getRow(['category_id'=>$_subCate['category_id']])){
+                    if(!empty($_replace['category_image'])){
+                        $this->__saveImage($_replace['category_image']);
+                        $_replace['category_image'] = '{CDN}'.$_replace['category_image'];
+                    }
+                    
                     if(!Kissbaby_CategoryModel::insert($_replace)){
                         log_message('error', $msg = __FUNCTION__.', 插入父分类失败. replace:'.print_r($_replace, true));
                         echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
@@ -112,6 +117,11 @@ class KissbabyController extends BasicController{
                     }
                 }else{
                     unset($_replace['create_time']);
+                    if(!empty($_replace['category_image']) && $_replace['category_image']!==str_replace('{CDN_URL}', '', $subCategory['category_image'])){
+                        $this->__saveImage($_replace['category_banner']);
+                        $_replace['category_image'] = '{CDN}'.$_replace['category_image'];
+                    }
+                    
                     if(!Kissbaby_CategoryModel::update($_replace, ['category_id'=>$_subCate['category_id']])){
                         log_message('error', $msg = __FUNCTION__.', 插更新父分类失败. replace:'.print_r($_replace, true));
                         echo date('Y-m-d H:i:s', $now).' '.$msg."\n";
