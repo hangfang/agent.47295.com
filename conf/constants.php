@@ -21,7 +21,7 @@ define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
 /**
  * @var string 图片文件CDN域名
  */
-define('IMG_CDN_URL', PHP_ENV==='product' ? 'http://oss.47295.com/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');
+define('IMG_CDN_URL', PHP_ENV==='product' ? 'http://cdn.47295.com/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');
 
 /**
  * @var string 静态文件CDN域名
