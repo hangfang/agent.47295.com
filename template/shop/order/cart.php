@@ -22,7 +22,7 @@ include $viewPath.'header.php';
                      <div class="shop-holder">
                           <div class="cart-img">
                              <a href="/shop/product/detail?product_id=2253">
-                                 <img width_bak="225" height_bak="265" data-original="data/JPgoods/2253\9f8316123ef70c4da8f8300b2d72ca59.jpg" src="http://agent.47295.com/static/shop/images/default.png" class="lazy img-responsive" alt="item4">
+                                 <img width_bak="225" height_bak="265" data-original="data/JPgoods/2253\9f8316123ef70c4da8f8300b2d72ca59.jpg" src="http://agent.47295.com/static/shop/images/default215x215.png" class="lazy img-responsive" alt="item4">
                              </a>
                              <a href="javascript:void(0);" class="button "></a>
                          </div>
