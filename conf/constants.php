@@ -10,6 +10,14 @@ define('OSS_ENDPOINT', 'oss-cn-shenzhen.aliyuncs.com');
 define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
 define('CDN_URL', 'http://oss.47295.com/upload/kissbaby/');
 
+define('SERVICE_TEL', '+86 15914186940');
+
+//短信验证码有效期,10分钟
+define('SMS_TOKEN_LIFT_TIME', 600);
+
+//简单判断手机号码正则
+define('PHONE_REG', '/^1[\d]{10}$/');
+
 //邮箱配置
 define('MAIL_CHANNEL', 'exmail');
 define('ALIYUN_MAIL_ACCESS_KEY_ID', 'LTAIJtec1o9LM09B');

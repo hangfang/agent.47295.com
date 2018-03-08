@@ -20,6 +20,7 @@ class Manage_UserController extends WechatController {
         }
         
         $this->_view->assign('title', '粉丝管理');
+        $this->_view->assign('openIdList', $openIdList);
         $this->_view->assign('userList', $userList);
         $this->_view->assign('nextOpenId', $openIdList['next_openid']);
         $this->_view->display(BASE_PATH.'/template/wechat/manage_user/index.php');
