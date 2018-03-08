@@ -144,11 +144,13 @@ class KissbabyController extends BasicController{
      * 将kissbaby商品详情的图片替换到oss
      */
     public function updateProductImgAction(){
+        $order = $this->_request->getParam('order', 'asc')==='asc' ? 'id asc' : 'id desc';
+
         $limit = 10;
         $offset = 0;
         $total = Kissbaby_ProductModel::count();
         do{
-            $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset]);
+            $productList = Kissbaby_ProductModel::getList([], 'id,product_name,product_image,product_description', ['limit'=>$limit, 'offset'=>$offset>0 ? $offset+1 : $offset], $order);
             foreach($productList as $_product){
                 $_update = [];
                 if(!empty($_product['product_image']) && strpos($_product['product_image'], CDN_URL_PLACEHOLDER)===false){
