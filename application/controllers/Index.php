@@ -51,7 +51,7 @@ class IndexController extends BasicController {
         $this->getView()->assign('data', $data);
     }
     
-    public function updatection(){
+    public function updateAction(){
         log_message('ALL', `/usr/local/sbin/update.sh`);exit;
     }
 }
