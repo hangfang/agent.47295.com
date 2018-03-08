@@ -18,6 +18,7 @@ include $viewPath.'header.php';
                                         $_extraPost = '</a>';
                                     }
                                     
+                                    $_image = empty($_image) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_image);
                                     echo <<<EOF
 <li>
     {$_extraPre}
@@ -38,7 +39,7 @@ EOF;
 					<h1><?php echo $product['product_name'];?></h1>
 					<ul class="price_single">
 					  <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="head"><h2>$'.$product['product_vip_price'].'</h2></li>' : '';?>
-					  <li class="head_desc"><a href="javascript:void(0);"><?php echo $product['product_views'];?> reviews</a><img src="<?php echo $staticDir;?>images/review.png" alt=""/></li>
+					  <li class="head_desc"><a href="javascript:void(0);"><?php echo $product['product_views'];?> reviews</a><img src="<?php echo STATIC_CDN_URL.$staticDir;?>images/review.png" alt=""/></li>
 					  <div class="clearfix"></div>
 					</ul>
 					<p style="display:none;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum</p>
@@ -86,10 +87,11 @@ EOF;
             <?php
                 foreach($related as $_related){
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<p>$ '.$_related['product_vip_price'].'</p>' : '';
+                    $_imgSrc = empty($_related['product_image'][0]) ? '' : str_replace('{CDN_URL}', IMG_CDN_URL, $_related['product_image'][0]);
                     echo <<<EOF
 <div class="col-md-3">
 <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
-<img data-original="{$_related['product_image'][0]}" class="lazy img-responsive" alt="">
+<img data-original="{$_imgSrc}" class="lazy img-responsive" alt="">
 </a>
 </div>
 <h4><a href="/shop/product/detail?product_id={$_related['product_id']}">{$_related['product_name']}</a></h4>

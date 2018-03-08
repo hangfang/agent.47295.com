@@ -19,18 +19,20 @@ include $viewPath.'header.php';
 	   <div class="box_1">
 	       <div class="col-md-7-bak">
                <?php 
+                $STATIC_CDN_URL = STATIC_CDN_URL;
                 for($i=0,$len=count($activityList); $i<$len; $i++){
                     if(($i+1)%3==0){
                         echo '<div class="section group">';
                     }
 
                     $_activity = $activityList[$i];
+                    $_activity['activity_image'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_activity['activity_image']);
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/activity/product?activity_id={$_activity['activity_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_activity['activity_image']}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_activity['activity_image']}" src="{$STATIC_CDN_URL}{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button " style="background:transparent;border:none;"></a>
         </div>

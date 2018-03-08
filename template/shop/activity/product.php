@@ -19,6 +19,7 @@ include $viewPath.'header.php';
 	   <div class="box_1">
 	       <div class="col-md-7-bak">
                <?php 
+                $STATIC_CDN_URL = STATIC_CDN_URL;
                 for($i=0,$len=count($productList); $i<$len; $i++){
                     if(($i+1)%3==0){
                         echo '<div class="section group">';
@@ -32,13 +33,14 @@ include $viewPath.'header.php';
                         $_product['product_image'] = '';
                     }
                     
+                    $_product['product_image'] = str_replace('{CDN_URL}', IMG_CDN_URL, $_activity['product_image']);
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<span><span class="amount">会员价:$'.$_product['product_vip_price'].'</span></span>' : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/product/detail?product_id={$_product['product_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_product['product_image']}" src="{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_product['product_image']}" src="{$STATIC_CDN_URL}{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button "></a>
         </div>
