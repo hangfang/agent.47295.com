@@ -455,8 +455,8 @@ class KissbabyController extends BasicController{
                         $_update['product_image'] = CDN_URL_PLACEHOLDER.$_update['product_image'];
                     }
                     
-                    if(!Kissbaby_LatestProductModel::update($_update)){
-                        log_message('error', '更新kissbaby新品到货失败, insert:'.print_r($_update, true));
+                    if(!Kissbaby_LatestProductModel::update($_update, $_where=['product_id'=>$_update['product_id']])){
+                        log_message('error', '更新kissbaby新品到货失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
                         echo '   update kissbaby latest product failed..., name:'.$_product['name']."\n";
                         continue;
                     }
