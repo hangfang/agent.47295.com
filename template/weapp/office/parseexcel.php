@@ -3,9 +3,9 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH . '/application/views/common/weui/header.php';
 ?>
 
-<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/public/css/lightbox.css?v=<?php echo STATIC_VERSION;?>"/>
-<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/kendo/css/kendo.common.min.css?v=<?php echo STATIC_VERSION;?>"/>
-<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/kendo/css/kendo.default.min.css?v=<?php echo STATIC_VERSION;?>"/>
+<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/public/css/lightbox.css"/>
+<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/kendo/css/kendo.common.min.css"/>
+<link type="text/css" rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/kendo/css/kendo.default.min.css"/>
 
 <div id="grid">
 </div>
@@ -36,27 +36,27 @@ include BASE_PATH . '/application/views/common/weui/header.php';
     var data = <?php echo json_encode($data['tbody']);?>;
     var columns = <?php $data['thead'][] = array('command'=>array('edit', 'destroy'), 'title'=>'操作', 'allowCopy'=>false);echo json_encode($data['thead']);?>;
 </script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.core.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.data.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.userevents.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.popup.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.dom.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.columnsorter.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.editable.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.numerictextbox.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.list.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.dropdownlist.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.binder.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.filtermenu.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.menu.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.columnmenu.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.selectable.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.resizable.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.draganddrop.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.pager.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.grid.min.js?v=<?php echo STATIC_VERSION;?>"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.core.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.data.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.userevents.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.popup.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.dom.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.columnsorter.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.editable.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.numerictextbox.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.list.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.dropdownlist.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.binder.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.filtermenu.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.menu.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.columnmenu.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.selectable.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.resizable.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.draganddrop.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.pager.min.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/kendo/js/kendo.grid.min.js"></script>
 
 
-<script src="<?php echo STATIC_CDN_URL;?>static/public/js/lightbox.js?v=<?php echo STATIC_VERSION;?>"></script>
-<script src="<?php echo STATIC_CDN_URL;?>static/public/js/office/parseExcel.js?v=<?php echo STATIC_VERSION;?>"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/lightbox.js"></script>
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/office/parseExcel.js"></script>
 <?php include BASE_PATH . '/application/views/common/weui/footer.php'; ?>

@@ -10,12 +10,12 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
     <meta charset="utf-8">
     <title><?php echo $data['title'];?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap.min.css?v=<?php echo STATIC_VERSION;?>">-->
-<!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap-theme.min.css?v=<?php echo STATIC_VERSION;?>">-->
-    <script src="<?php echo STATIC_CDN_URL;?>static/public/js/jquery.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-<!--    <script src="<?php echo STATIC_CDN_URL;?>static/bootstrap/js/bootstrap.min.js?v=<?php echo STATIC_VERSION;?>"></script>-->
-    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/weui.css?v=<?php echo STATIC_VERSION;?>"/>
-    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/common.css?v=<?php echo STATIC_VERSION;?>"/>
+<!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap.min.css">-->
+<!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap-theme.min.css">-->
+    <script src="<?php echo STATIC_CDN_URL;?>static/public/js/jquery.min.js"></script>
+<!--    <script src="<?php echo STATIC_CDN_URL;?>static/bootstrap/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/weui.css"/>
+    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/common.css"/>
     <style type="text/css">
         body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
         p.weui_tabbar_label {padding: 0; margin:0;}
@@ -373,7 +373,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
                         <input class="weui_input" type="number" placeholder="请输入验证码"/>
                     </div>
                     <div class="weui_cell_ft">
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/vcode.jpg?v=<?php echo STATIC_VERSION;?>" />
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/vcode.jpg" />
                     </div>
                 </div>
                 <div class="weui_cell">
@@ -389,7 +389,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
                     </div>
                     <div class="weui_cell_ft">
                         <i class="weui_icon_warn"></i>
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/vcode.jpg?v=<?php echo STATIC_VERSION;?>" />
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/vcode.jpg" />
                     </div>
                 </div>
             </div>
@@ -409,15 +409,15 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
                             </div>
                             <div class="weui_uploader_bd">
                                 <ul class="weui_uploader_files">
-                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg?v=<?php echo STATIC_VERSION;?>)"></li>
-                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg?v=<?php echo STATIC_VERSION;?>)"></li>
-                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg?v=<?php echo STATIC_VERSION;?>)"></li>
-                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg?v=<?php echo STATIC_VERSION;?>)">
+                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg)"></li>
+                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg)"></li>
+                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg)"></li>
+                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg)">
                                         <div class="weui_uploader_status_content">
                                             <i class="weui_icon_warn"></i>
                                         </div>
                                     </li>
-                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg?v=<?php echo STATIC_VERSION;?>)">
+                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>static/weui/images/upload_2.jpg)">
                                         <div class="weui_uploader_status_content">50%</div>
                                     </li>
                                 </ul>
@@ -712,25 +712,25 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
             <div class="weui_tabbar">
                 <a href="javascript:;" class="weui_tabbar_item weui_bar_item_on">
                     <div class="weui_tabbar_icon">
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_button.png?v=<?php echo STATIC_VERSION;?>" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_button.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">微信</p>
                 </a>
                 <a href="javascript:;" class="weui_tabbar_item">
                     <div class="weui_tabbar_icon">
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png?v=<?php echo STATIC_VERSION;?>" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">通讯录</p>
                 </a>
                 <a href="javascript:;" class="weui_tabbar_item">
                     <div class="weui_tabbar_icon">
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png?v=<?php echo STATIC_VERSION;?>" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">发现</p>
                 </a>
                 <a href="javascript:;" class="weui_tabbar_item">
                     <div class="weui_tabbar_icon">
-                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_cell.png?v=<?php echo STATIC_VERSION;?>" alt="">
+                        <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_cell.png" alt="">
                     </div>
                     <p class="weui_tabbar_label">我</p>
                 </a>
@@ -1098,13 +1098,13 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
                             </div>
                             <div class="weui_uploader_bd">
                                 <ul class="weui_uploader_files">
-                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>/static/weui/images/upload_0.jpg?v=<?php echo STATIC_VERSION;?>)"></li>
+                                    <li class="weui_uploader_file" style="background-image:url(<?php echo STATIC_CDN_URL;?>/static/weui/images/upload_0.jpg)"></li>
                                     <li class="weui_uploader_file weui_uploader_status" style="background-image:url(/static/weui/images/upload_0.jpg)">
                                         <div class="weui_uploader_status_content">
                                             <i class="weui_icon_warn"></i>
                                         </div>
                                     </li>
-                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>/static/weui/images/upload_1.jpg?v=<?php echo STATIC_VERSION;?>)">
+                                    <li class="weui_uploader_file weui_uploader_status" style="background-image:url(<?php echo STATIC_CDN_URL;?>/static/weui/images/upload_1.jpg)">
                                         <div class="weui_uploader_status_content">50%</div>
                                     </li>
                                 </ul>
@@ -1119,7 +1119,7 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
         </div>
     </script>
 
-    <script src="<?php echo STATIC_CDN_URL;?>static/weui/js/zepto.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-    <script src="<?php echo STATIC_CDN_URL;?>static/weui/js/router.min.js?v=<?php echo STATIC_VERSION;?>"></script>
-    <script src="<?php echo STATIC_CDN_URL;?>static/public/js/index/demo.js?v=<?php echo STATIC_VERSION;?>"></script>
+    <script src="<?php echo STATIC_CDN_URL;?>static/weui/js/zepto.min.js"></script>
+    <script src="<?php echo STATIC_CDN_URL;?>static/weui/js/router.min.js"></script>
+    <script src="<?php echo STATIC_CDN_URL;?>static/public/js/index/demo.js"></script>
     <?php include BASE_PATH.'/template/common/weui/footer.php';?>

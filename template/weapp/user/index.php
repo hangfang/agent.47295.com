@@ -8,7 +8,7 @@ include BASE_PATH.'/application/views/common/weui/header.php';
     <div class="weui_panel_bd">
         <div class="weui_media_box weui_media_text">
             <div class="head-img">
-                <img src="<?php echo STATIC_CDN_URL;?>static/public/img/user/head-img.png?v=<?php echo STATIC_VERSION;?>" width="75" height="75">
+                <img src="<?php echo STATIC_CDN_URL;?>static/public/img/user/head-img.png" width="75" height="75">
             </div>
             <div class="head-dsb">
                 <p class="dsb-name">--凌乱</p>
@@ -108,5 +108,4 @@ include BASE_PATH.'/application/views/common/weui/header.php';
         </div>
     </div>
 </div>
-<script src="<?php echo STATIC_CDN_URL;?>static/public/js/user/index.js?v=<?php echo STATIC_VERSION;?>"></script>
 <?php include BASE_PATH.'/application/views/common/weui/footer.php';?>
