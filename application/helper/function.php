@@ -889,6 +889,7 @@ if(!function_exists('lExit')){
                 $body = json_encode(['rtn'=>$code, 'error_msg'=>$msg], JSON_UNESCAPED_UNICODE);
             }
         }
+        
         log_message('all', Yaf_Registry::get('log_message_all')."\t".'response:'.$body."\n");
 		exit($body);
     }
