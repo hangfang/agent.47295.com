@@ -306,7 +306,7 @@ class KissbabyController extends BasicController{
                 $_page++;
                 $_number += $_limit;
                 
-                unset($productList, $_product, $_update, $_cate, $detail);
+                unset($productList, $_product, $_update, $detail);
             }while($_total>$_number);
         }
         echo __FUNCTION__.',按分类更新商品成功'."\n";
