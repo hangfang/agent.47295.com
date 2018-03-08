@@ -133,6 +133,8 @@ class KissbabyController extends BasicController{
                     echo 'update kissbaby sub category succ..., name:'.$_subCate['name']."\n";
                 }
             }
+            
+            unset($_cate, $categoryInfo, $_replace, $subCategory);
         }
         
         exit(date('Y-m-d H:i:s', $now).' '.'更新分类成功'."\n");
@@ -302,6 +304,8 @@ class KissbabyController extends BasicController{
                 echo '-----------------------------------------------'."\n";
                 $_page++;
                 $_number += $_limit;
+                
+                unset($productList, $_product, $_update, $_cate, $detail);
             }while($_total>$_number);
         }
         echo __FUNCTION__.',按分类更新商品成功'."\n";
@@ -469,6 +473,8 @@ class KissbabyController extends BasicController{
             echo '-----------------------------------------------'."\n";
             $_page++;
             $_number += $_limit;
+            
+            unset($productList, $_update, $productInfo, $productList);
         }while($_total>$_number);
         echo __FUNCTION__.',更新新品到货成功'."\n";
     }
@@ -663,6 +669,8 @@ class KissbabyController extends BasicController{
                 $_page++;
                 $_number += $_limit;
             }while($_total>$_number);
+            
+            unset($_number, $_limit, $_total, $_page, $productInfo, $productList, $_update, $_activity);
         }
         echo __FUNCTION__.',更新活动成功'."\n";
     }
