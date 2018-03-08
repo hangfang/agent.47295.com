@@ -632,12 +632,12 @@ class KissbabyController extends BasicController{
                     ];
                     
                     if($productInfo=Kissbaby_ActivityProductModel::getRow($_where=['product_id'=>$_product['product_id'], 'activity_id'=>$_activity['sale_id']], 'product_id')){
+                        if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
+                            $this->__saveImage($_update['product_image']);
+                            $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
+                        }
+                        
                         if(false===Kissbaby_ActivityProductModel::update($_update, $_where)){
-                            if(!empty($_update['product_image']) && $_update['product_image']!==str_replace('{CDN_URL}', '', $productInfo['product_image'])){
-                                $this->__saveImage($_update['product_image']);
-                                $_update['product_image'] = '{CDN_URL}'.$_update['product_image'];
-                            }
-                            
                             log_message('error', '更新kissbaby活动商品失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
                             echo '   update kissbaby activity product failed..., name:'.$_product['name']."\n";
                             continue;
