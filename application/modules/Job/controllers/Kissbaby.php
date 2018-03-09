@@ -441,9 +441,9 @@ EOF;
         $_total = 100;
         $_limit = 20;
         $_page = 0;
+        $_totalPage = 0;
         $_number = 0;
         do{
-            echo 'latest product start..., page:'.$_page."\n";
             $productList = http($_tmp=['url'=>sprintf(LATEST_PRODUCT, $_page, $_limit)]);
             if(!$productList){
                 log_message('error', '从kissbaby获取新品到货列表失败');
@@ -458,6 +458,8 @@ EOF;
             }
             
             $_total = $productList['total'];
+            $_totalPage = ceil($_total/$_limit);
+            echo 'latest product start..., page:'.$_page.'/'.$_totalPage."\n";
             //log_message('error', print_r($goodsList, true));exit;
             foreach($productList['product'] as $_product){
                 $_update = [
@@ -502,7 +504,7 @@ EOF;
                 }
             }
             
-            echo 'latest product succ..., page:'.$_page."\n";
+            echo 'latest product succ..., page:'.$_page.'/'.$_totalPage."\n";
             echo '-----------------------------------------------'."\n";
             $_page++;
             $_number += $_limit;
