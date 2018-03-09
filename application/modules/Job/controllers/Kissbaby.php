@@ -249,18 +249,23 @@ class KissbabyController extends BasicController{
                         'category_id'   =>  $_cate['category_id'],
                         'product_id'   =>  $detail['product_id'],
                         'product_name'   =>  $detail['name'],
-                        'product_image'   =>  empty($detail['images']) ? $detail['image'] : implode(',', $detail['images']),
+                        'product_image'   =>  empty($detail['images']) ? (empty($detail['image']) ? '' : $detail['image']) : implode(',', $detail['images']),
                         'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
                         'product_vip_price'   =>  $detail['vip_price'],
                         'product_tag'   =>  $detail['tag'],
                         'product_model'   =>  $detail['model'],
                         'product_purchased'   =>  $detail['purchased'],
+                        'product_hash'   =>  md5(json_encode($detail)),
                         'create_time'   =>  empty($detail['date_added']) ? time() : strtotime($detail['date_added']),
                         'ts'   =>  empty($detail['date_modified']) ? date('Y-m-d H:i:s') : $detail['date_modified'],
                     ];
                     
-                    if($_product=Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id,product_image,product_description')){
+                    if($_product=Kissbaby_ProductModel::getRow(['product_id'=>$detail['product_id']], 'product_id,product_image,product_description,product_hash')){
+                        if($_product['product_hash']===$_update['product_hash']){
+                            echo 'product detail not changed..., name:'.$detail['name']."\n";
+                            continue;
+                        }
                         
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
