@@ -697,25 +697,32 @@ class KissbabyController extends BasicController{
         }
 
         $_tmp = explode('.', $_fileName);
-        try{
-            $ch = curl_init(H5_HTTP_SERVER.$_imagePath);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $_content = curl_exec($ch);
-            curl_close($ch);
-        }catch(Exception $e){
-            log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.H5_HTTP_SERVER.$_imagePath);
-            return true;
+        $_path = $_path.'/'.md5($_fileName).'.'.array_pop($_tmp);
+        
+        if(!file_exists($_path)){
+            try{
+                $ch = curl_init(H5_HTTP_SERVER.$_imagePath);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $_content = curl_exec($ch);
+                curl_close($ch);
+            }catch(Exception $e){
+                log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.H5_HTTP_SERVER.$_imagePath);
+                return true;
+            }
+
+            $rt = file_put_contents($_path, $_content);
+            if(!$rt){
+                log_message('error', __FUNCTION__.', 保存kissbaby图片失败, save path:'. $_path .' url:'.$_imagePath);
+                return false;
+            }
         }
         
-        $rt = file_put_contents($_path = $_path.'/'.md5($_fileName).'.'.array_pop($_tmp), $_content);
-        if(!$rt){
-            log_message('error', __FUNCTION__.', 保存kissbaby图片失败, save path:'. $_path .' url:'.$_imagePath);
-            return false;
+        $_imagePath = 'upload/kissbaby/'.str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
+        
+        $oss = self::getOssInstance();
+        if(!$oss->doesObjectExist(OSS_BUCKET, $_imagePath)){
+            $oss->uploadFile(OSS_BUCKET, $_imagePath, $_path);
         }
-        
-        $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
-        
-        self::getOssInstance()->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
-        return true;
+        return true;//
     }
 }
