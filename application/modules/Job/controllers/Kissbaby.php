@@ -744,7 +744,7 @@ EOF;
             }
         }
         
-        $_imagePath = 'upload/kissbaby/'.str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
+        $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
         
         $oss = self::getOssInstance();
         if(!$oss->doesObjectExist(OSS_BUCKET, $_imagePath)){
