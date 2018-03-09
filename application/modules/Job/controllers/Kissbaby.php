@@ -357,11 +357,13 @@ EOF;
         if(!empty($detail['images'])){
             foreach($detail['images'] as &$_image){
                 $this->__saveImage($_image);
+                $_image = CDN_URL_PLACEHOLDER.$_image;
             }
 
             $detail['image'] = implode(',', $detail['images']);
         }else{
             $this->__saveImage($detail['image']);
+            $detail['image'] = CDN_URL_PLACEHOLDER.$detail['image'];
         }
         
         if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
@@ -747,8 +749,8 @@ EOF;
         $_imagePath = str_replace(str_replace(['\\'], ['/'], IMAGE_PATH), '', $_path);
         
         $oss = self::getOssInstance();
-        if(!$oss->doesObjectExist(OSS_BUCKET, $_imagePath)){
-            $oss->uploadFile(OSS_BUCKET, $_imagePath, $_path);
+        if(!$oss->doesObjectExist(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath)){
+            $oss->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
         }
         return true;//
     }
