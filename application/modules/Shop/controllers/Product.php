@@ -29,20 +29,22 @@ class ProductController extends BasicController{
      * @return boolean
      */
     public function latestAction(){
-        $limit = ['limit'=>12];
-        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-        $productList = Kissbaby_LatestProductModel::getList([], '*', $limit);
-        
-        if($this->_request->isXmlHttpRequest()){
-            lExit($productList);
+        $total = Kissbaby_ProductModel::count();
+        $productList = [];
+        if($total){
+            $limit = ['limit'=>12];
+            $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+            $productList = Kissbaby_ProductModel::getList([], '*', $limit);
         }
         
-        if(!$productList){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=新品到货数据丢失...');exit;
+        $result = ['list'=>$productList, 'total'=>$total];
+        
+        if($this->_request->isXmlHttpRequest()){
+            lExit($result);
         }
         
         $this->_view->assign('title', '新品到货');
-        $this->_view->assign('latestProduct', $productList);
+        $this->_view->assign('data', $result);
         return true;
     }
 }

@@ -52,6 +52,7 @@ class LoginController extends BasicController{
         
         $insert['id'] = $userId;
         $_SESSION['user'] = $insert;
+        $_SESSION['user']['user_type'] = in_array($userMobile, ADMIN_MOBILE_LIST) ? 'admin' : 'customer';
         lExit(0, '账号注册成功');
     }
     
@@ -85,6 +86,7 @@ class LoginController extends BasicController{
         }
         
         $_SESSION['user'] = $user;
+        $_SESSION['user']['user_type'] = in_array($user['user_mobile'], ADMIN_MOBILE_LIST) ? 'admin' : 'customer';
         lExit(0, '登录成功');
     }
     

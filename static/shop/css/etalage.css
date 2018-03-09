@@ -92,7 +92,7 @@
 .etalage, .etalage_small_thumbs li{ float:left }
 .etalage_small_thumbs li img{
 	width:60px !important;
-	height:100% !important;
+	height:60px !important;
 }
 .etalage_small_thumbs{
 	width:100% !important;

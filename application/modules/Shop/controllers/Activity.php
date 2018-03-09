@@ -8,29 +8,42 @@ class ActivityController extends BasicController{
     public function productAction(){
         $activityId = $this->_request->getQuery('activity_id');
         if(!$activityId){
+            if($this->_request->isXmlHttpRequest()){
+                lExit(502, '请求非法');
+            }
+            
             header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
         }
         
         if(!$activity = Kissbaby_ActivityModel::getRow(['activity_id'=>$activityId])){
+            if($this->_request->isXmlHttpRequest()){
+                lExit(502, '活动数据丢失...');
+            }
+            
             header('location: /shop/index/notfound?code=404&title=异常&msg=活动数据丢失...');exit;
         }
         
-        $limit = ['limit'=>12];
-        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-        $productList = Kissbaby_ActivityProductModel::getList(['activity_id'=>$activityId], '*', $limit);
-            
-        if($this->_request->isXmlHttpRequest()){
-            lExit($productList);
+        $total = Kissbaby_ActivityProductModel::count(['activity_id'=>$activityId]);
+        $productList = [];
+        if($total){
+            $limit = ['limit'=>12];
+            $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+            $productList = Kissbaby_ActivityProductModel::getList(['activity_id'=>$activityId], '*', $limit);
         }
         
-        if(!$productList){
+        $result = ['list'=>$productList, 'total'=>$total];
+        
+        if($this->_request->isXmlHttpRequest()){
+            lExit($result);
+        }
+        
+        if(!$result['list']){
             header('location: /shop/index/notfound?code=404&title=异常&msg=活动商品数据丢失...');exit;
         }
         
-        
         $this->_view->assign('activity', $activity);
         $this->_view->assign('title', $activity['activity_name']);
-        $this->_view->assign('productList', $productList);
+        $this->_view->assign('data', $result);
         return true;
     }
     

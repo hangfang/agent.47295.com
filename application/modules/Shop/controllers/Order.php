@@ -5,9 +5,6 @@ class OrderController extends BasicController{
      * 订单列表
      */
     public function indexAction(){
-        $limit = ['limit'=>12];
-        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-        
         $where = [];
         if($_SESSION['user']['user_type']=='customer'){
             $where['user_id'] = $_SESSION['user']['id'];
@@ -28,18 +25,25 @@ class OrderController extends BasicController{
             $where['order_status'] = $orderStatus;
         }
         
-        $orderList = Kissbaby_OrderModel::getList($where, '*', $limit, 'id desc');
+        $total = Kissbaby_OrderModel::count($where);
+        $orderList = [];
+        if($total){
+            $limit = ['limit'=>12];
+            $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+            $orderList = Kissbaby_OrderModel::getList($where, '*', $limit, 'id desc');
+        }
+        $result = ['list'=>$orderList, 'total'=>$total];
         
         if($this->_request->isXmlHttpRequest()){
-            lExit($orderList);
+            lExit($result);
         }
         
-        if($orderList){
+        if(!$result['list']){
             header('location: /shop/index/notfound?code=404&msg=异常...&title=订单数据丢失...');exit;
         }
         
         $this->_view->assign('title', '订单中心');
-        $this->_view->assign('orderList', $orderList);
+        $this->_view->assign('data', $result);
         return true;
     }
     

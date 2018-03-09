@@ -2,16 +2,21 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 class IndexController extends BasicController{
     public function indexAction(){
-        $limit = ['limit'=>12];
-        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-        $homeRecommandProduct = Kissbaby_HomeRecommandProductModel::getList([], '*', $limit);
+        $total = Kissbaby_HomeRecommandProductModel::count();
+        $homeRecommandProduct = [];
+        if($total){
+            $limit = ['limit'=>12];
+            $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+            $homeRecommandProduct = Kissbaby_HomeRecommandProductModel::getList([], '*', $limit);
+        }
         
+        $result = ['list'=>$homeRecommandProduct, 'total'=>$total];
         if($this->_request->isXmlHttpRequest()){
-            lExit($homeRecommandProduct);
+            lExit($result);
         }
         
         $this->_view->assign('title', '精选推荐');
-        $this->_view->assign('homeRecommandProduct', $homeRecommandProduct);
+        $this->_view->assign('data', $result);
         return true;
     }
     

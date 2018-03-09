@@ -108,7 +108,7 @@ body a{
 	font-size:13px;
 }
 .cssmenu ul li a:hover, .h_nav ul li a:hover, .content_box h4 a:hover, ul.list_1 li a:hover, .box_3 h4 a:hover{
-	color:#f54d56;
+	color:#ffffff;
 	text-decoration:none;
 }
 .logo {
@@ -220,6 +220,7 @@ ul.icon1{
 	visibility: visible;
 	position: absolute;
 	top:20px;
+	right:-27px !important;
 	z-index: 1;
 	right: -100px;
 	background: #ffffff;
@@ -696,8 +697,11 @@ h2.m_3 {
     -o-box-shadow: -12px -12px 0px #E2E2E2;
 }
 .shop-content > div a {
-  font-size: 15px;
-  letter-spacing: 2px;
+    font-size: 15px;
+    letter-spacing: 2px;
+    overflow: hidden;
+    height: 20px;
+    display: block;
 }
 .shop-content h3 {
   display:none;

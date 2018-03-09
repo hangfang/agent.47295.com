@@ -79,6 +79,11 @@ if(PHP_ENV==='product'){
 define('WECHAT_HK_ACCOUNT', 'WangLin-ling');
 
 /**
+ * @var string 管理员手机号码
+ */
+define('ADMIN_MOBILE_LIST', ['13378404936', '15914186940']);
+
+/**
  * @var string 业务员电话
  */
 define('SERVICE_TEL', '+86 15914186940');

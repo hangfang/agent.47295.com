@@ -2,7 +2,7 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class Kissbaby_OrderModel extends BaseModel {
-    public static $_table = 'order';
+    public static $_table = '`order`';
     public static $_database = 'kissbaby';
     
     /**
