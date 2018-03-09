@@ -17,13 +17,18 @@ define('ACTIVITY_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=module
 define('ACTIVITY_PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=product/sale/getSaleInfo&sale_id=%s&sort=popular&order=desc&page=%s&limit=%s&device=android&version=111');
 
 //图片的域名
-define('H5_HTTP_SERVER', 'http://7xl26a.com2.z0.glb.qiniucdn.com/image/');
-define('H5_HTTP_SERVER_', 'http://7xl26a.com2.z0.glb.qiniucdn.com//image/');
 define('IMAGE_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'kissbaby'.DIRECTORY_SEPARATOR);
 define('IMAGE_URL', BASE_URL.'/upload/kissbaby/');
 
 class KissbabyController extends BasicController{
     private static $_OSS_CLIENT = null;
+    private static $_H5_HTTP_SERVER = [];
+    
+    public function init(){
+        parent::init();
+        self::$_H5_HTTP_SERVER = get_var_from_conf('H5_HTTP_SERVER');
+    }
+    
     public static function getOssInstance(){
         if(self::$_OSS_CLIENT instanceof Oss_Client){
             return self::$_OSS_CLIENT;
@@ -157,8 +162,7 @@ class KissbabyController extends BasicController{
                     $_product['product_image'] = explode(',', $_product['product_image']);
                     foreach($_product['product_image'] as &$_image){
                         if(strpos($_image, CDN_URL_PLACEHOLDER)===false){
-                            $_image = str_replace(H5_HTTP_SERVER, '', $_image);
-                            $_image = str_replace(H5_HTTP_SERVER_, '', $_image);
+                            $_image = str_replace(self::$_H5_HTTP_SERVER, '', $_image);
                             $this->__saveImage($_image);
                             $_image = CDN_URL_PLACEHOLDER.$_image;
                         }
@@ -171,8 +175,13 @@ class KissbabyController extends BasicController{
                     for($i=0,$len=count($matches[1]); $i<$len; $i++){
                         $_product['product_description'] = str_replace($matches[1][$i], '{IMG_URL}', $_product['product_description']);
                         
-                        $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
-                        $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
+                        if(preg_match('/([.*]+)data\.*/', $matches[1][$i], $_cdnUrl)){
+                            if(!in_array($_cdnUrl[1][0], self::$_H5_HTTP_SERVER)){
+                                self::$_H5_HTTP_SERVER[] = $_cdnUrl[1][0];
+                            }
+                        }
+                        
+                        $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
                         $this->__saveImage($matches[1][$i]);
                         
                         $_product['product_description'] = str_replace('{IMG_URL}', CDN_URL_PLACEHOLDER.$matches[1][$i], $_product['product_description']);
@@ -200,6 +209,14 @@ class KissbabyController extends BasicController{
             
             unset($productList);
         }while($offset+1<$total);
+        
+        $export = var_export(self::$_H5_HTTP_SERVER, true);
+        $content = <<<EOF
+<?php
+defined('BASE_PATH') OR exit('No direct script access allowed');
+$H5_HTTP_SERVER = {$export};
+EOF;
+        file_put_contents(BASE_PATH.'/conf/H5_HTTP_SERVER.php', $content);
     }
     
     /**
@@ -268,8 +285,8 @@ class KissbabyController extends BasicController{
                         
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
-                            $detail['description'] = str_replace(H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
+                            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
+                            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
                             
                             if($detail['description']==$_product['product_description']){
                                 echo ' product_description not changed...'."\n";
@@ -350,14 +367,14 @@ class KissbabyController extends BasicController{
         
         if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
             for($i=1,$len=count($matches[1]); $i<$len; $i++){
-                $matches[1][$i] = str_replace(H5_HTTP_SERVER, '', $matches[1][$i]);
-                $matches[1][$i] = str_replace(H5_HTTP_SERVER_, '', $matches[1][$i]);
+                $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
+                $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER_, '', $matches[1][$i]);
                 $this->__saveImage($matches[1][$i]);
             }
             
             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
-            $detail['description'] = str_replace(H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
+            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
+            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
         }else{
             $detail['description'] = '';
         }
@@ -701,12 +718,12 @@ class KissbabyController extends BasicController{
         
         if(!file_exists($_path)){
             try{
-                $ch = curl_init(H5_HTTP_SERVER.$_imagePath);
+                $ch = curl_init(self::$_H5_HTTP_SERVER.$_imagePath);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $_content = curl_exec($ch);
                 curl_close($ch);
             }catch(Exception $e){
-                log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.H5_HTTP_SERVER.$_imagePath);
+                log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.self::$_H5_HTTP_SERVER.$_imagePath);
                 return true;
             }
 
