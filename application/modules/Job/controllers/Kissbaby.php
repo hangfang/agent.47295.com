@@ -29,6 +29,10 @@ class KissbabyController extends BasicController{
         self::$_H5_HTTP_SERVER = get_var_from_conf('H5_HTTP_SERVER');
     }
     
+    /**
+     * 获取阿里OSS存储对象
+     * return Oss_Client
+     */
     public static function getOssInstance(){
         if(self::$_OSS_CLIENT instanceof Oss_Client){
             return self::$_OSS_CLIENT;
