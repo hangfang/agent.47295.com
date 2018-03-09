@@ -717,7 +717,8 @@ EOF;
         
         $_H5_HTTP_SERVER = $_H5_HTTP_SERVER ? $_H5_HTTP_SERVER : self::$_H5_HTTP_SERVER[0];
         
-        $_path = explode('/', urldecode($_imagePath));
+        $_imagePath = urldecode($_imagePath);
+        $_path = explode('/', $_imagePath);
         $_fileName = array_pop($_path);
         $_path = implode('/', $_path);
         
