@@ -195,9 +195,9 @@ class KissbabyController extends BasicController{
                 if($_update){
                     if(!Kissbaby_ProductModel::update($_update, $_where=['id'=>$_product['id']])){
                         log_message('error', __FUNCTION__.', 更新商品图片为oss地址失败, update:'.print_r($_update, true).', where:'.print_r($_where, true));
-                        echo ($offset+1).'/'.$total.'  product '. implode(',', array_keys($_product)) .' update failed..., name:'.$_product['product_name']."\n";
+                        echo ($offset+1).'/'.$total.'  product '. implode(',', array_keys($_update)) .' update failed..., name:'.$_product['product_name']."\n";
                     }else{
-                        echo ($offset+1).'/'.$total.'  product '. implode(',', array_keys($_product)) .' update succ..., name:'.$_product['product_name']."\n";
+                        echo ($offset+1).'/'.$total.'  product '. implode(',', array_keys($_update)) .' update succ..., name:'.$_product['product_name']."\n";
                     }
                 }else{
                     echo ($offset+1).'/'.$total.'  product not change..., name:'.$_product['product_name']."\n";
