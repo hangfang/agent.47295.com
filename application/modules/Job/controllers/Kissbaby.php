@@ -182,7 +182,7 @@ class KissbabyController extends BasicController{
                         }
                         
                         $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
-                        $this->__saveImage($matches[1][$i]);
+                        $this->__saveImage($matches[1][$i], $_cdnUrl[1][0]);
                         
                         $_product['product_description'] = str_replace('{IMG_URL}', CDN_URL_PLACEHOLDER.$matches[1][$i], $_product['product_description']);
                         
@@ -286,7 +286,6 @@ EOF;
                         if(!empty($detail['description'])){
                             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
                             $detail['description'] = str_replace(self::$_H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
-                            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
                             
                             if($detail['description']==$_product['product_description']){
                                 echo ' product_description not changed...'."\n";
@@ -366,15 +365,24 @@ EOF;
         }
         
         if(!empty($detail['description']) && preg_match_all('/src\="([^"]+)"/i', $detail['description'], $matches)){
-            for($i=1,$len=count($matches[1]); $i<$len; $i++){
+            for($i=0,$len=count($matches[1]); $i<$len; $i++){
+                $detail['description'] = str_replace($matches[1][$i], '{IMG_URL}', $detail['description']);
+
+                if(preg_match('/(.+)data\.*/', $matches[1][$i], $_cdnUrl)){
+                    if(!in_array($_cdnUrl[1][0], self::$_H5_HTTP_SERVER)){
+                        self::$_H5_HTTP_SERVER[] = $_cdnUrl[1][0];
+                    }
+                }
+
                 $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
-                $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER_, '', $matches[1][$i]);
-                $this->__saveImage($matches[1][$i]);
+                $this->__saveImage($matches[1][$i], $_cdnUrl[1][0]);
+
+                $detail['description'] = str_replace('{IMG_URL}', CDN_URL_PLACEHOLDER.$matches[1][$i], $detail['description']);
+
             }
+            unset($matches);
             
             $detail['description'] = str_replace('src=', 'class="lazy" data-original=', $detail['description']);
-            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER, CDN_URL_PLACEHOLDER, $detail['description']);
-            $detail['description'] = str_replace(self::$_H5_HTTP_SERVER_, CDN_URL_PLACEHOLDER, $detail['description']);
         }else{
             $detail['description'] = '';
         }
@@ -695,10 +703,12 @@ EOF;
      * @param string $_imagePath 图片路径
      * @return boolean
      */
-    private function __saveImage(&$_imagePath){
+    private function __saveImage(&$_imagePath, $_H5_HTTP_SERVER=''){
         if(empty($_imagePath)){
             return true;
         }
+        
+        $_H5_HTTP_SERVER = $_H5_HTTP_SERVER ? $_H5_HTTP_SERVER : self::$_H5_HTTP_SERVER[0];
         
         $_path = explode('/', $_imagePath);
         $_fileName = array_pop($_path);
@@ -718,12 +728,12 @@ EOF;
         
         if(!file_exists($_path)){
             try{
-                $ch = curl_init(self::$_H5_HTTP_SERVER.$_imagePath);
+                $ch = curl_init($_H5_HTTP_SERVER.$_imagePath);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 $_content = curl_exec($ch);
                 curl_close($ch);
             }catch(Exception $e){
-                log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.self::$_H5_HTTP_SERVER.$_imagePath);
+                log_message('error', __FUNCTION__.', 获取kissbaby图片失败, url:'.$_H5_HTTP_SERVER.$_imagePath);
                 return true;
             }
 
