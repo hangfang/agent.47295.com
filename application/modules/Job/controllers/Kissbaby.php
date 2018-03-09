@@ -97,10 +97,7 @@ class KissbabyController extends BasicController{
             }
             
             foreach($_cate['children'] as $_subCate){
-                if($_subCate['image']){
-                    $this->__saveImage($_subCate['image']);
-                }
-            
+                
                 $_replace = [
                     'parent_id'         =>  $_subCate['parent_id'],
                     'category_id'       =>  $_subCate['category_id'],
