@@ -72,11 +72,15 @@ class CategoryController extends BasicController{
             header('location: /shop/index/notfound?code=404&title=异常&msg=非法请求');exit;
         }
         
+        if(!$category = Kissbaby_CategoryModel::getRow(['category_id'=>$categoryId], 'category_name')){
+            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
+        }
+        
         if(!$categoryList = Kissbaby_CategoryModel::getList(['parent_id'=>$categoryId], '*', '', 'category_order asc')){
             header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
         }
         
-        $this->_view->assign('title', '二级分类');
+        $this->_view->assign('title', $category['category_name']);
         $this->_view->assign('categoryList', $categoryList);
         return true;
     }
