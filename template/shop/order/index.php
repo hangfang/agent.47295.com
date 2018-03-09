@@ -41,7 +41,7 @@ include $viewPath.'header.php';
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/order/detail?order_code={$_order['order_code']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4" style="height:17rem;">
             </a>
             <a href="javascript:void(0);" class="button "></a>
         </div>
@@ -129,7 +129,7 @@ EOF;
     <div class="shop-holder">\
          <div class="product-img">\
             <a href="/shop/order/detail?order_code='+ order['order_code'] +'">\
-                <img width_bak="225" height_bak="265" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/default215x215.png\';" class="lazy img-responsive"  alt="item4">\
+                <img width_bak="225" height_bak="265" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/default215x215.png\';" class="lazy img-responsive"  alt="item4" style="height:17rem;">\
             </a>\
             <a href="javascript:void(0);" class="button "></a>\
         </div>\

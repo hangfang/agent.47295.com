@@ -32,7 +32,7 @@ include $viewPath.'header.php';
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/activity/product?activity_id={$_activity['activity_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_activity['activity_image']}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_activity['activity_image']}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4" style="height:17rem;">
             </a>
             <a href="javascript:void(0);" class="button " style="background:transparent;border:none;"></a>
         </div>
