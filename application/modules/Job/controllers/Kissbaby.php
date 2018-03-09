@@ -182,6 +182,13 @@ class KissbabyController extends BasicController{
                         if(preg_match('/([.*]+)data\.*/', $matches[1][$i], $_cdnUrl)){
                             if(!in_array($_cdnUrl[1][0], self::$_H5_HTTP_SERVER)){
                                 self::$_H5_HTTP_SERVER[] = $_cdnUrl[1][0];
+                                $export = var_export(self::$_H5_HTTP_SERVER, true);
+                                $content = <<<EOF
+<?php
+defined('BASE_PATH') OR exit('No direct script access allowed');
+\$H5_HTTP_SERVER = {$export};
+EOF;
+                                file_put_contents(BASE_PATH.'/conf/H5_HTTP_SERVER.php', $content);
                             }
                         }
                         
@@ -213,14 +220,6 @@ class KissbabyController extends BasicController{
             
             unset($productList);
         }while($offset+1<$total);
-        
-        $export = var_export(self::$_H5_HTTP_SERVER, true);
-        $content = <<<EOF
-<?php
-defined('BASE_PATH') OR exit('No direct script access allowed');
-\$H5_HTTP_SERVER = {$export};
-EOF;
-        file_put_contents(BASE_PATH.'/conf/H5_HTTP_SERVER.php', $content);
     }
     
     /**
