@@ -182,7 +182,7 @@ class KissbabyController extends BasicController{
                         }
                         
                         $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
-                        $this->__saveImage($matches[1][$i], $_cdnUrl[1][0]);
+                        $this->__saveImage($matches[1][$i], empty($_cdnUrl[1][0]) ? '' : $_cdnUrl[1][0]);
                         
                         $_product['product_description'] = str_replace('{IMG_URL}', CDN_URL_PLACEHOLDER.$matches[1][$i], $_product['product_description']);
                         
@@ -375,7 +375,7 @@ EOF;
                 }
 
                 $matches[1][$i] = str_replace(self::$_H5_HTTP_SERVER, '', $matches[1][$i]);
-                $this->__saveImage($matches[1][$i], $_cdnUrl[1][0]);
+                $this->__saveImage($matches[1][$i], empty($_cdnUrl[1][0]) ? '' : $_cdnUrl[1][0]);
 
                 $detail['description'] = str_replace('{IMG_URL}', CDN_URL_PLACEHOLDER.$matches[1][$i], $detail['description']);
 
