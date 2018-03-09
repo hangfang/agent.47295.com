@@ -19,7 +19,7 @@ include $viewPath.'header.php';
                                         $_extraPost = '</a>';
                                     }
                                     
-                                    $_image = empty($_image) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_image);
+                                    $_image = empty($_image) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_image);
                                     echo <<<EOF
 <li>
     {$_extraPre}
@@ -78,7 +78,7 @@ EOF;
 			  </ul>
 			 </div>
 			 <div class="menu_drop" style="margin-top:1.8rem;">
-                <?php echo $product['product_description'];?>
+                <?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);?>
 	 		</div>
    </div>
     <?php if($related){?>
@@ -88,7 +88,8 @@ EOF;
             <?php
                 foreach($related as $_related){
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<p>$ '.$_related['product_vip_price'].'</p>' : '';
-                    $_imgSrc = empty($_related['product_image'][0]) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_related['product_image'][0]);
+                    $_related['product_image'] = empty($_related['product_image']) ? [] : explode(',', $_related['product_image']);
+                    $_imgSrc = empty($_related['product_image'][0]) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_related['product_image'][0]);
                     echo <<<EOF
 <div class="col-md-3">
 <div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">

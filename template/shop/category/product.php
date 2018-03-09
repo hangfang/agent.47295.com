@@ -26,15 +26,16 @@ include $viewPath.'header.php';
                     }
 
                     $_product = $productList[$i];
-
-                    $_imgSrc = empty($_product['product_image'][0]) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image'][0]);
+                    
+                    $_product['product_image'] = empty($_product['product_image']) ? [] : explode(',', $_product['product_image']);
+                    $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image'][0]);
                     $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<span><span class="amount">会员价:$'.$_product['product_vip_price'].'</span></span>' : '';
                     echo <<<EOF
 <div class="col_1_of_3 span_1_of_3">
     <div class="shop-holder">
          <div class="product-img">
             <a href="/shop/product/detail?product_id={$_product['product_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
+                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4">
             </a>
             <a href="javascript:void(0);" class="button "></a>
         </div>
