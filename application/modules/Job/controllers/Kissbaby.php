@@ -218,7 +218,7 @@ class KissbabyController extends BasicController{
         $content = <<<EOF
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
-$H5_HTTP_SERVER = {$export};
+\$H5_HTTP_SERVER = {$export};
 EOF;
         file_put_contents(BASE_PATH.'/conf/H5_HTTP_SERVER.php', $content);
     }
