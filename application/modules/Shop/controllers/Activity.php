@@ -15,7 +15,15 @@ class ActivityController extends BasicController{
             header('location: /shop/index/notfound?code=404&title=异常&msg=活动数据丢失...');exit;
         }
         
-        if(!$productList = Kissbaby_ActivityProductModel::getList(['activity_id'=>$activityId])){
+        $limit = ['limit'=>12];
+        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+        $productList = Kissbaby_ActivityProductModel::getList(['activity_id'=>$activityId], '*', $limit);
+            
+        if($this->_request->isXmlHttpRequest()){
+            lExit($productList);
+        }
+        
+        if(!$productList){
             header('location: /shop/index/notfound?code=404&title=异常&msg=活动商品数据丢失...');exit;
         }
         
@@ -31,12 +39,19 @@ class ActivityController extends BasicController{
      * @return boolean
      */
     public function indexAction(){
-        $this->_view->assign('title', '限时活动');
+        $limit = ['limit'=>12];
+        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+        $activityList = Kissbaby_ActivityModel::getList(['activity_status'=>1, 'activity_visible'=>1, 'start_time<='=>date('Y-m-d H:i:s'), 'end_time>='=>date('Y-m-d H:i:s')], '*', $limit, 'activity_order asc');
         
-        if(!$activityList = Kissbaby_ActivityModel::getList(['activity_status'=>1, 'activity_visible'=>1, 'start_time<='=>date('Y-m-d H:i:s'), 'end_time>='=>date('Y-m-d H:i:s')], '*', '', 'activity_order asc')){
+        if($this->_request->isXmlHttpRequest()){
+            lExit($activityList);
+        }
+        
+        if(!$activityList){
             header('location: /shop/index/notfound?code=404&title=异常&msg=活动数据丢失...');exit;
         }
         
+        $this->_view->assign('title', '限时活动');
         $this->_view->assign('activityList', $activityList);
         return true;
     }

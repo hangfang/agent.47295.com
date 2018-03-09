@@ -14,12 +14,20 @@ class CategoryController extends BasicController{
         if(!$category = Kissbaby_CategoryModel::getRow(['category_id'=>$categoryId])){
             header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据丢失...');exit;
         }
-        $this->_view->assign('category', $category);
         
-        if(!$productList = Kissbaby_ProductModel::getList(['category_id'=>$categoryId])){
+        $limit = ['limit'=>12];
+        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+        $productList = Kissbaby_ProductModel::getList(['category_id'=>$categoryId], '*', $limit);
+            
+        if($this->_request->isXmlHttpRequest()){
+            lExit($productList);
+        }
+        
+        if(!$productList){
             header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
         }
         
+        $this->_view->assign('category', $category);
         $this->_view->assign('title', $category['category_name']);
         $this->_view->assign('productList', $productList);
         return true;

@@ -11,7 +11,7 @@ class AuthController extends WechatController {
     public function indexAction(){
         $url = $this->_request->getQuery('redirect_uri');
 
-        if(isset($_SESSION['user']) && $_SESSION['user']['user_type']=='seller'){
+        if(isset($_SESSION['user']) && $_SESSION['user']['user_type']=='customer'){
             $url = $url ? $url : '/shop/index/index';
             header('location: '.$url);exit;
         }else if(isset($_SESSION['user']) && $_SESSION['user']['user_type']=='admin'){
@@ -61,7 +61,7 @@ class AuthController extends WechatController {
         if($user){
             $url = '/wechat/auth/index';
             $_SESSION['user'] = $user;
-            $_SESSION['user']['user_type'] = in_array($user['user_openid'], WECHAT_ADMIN_OPENID) ? 'admin' : 'seller';
+            $_SESSION['user']['user_type'] = in_array($user['user_openid'], WECHAT_ADMIN_OPENID) ? 'admin' : 'customer';
         }else{
             $url = '/wechat/auth/register';
         }
