@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap.min.css">
 <!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap-theme.min.css">-->
     <script src="<?php echo STATIC_CDN_URL;?>static/public/js/jquery.min.js"></script>
+    <script src="<?php echo STATIC_CDN_URL;?>static/public/js/lightbox.js"></script>
     <script src="<?php echo STATIC_CDN_URL;?>static/bootstrap/js/bootstrap.min.js"></script>
     <script src="<?php echo STATIC_CDN_URL;?>static/shop/js/jquery.lazyload.js?v=<?php echo STATIC_VERSION;?>"></script>
     <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/weui.css?v=<?php echo STATIC_VERSION;?>"/>
