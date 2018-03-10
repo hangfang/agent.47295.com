@@ -110,5 +110,4 @@ EOF;
     </div>
 </div>
 <?php }?>
-</div>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>
