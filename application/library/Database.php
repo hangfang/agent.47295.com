@@ -18,6 +18,10 @@ class Database{
      * @return Database_Drivers_Pdo_Mysql Mysql驱动类的实例
      */
     public static function getInstance($default_group='agent'){
+        if(PHP_ENV==='online_test' && strpos($default_group, 'information_schema')===false){
+            $default_group = 'test_'.$default_group;
+        }
+        
         if(! $config = Yaf_Registry::get('db_config')){
             $config = new Yaf_Config_Ini(BASE_PATH . '/conf/database.ini', ini_get('yaf.environ'));
             $config = $config->toArray();
