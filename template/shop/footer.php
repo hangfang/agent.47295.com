@@ -10,25 +10,5 @@
 	    </div>
 	</div>
 </div>
-<div style="width: 100%; height: 100%; z-index: 9998; position: absolute; top: 0px; left: 0px; display: none;" id="mask"></div>
-<script>
-    $("img.lazy").lazyload({effect: "fadeIn"});
-    $(function(){
-       $('#shopping-cart').click(function(){
-            var tar = $(this).siblings('.header-bottom-right');
-            if(tar.css('display')!=='none'){
-                tar.fadeOut();
-            }else{
-                tar.fadeIn();
-                $('#mask').show();
-            }
-        });
-        
-        $('#mask').on('click', function(){
-            $('#shopping-cart').siblings('.header-bottom-right').fadeOut();
-            $(this).hide();
-        });
-    });
-</script>
 </body>
 </html>

@@ -11,14 +11,15 @@
 <!--    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/bootstrap/css/bootstrap-theme.min.css">-->
     <script src="<?php echo STATIC_CDN_URL;?>static/public/js/jquery.min.js"></script>
     <script src="<?php echo STATIC_CDN_URL;?>static/bootstrap/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/weui.css"/>
-    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/common.css"/>
+    <script src="<?php echo STATIC_CDN_URL;?>static/shop/js/jquery.lazyload.js?v=<?php echo STATIC_VERSION;?>"></script>
+    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/weui.css?v=<?php echo STATIC_VERSION;?>"/>
+    <link rel="stylesheet" href="<?php echo STATIC_CDN_URL;?>static/weui/css/common.css?v=<?php echo STATIC_VERSION;?>"/>
     <style type="text/css">
         body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
         p.weui_tabbar_label {padding: 0; margin:0;}
         .weui_tabbar_icon + .weui_tabbar_label {margin: 0;}
     </style>
-    <?php if(ini_get('environ') === 'production'){ ?>
+    <?php if(ini_get('environ') === 'product'){ ?>
     <script>
         window.onerror = function(){return true;};
     </script>

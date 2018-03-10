@@ -5,7 +5,7 @@ class IndexController extends BasicController{
         $total = Kissbaby_HomeRecommandProductModel::count();
         $homeRecommandProduct = [];
         if($total){
-            $limit = ['limit'=>12];
+            $limit = ['limit'=>10];
             $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
             $homeRecommandProduct = Kissbaby_HomeRecommandProductModel::getList([], '*', $limit);
         }
@@ -24,6 +24,14 @@ class IndexController extends BasicController{
         $this->_view->assign('code', empty($tmp=$this->_request->getQuery('code')) ? '404' : $tmp);
         $this->_view->assign('msg', empty($tmp=$this->_request->getQuery('msg')) ? '页面发生错误' : $tmp);
         $this->_view->assign('title', empty($tmp=$this->_request->getQuery('title')) ? '页面发生错误' : $tmp);
+        return true;
+    }
+    
+    public function succAction(){
+        $this->_view->assign('href', empty($tmp=$this->_request->getQuery('href')) ? BASE_URL : $tmp);
+        $this->_view->assign('msg', empty($tmp=$this->_request->getQuery('msg')) ? '操作成功' : $tmp);
+        $this->_view->assign('title', empty($tmp=$this->_request->getQuery('title')) ? '操作成功' : $tmp);
+        $this->_view->assign('detail', empty($tmp=$this->_request->getQuery('detail')) ? BASE_URL : $tmp);
         return true;
     }
 }

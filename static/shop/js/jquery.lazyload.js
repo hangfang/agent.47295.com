@@ -179,7 +179,7 @@
             fold = $(settings.container).offset().top + $(settings.container).height();
         }
 
-        return fold <= $(element).offset().top - settings.threshold;
+        return fold <= $(element).offset().top - settings.threshold -400;
     };
 
     $.rightoffold = function(element, settings) {

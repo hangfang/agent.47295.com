@@ -268,6 +268,7 @@ EOF;
                         'product_image'   =>  empty($detail['images']) ? (empty($detail['image']) ? '' : $detail['image']) : implode(',', $detail['images']),
                         'product_description'   =>  empty($detail['description']) ? '' : $detail['description'],
                         'product_sale_price'   =>  $detail['sale_price'],
+                        'product_short_name'   =>  $detail['short_name'],
                         'product_vip_price'   =>  $detail['vip_price'],
                         'product_tag'   =>  $detail['tag'],
                         'product_model'   =>  $detail['model'],

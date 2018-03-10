@@ -9,7 +9,7 @@ define('BASE_URL', 'http://'.SERVER_NAME);
 /**
  * @var string 静态文件版本号
  */
-define('STATIC_VERSION', '######');
+define('STATIC_VERSION', PHP_ENV==='develop' ? time() : '######');
 
 //OSS配置
 define('OSS_BUCKET', 'agent-47295');
@@ -26,7 +26,7 @@ define('IMG_CDN_URL', PHP_ENV==='develop' ?  BASE_URL.'/upload/kissbaby/' : 'htt
 /**
  * @var string 静态文件CDN域名
  */
-define('STATIC_CDN_URL', PHP_ENV==='develop'? BASE_URL : 'http://static.47295.com/');
+define('STATIC_CDN_URL', PHP_ENV==='develop'? BASE_URL.'/' : 'http://static.47295.com/');
 
 /**
  * @var string CDN域名占位符

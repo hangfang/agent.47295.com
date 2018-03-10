@@ -1,3 +1,4 @@
+        <div style="height:47px;width:100%;visibility: hidden;" id="mask"></div>
     </div>
     <!-- start-已完成-start -->
     <div id="toast" style="display: none;">
@@ -55,26 +56,6 @@
         </div>
     </div>
     <!-- end--提示弹框--end -->
-    <!-- start-操作成功-start -->
-    <div class="msg" id="msg" style="display:none;">
-        <div class="weui_msg">
-            <div class="weui_icon_area"><i class="weui_icon_success weui_icon_msg"></i></div>
-            <div class="weui_text_area">
-                <h2 class="weui_msg_title">操作成功</h2>
-                <p class="weui_msg_desc">内容详情，可根据实际需要安排</p>
-            </div>
-            <div class="weui_opr_area">
-                <p class="weui_btn_area">
-                    <a href="javascript:;" class="weui_btn weui_btn_primary">确定</a>
-                    <a href="javascript:;" class="weui_btn weui_btn_default">取消</a>
-                </p>
-            </div>
-            <div class="weui_extra_area">
-                <a href="">查看详情</a>
-            </div>
-        </div>
-    </div>
-    <!-- end--操作成功--end -->
     <div id="tabbar" class="tabbar">
         <div class="weui_tab">
             <div class="weui_tab_bd">
@@ -110,10 +91,9 @@
     </div>
     <!-- start-ActionSheet-start -->
     <div id="actionSheet_wrap">
-        <div class="weui_mask_transition" id="mask" style="display: none;"></div>
+        <div class="weui_mask_transition" style="display: none;"></div>
         <div class="weui_actionsheet" id="weui_actionsheet">
             <div class="weui_actionsheet_menu">
-                <div class="weui_actionsheet_cell">谢谢使用WeApp！</div>
             </div>
             <div class="weui_actionsheet_action">
                 <div class="weui_actionsheet_cell" id="actionsheet_cancel">取消</div>
@@ -123,4 +103,133 @@
     <!-- start-ActionSheet-start -->
 </body>
 </html>
+<script>
+    var layer = {
+        toast:function(msg){
+            $('#toast').find('p').html(msg).end().show();
+            setTimeout(function(){
+                $('#toast').find('p').html('已完成').end().hide();
+            }, 2000);
+        },
+        error:function(msg){
+            $('#dialog2').find('.weui_dialog_bd').html(msg).end().show();
+            $('#dialog2').find('a').one('click', function(){
+                $('#dialog2').find('.weui_dialog_bd').html('弹窗内容，告知当前页面信息等').end().hide();
+            });
+        },
+        loading:function(show){
+            if(typeof show!=='undefined' && show){
+                $('#loadingToast').show();
+            }else{
+                $('#loadingToast').hide();
+            }
+        },
+        confirm:function(msg, yes, no){
+            $('#dialog1').find('.weui_dialog_bd').html(msg).end().show();
+            $('#dialog1').find('a:eq(1)').one('click', function(){
+                $('#dialog1').find('.weui_dialog_bd').html('自定义弹窗内容，居左对齐显示，告知需要确认的信息等').end().hide();
+                if(typeof yes === 'function'){
+                    yes.call();
+                }
+            });
+            $('#dialog1').find('a:eq(0)').one('click', function(){
+                $('#dialog1').find('.weui_dialog_bd').html('自定义弹窗内容，居左对齐显示，告知需要确认的信息等').end().hide();
+                if(typeof no === 'function'){
+                    no.call();
+                }
+            });
+        },
+        actionSheet:function(menu){
+            var defaultHtml = '<div class="weui_actionsheet_cell"><a href="<?php echo STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg">公众号：琳玲港货</a></div>\
+                <div class="weui_actionsheet_cell"><a href="tel:<?php echo SERVICE_TEL;?>">联系电话：<?php echo SERVICE_TEL;?></a></div>';
+            var mask = $('.weui_mask_transition');
+            var weuiActionsheet = $('#weui_actionsheet');
+            if(Object.prototype.toString.call(menu)!=='[object Array]'){
+                menu = [
+                    {
+                        'url':'<?php echo STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg',
+                        'text':'公众号：琳玲港货'
+                    },{
+                        'url':'tel:<?php echo SERVICE_TEL;?>',
+                        'text':'联系电话：<?php echo SERVICE_TEL;?>'
+                    },
+                ];
+            }
+            
+            var html = '';
+            for(var i in menu){
+                html += '<div class="weui_actionsheet_cell">';
+                if(typeof menu[i].url!=='undefined' && typeof menu[i].text!=='undefined'){
+                    html += '<a href="'+ menu[i].url +'" id="weui_actionsheet_cell_'+ i +'">'+ menu[i].text +'</a>';
+                }
+                html += '</div>';
+            }
+            
+            if(!html){
+                html = defaultHtml;
+            }
+            weuiActionsheet.find('.weui_actionsheet_menu').html(html);
+            for(var i in menu){
+                if(typeof menu[i].click==='function'){
+                    weuiActionsheet.find('#weui_actionsheet_cell_'+i).click(function(){
+                        menu[i].click.call();
+                    });
+                }
+            }
+            
+            weuiActionsheet.addClass('weui_actionsheet_toggle');
+            mask.show().addClass('weui_fade_toggle').one('click', function () {
+                hideActionSheet(weuiActionsheet, mask);
+            });
+            $('#actionsheet_cancel').one('click', function () {
+                hideActionSheet(weuiActionsheet, mask);
+            });
+            weuiActionsheet.unbind('transitionend').unbind('webkitTransitionEnd');
+
+            function hideActionSheet(weuiActionsheet, mask) {
+                weuiActionsheet.removeClass('weui_actionsheet_toggle');
+                mask.removeClass('weui_fade_toggle');
+                weuiActionsheet.on('transitionend', function () {
+                    mask.hide();
+                }).on('webkitTransitionEnd', function () {
+                    mask.hide();
+                })
+                
+                weuiActionsheet.find('.weui_actionsheet_menu').html(defaultHtml);
+            }
+        }
+    };
+    $(function(){
+        $("img.lazy").lazyload({effect: "fadeIn"});
+        
+        $('.add_to_cart').click(function(){
+            var data = $(this).attr('data');
+
+            if(data){
+                try{
+                    var json = JSON.parse(data);
+                    if(typeof localStorage.cart==='undefined'){
+                        localStorage.cart = JSON.stringify([json]);
+                    }else{
+                        var cart = JSON.parse(localStorage.cart);
+                        if(Object.prototype.toString.call(cart)!=='[object Array]'){
+                            cart = [json];
+                        }else{
+                            cart.unshift(json);
+                        }
+                        localStorage.cart = JSON.stringify(cart);
+                        layer.toast('成功');
+                    }
+                }catch(e){
+                    layer.error('加入购物车失败，请稍后再试');
+                    return false;
+                }
+                
+                return false;
+            }
+            
+            return false;
+        });
+    });
+</script>
 <script type="text/javascript" src="http://tajs.qq.com/stats?sId=55696994" charset="UTF-8"></script>
