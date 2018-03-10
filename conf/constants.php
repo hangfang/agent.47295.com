@@ -21,12 +21,12 @@ define('OSS_URL', 'http://'.OSS_BUCKET.'.oss-cn-shenzhen.aliyuncs.com/');
 /**
  * @var string 图片文件CDN域名
  */
-define('IMG_CDN_URL', PHP_ENV==='product' ? 'http://cdn.47295.com/upload/kissbaby/' : BASE_URL.'/upload/kissbaby/');
+define('IMG_CDN_URL', PHP_ENV==='develop' ?  BASE_URL.'/upload/kissbaby/' : 'http://cdn.47295.com/upload/kissbaby/');
 
 /**
  * @var string 静态文件CDN域名
  */
-define('STATIC_CDN_URL', PHP_ENV==='product'? 'http://static.47295.com/' : BASE_URL);
+define('STATIC_CDN_URL', PHP_ENV==='develop'? BASE_URL : 'http://static.47295.com/');
 
 /**
  * @var string CDN域名占位符
