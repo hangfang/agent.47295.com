@@ -85,7 +85,7 @@ EOF;
 </div>
 <?php if($related){?>
 <div class="weui_panel">
-    <div class="weui_panel_hd">小图文组合列表</div>
+    <div class="weui_panel_hd">猜你喜欢</div>
     <div class="weui_panel_bd">
         <div class="weui_media_box weui_media_small_appmsg">
             <div class="weui_cells weui_cells_access">
