@@ -1,128 +1,114 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include $viewPath.'header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
 <style>
-    .menu_drop img {width:25.1rem; height:25.1rem;clear:both;display:block;}
+    /*轮播图*/
+	.focus{ width:100%;  margin:0 auto; position:relative; overflow:hidden;   }
+	.focus .hd{ width:100%; height:5px;  position:absolute; z-index:1; bottom:0; text-align:center;  padding:0px !important;}
+	.focus .hd ul{ overflow:hidden; display:-moz-box; display:-webkit-box; display:box; height:5px; background-color:rgba(51,51,51,0.5);   }
+	.focus .hd ul li{ -moz-box-flex:1; -webkit-box-flex:1; box-flex:1; }
+	.focus .hd ul .on{ background:#FF4000;  }
+	.focus .bd{ position:relative; z-index:0; }
+	.focus .bd li img{ width:100%;  height:215pxpx; }
+	.focus .bd li a{ -webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */ }
+    .article img {width:100%;height:100%;}
+    
+    /*商品描述*/
+    .weui_panel .weui_media_info {margin-top:0px !important;}
+    .weui_panel .weui_media_info_meta {color:#888;clear:both;font-size:1.4rem;line-height:2.2rem;}
+    .weui_panel .weui_media_info_meta span{color:red;}
 </style>
-<div class="single_top">
-	 <div class="container"> 
-	      <div class="single_grid">
-				<div class="grid images_3_of_2">
-						<ul id="etalage">
-                            <?php
-                                $_index = 0;
-                                $product['product_image'] = empty($product['product_image']) ? [] : explode(',', $product['product_image']);
-                                foreach($product['product_image'] as $_image){
-                                    if($_index == 0){
-                                        $_extraPre = '<a href="javascript:void(0);">';
-                                        $_extraPost = '</a>';
-                                    }
-                                    
-                                    $_image = empty($_image) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_image);
-                                    echo <<<EOF
+<script src="<?php echo STATIC_CDN_URL;?>static/public/js/TouchSlide.1.1.js?v=<?php echo STATIC_VERSION;?>"></script>
+     <?php
+        $_index = 0;
+        $product['product_image'] = empty($product['product_image']) ? [] : explode(',', $product['product_image']);
+        $STATIC_CDN_URL = STATIC_CDN_URL;
+        $_hd = '';
+        $_bd = '';
+        foreach($product['product_image'] as $_image){
+            $_hd .= '<li></li>';
+            $_image = empty($_image) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_image);
+            $_bd .= <<<EOF
 <li>
-    {$_extraPre}
-    <img class="etalage_thumb_image" src="{$_image}" class="img-responsive" />
-    <img class="etalage_source_image" src="{$_image}" class="img-responsive" title="" />
-    {$_extraPost}
+    <a href="javascript:void(0)">
+        <img _src="{$_image}" class="carousel-inner img-responsive" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/default215x215.png'"/>
+    </a>
 </li>
 EOF;
-                                }
-                            ?>
-						</ul>
-                        <div class="clearfix"></div>		
-				  </div> 
-				  <div class="desc1 span_3_of_2">
-				  	<ul class="back">
-                        <li><i class="back_arrow"> </i>Back to <a href="/shop/category/product?category_id=<?php echo $product['category_id'];?>"><?php echo empty($category['category_name']) ? '未知分类' : $category['category_name'];?></a></li>
-                    </ul>
-					<h1><?php echo $product['product_name'];?></h1>
-					<ul class="price_single">
-					  <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="head"><h2>$'.$product['product_vip_price'].'</h2></li>' : '';?>
-					  <li class="head_desc"><a href="javascript:void(0);"><?php echo $product['product_views'];?> reviews</a><img src="<?php echo STATIC_CDN_URL.$staticDir;?>images/review.png" alt=""/></li>
-					  <div class="clearfix"></div>
-					</ul>
-					<p style="display:none;">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum</p>
-				     <div class="dropdown_top">
-				       <div class="dropdown_left">
-					     <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
-	            			<option value="0">规格：<?php echo $product['product_model'];?></option>	
-			             </select>
-			            </div>
-			            <ul class="color_list">
-							<li><a href="javascript:void(0)">销量: <span class="color1"><?php echo $product['product_purchased'];?></span>件</a></li>
-						</ul>
-                         
-						 <div class="clearfix"></div>
-                         
-                         <div class="dropdown_left" style="visibility:hidden;">
-                         <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
-	            			<option value="0">规格：<?php echo $product['product_model'];?></option>	
-			             </select>
-                        </div>
-                         <ul class="color_list">
-							<li><a href="javascript:void(0);" class="btn1 btn2 btn-primary1"><span>加入购物车</span></a></li>
-						</ul>
-						 <div class="clearfix"></div>
-			         </div>
-				</div>
-          	    <div class="clearfix"></div>
-          	   </div>
-          	 <div class="single_social_top" style="display:none;">   
-          	  <ul class="single_social" style="display:none;">
-				  <li><a href="#"> <i class="s_fb"> </i> <div class="social_desc">Share<br> on facebook</div><div class="clearfix"> </div></a></li>
-				  <li><a href="#"> <i class="s_twt"> </i> <div class="social_desc">Tweet<br> this product</div><div class="clearfix"> </div></a></li>
-				  <li><a href="#"> <i class="s_google"> </i><div class="social_desc">Google+<br> this product</div><div class="clearfix"> </div></a></li>
-				  <li class="last"><a href="#"> <i class="s_email"> </i><div class="social_desc">Email<br> a Friend</div><div class="clearfix"> </div></a></li>
-			  </ul>
-			 </div>
-			 <div class="menu_drop" style="margin-top:1.8rem;">
-                <?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);?>
-	 		</div>
-   </div>
-    <?php if($related){?>
-   <h3 class="m_2">猜你喜欢</h3>
-    <div class="container">
-        <div class="box_3">
-            <?php
-                foreach($related as $_related){
-                    $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<p>$ '.$_related['product_vip_price'].'</p>' : '';
-                    $_related['product_image'] = empty($_related['product_image']) ? [] : explode(',', $_related['product_image']);
-                    $_imgSrc = empty($_related['product_image'][0]) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_related['product_image'][0]);
-                    echo <<<EOF
-<div class="col-md-3">
-<div class="content_box"><a href="/shop/product/detail?product_id={$_related['product_id']}">
-<img data-original="{$_imgSrc}" class="lazy img-responsive" alt="">
-</a>
+        }
+    ?>
+<div id="focus" class="focus">
+    <div class="hd">
+        <ul><?php echo $_hd;?></ul>
+    </div>
+    <div class="bd">
+        <ul><?php echo $_bd;?></ul>
+    </div>
 </div>
-<h4><a href="/shop/product/detail?product_id={$_related['product_id']}">{$_related['product_name']}</a></h4>
-{$_extra}
-</div>
-EOF;
-                }
-            ?>
-            <div class="clearfix"> </div>
+<script type="text/javascript">
+    TouchSlide({ 
+        slideCell:"#focus",
+        titCell:".hd ul", //开启自动分页 autoPage:true ，此时设置 titCell 为导航元素包裹层
+        mainCell:".bd ul", 
+        effect:"left", 
+        autoPlay:true,//自动播放
+        autoPage:true, //自动分页
+        switchLoad:"_src" //切换加载，真实图片路径为"_src" 
+    });	
+</script>
+<div class="weui_panel">
+    <div class="weui_panel_bd">
+        <div class="weui_media_box weui_media_text">
+            <ul class="weui_media_info">
+                <li class="weui_media_info_meta">商品名称：<span><?php echo $product['product_name'];?></span></li>
+                <li class="weui_media_info_meta">分类：<a href="/shop/category/product?category_id=<?php echo $category['category_id'];?>"><span><?php echo $category['category_name'];?></span></a></li>
+                <li class="weui_media_info_meta">规格：<span><?php echo $product['product_model'];?></span></li>
+                <li class="weui_media_info_meta">销量：<span><?php echo $product['product_purchased'];?>件</span></li>
+                <li class="weui_media_info_meta">浏览量：<span><?php echo $product['product_views'];?>次</span></li>
+                <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="weui_media_info_meta">Kissbaby原价：<span>￥'.$product['product_sale_price'].'</span></li>' : '';?>
+                <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="weui_media_info_meta">Kissbaby会员价：<span>￥'.$product['product_vip_price'].'</span></li>' : '';?>
+            </ul>
         </div>
     </div>
-    <?php } ?>
 </div>
-<script>
-    jQuery(document).ready(function($){
-        $('#etalage').etalage({
-            thumb_image_width: 300,
-            thumb_image_height: 400,
-            source_image_width: 900,
-            source_image_height: 1200,
-            show_hint: true,
-            click_callback: function(image_anchor, instance_id){
-//alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
-            },
-            change_callback:function(){
-                
-            }
-        });
-
-    });
-</script>
-<?php include $viewPath.'footer.php';?>
+<div class="article">
+    <div class="bd">
+        <article class="weui_article" style="padding:0;">
+            <section>
+                <section>
+                    <?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);?>
+                </section>
+            </section>
+        </article>
+    </div>
+</div>
+<?php if($related){?>
+<div class="weui_panel">
+    <div class="weui_panel_hd">小图文组合列表</div>
+    <div class="weui_panel_bd">
+        <div class="weui_media_box weui_media_small_appmsg">
+            <div class="weui_cells weui_cells_access">
+                <?php
+                foreach($related as $_related){
+                    $_related['product_image'] = empty($_related['product_image']) ? [] : explode(',', $_related['product_image']);
+                    $_imgSrc = empty($_related['product_image'][0]) ? '{$STATIC_CDN_URL}{$staticDir}images/default215x215.png' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_related['product_image'][0]);
+                    
+                    echo <<<EOF
+<a class="weui_cell" href="/shop/product/detail?product_id={$_related['product_id']}">
+    <div class="weui_cell_hd"><img data-origin="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/default215x215.png';" alt="" class="lazy" style="width:20px;margin-right:5px;display:block"></div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <p style="margin:0px;line-height: 1.4rem;height: 1.4rem;overflow:hidden;">{$_related['product_name']}</p>
+    </div>
+    <span class="weui_cell_ft"></span>
+</a>
+EOF;
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php }?>
+</div>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>
