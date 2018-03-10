@@ -38,7 +38,6 @@ class BasicController extends Yaf_Controller_Abstract {
             $this->_view->assign('actionName', $actionName);
             $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
 
-            return true;
             if($moduleName==='index'){
                 return true;
             }else if(in_array($controllerName, ['login', 'auth']) || in_array($actionName, ['notfound'])){
