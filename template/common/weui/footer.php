@@ -62,24 +62,24 @@
 
             </div>
             <div class="weui_tabbar">
-                <?php if(empty($_SESSION['user']) || $_SESSION['user']['user_type']!=='admin'){ ?>
-                    <a href="/shop/index/index" class="weui_tabbar_item <?php if($controllerName==='index'){echo 'weui_bar_item_on';}?>">
+                    <a href="javascript:void(0);" class="weui_tabbar_item <?php if($controllerName==='product'||$controllerName==='index'||$controllerName==='category'||$controllerName==='activity'){echo 'weui_bar_item_on';}?>" id="shop_entry_btn">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_actionSheet.png" alt="">
                         </div>
-                        <p class="weui_tabbar_label">新品到货</p>
+                        <p class="weui_tabbar_label">导航</p>
                     </a>
-                    <a href="/shop/category/index" id="contact" class="weui_tabbar_item <?php if($controllerName==='category'){echo 'weui_bar_item_on';}?>">
+                <?php if(empty($_SESSION['user']) || $_SESSION['user']['user_type']!=='admin'){ ?>
+                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($controllerName==='order'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
-                        <p class="weui_tabbar_label">商品分类</p>
+                        <p class="weui_tabbar_label">购物车</p>
                     </a>
                     <a href="/shop/activity/index" class="weui_tabbar_item <?php if($controllerName==='activity'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                         </div>
-                        <p class="weui_tabbar_label">限时活动</p>
+                        <p class="weui_tabbar_label">订单</p>
                     </a>
                     <a href="/shop/account/index" class="weui_tabbar_item <?php if($controllerName==='manage_account'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
@@ -88,12 +88,6 @@
                         <p class="weui_tabbar_label">账户中心</p>
                     </a>
                 <?php }else{?>
-                    <a href="/shop/index/index" class="weui_tabbar_item <?php if($moduleName==='shop'){echo 'weui_bar_item_on';}?>">
-                        <div class="weui_tabbar_icon">
-                            <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_actionSheet.png" alt="">
-                        </div>
-                        <p class="weui_tabbar_label">商城</p>
-                    </a>
                     <a href="/wechat/manage_menu/index" id="contact" class="weui_tabbar_item <?php if($controllerName==='manage_menu'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
@@ -256,6 +250,15 @@
             }
             
             return false;
+        });
+        
+        $('#shop_entry_btn').click(function(){
+            var menu = [
+                {'url':'/shop/category/index','text':'分类'},
+                {'url':'/shop/activity/index','text':'限时活动'},
+                {'url':'/shop/index/index','text':'新品到货'},
+            ];
+            layer.actionSheet(menu);
         });
     });
 </script>
