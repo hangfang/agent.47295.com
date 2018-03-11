@@ -2,6 +2,9 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH.'/template/common/weui/header.php';
 ?>
+<style>
+    .weui_media_desc .add_to_cart {float:right;}
+</style>
 <div class="weui_panel weui_panel_access">
     <div class="weui_panel_hd"><?php echo $title;?></div>
     <div class="weui_panel_bd">

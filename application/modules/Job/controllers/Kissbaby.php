@@ -429,11 +429,6 @@ EOF;
      * 从kissbaby获取新品到货列表
      */
     public function getLatestProductAction(){
-        if(false===Kissbaby_LatestProductModel::delete()){
-            log_message('error', '删除kissbaby新品到货失败');
-            echo '   delete kissbaby latest product failed...'."\n";
-            exit;
-        }
                 
         $_total = 100;
         $_limit = 20;
@@ -462,6 +457,7 @@ EOF;
                 $_update = [
                     'product_id'   =>  $_product['product_id'],
                     'product_name'   =>  $_product['name'],
+                    'product_hash'   =>  md5(json_encode($_product)),
                     'product_image'   =>  empty($_product['image']) ? '' : $_product['image'],
                     'product_sale_price'   =>  $_product['sale_price'],
                     'product_vip_price'   =>  $_product['vip_price'],
@@ -485,6 +481,11 @@ EOF;
 
                     echo '  insert kissbaby latest product succ..., name:'.$_product['name']."\n";
                 }else{
+                    if($productInfo['product_hash']===$_update['product_hash']){
+                        echo '   product not change, name:'.$_product['name']."\n";
+                        continue;
+                    }
+                    
                     unset($_update['create_time']);
                     if(!empty($_update['product_image']) && $_update['product_image']!==str_replace(CDN_URL_PLACEHOLDER, '', $productInfo['product_image'])){
                         $this->__saveImage($_update['product_image']);
@@ -547,14 +548,23 @@ EOF;
             ];
         }
         
-        if(false===Kissbaby_HomeRecommandActivityModel::delete()){
+        $db = Database::getInstance('kissbaby');
+        $db->startTransaction();
+        
+        if(Kissbaby_HomeRecommandActivityModel::delete()){
+            echo 'delete kissbaby home recommand activity succ...'."\n";
+            if(false===Kissbaby_HomeRecommandActivityModel::batchInsert($_update)){
+                $db->rollBack();
+                log_message('error', '插入kissbaby首页推荐活动失败');
+                echo 'insert kissbaby home recommand activity failed...'."\n";
+            }else{
+                $db->commit();
+                echo 'insert kissbaby home recommand activity succ...'."\n";
+            }
+        }else{
+            $db->rollBack();
             log_message('error', '删除kissbaby首页推荐活动失败');
             echo 'delete kissbaby home recommand activity failed...'."\n";
-        }else if(false===Kissbaby_HomeRecommandActivityModel::batchInsert($_update)){
-            log_message('error', '插入kissbaby首页推荐活动失败');
-            echo 'insert kissbaby home recommand activity failed...'."\n";
-        }else{
-            echo 'insert kissbaby home recommand activity succ...'."\n";
         }
 
         $_update = [];
@@ -575,14 +585,21 @@ EOF;
             ];
         }
 
-        if(false===Kissbaby_HomeRecommandProductModel::delete()){
+        $db->startTransaction();
+        if(Kissbaby_HomeRecommandProductModel::delete()){
+            echo 'delete kissbaby home recommand product succ...'."\n";
+            if(false===Kissbaby_HomeRecommandProductModel::batchInsert($_update)){
+                $db->rollBack();
+                log_message('error', '插入kissbaby首页推荐商品失败');
+                echo 'insert kissbaby home recommand product failed...'."\n";
+            }else{
+                $db->commit();
+                echo 'insert kissbaby home recommand product succ...'."\n";
+            }
+        }else{
+            $db->rollBack();
             log_message('error', '删除kissbaby首页推荐商品失败');
             echo 'delete kissbaby home recommand product failed...'."\n";
-        }else if(false===Kissbaby_HomeRecommandProductModel::batchInsert($_update)){
-            log_message('error', '插入kissbaby首页推荐商品失败');
-            echo 'insert kissbaby home recommand product failed...'."\n";
-        }else{
-            echo 'insert kissbaby home recommand product succ...'."\n";
         }
         
         echo __FUNCTION__.',更新首页推荐成功'."\n";
