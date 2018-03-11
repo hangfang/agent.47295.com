@@ -497,4 +497,8 @@ class BaseModel
             }
         }
     }
+    
+    public static function isAdmin(){
+        return !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin';
+    }
 }

@@ -21,7 +21,11 @@ include BASE_PATH.'/template/common/weui/header.php';
 
                 $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image']);
                 $_productData = json_encode($_product);
-                $_extra = '<span class="weui_desc_extra">会员价:$'. $_product['product_vip_price'] .'</span>';
+                $_extra = '';
+                if(BaseModel::isAdmin()){
+                    $_extra .= '<span class="weui_desc_extra">会员价:$'. $_product['product_vip_price'] .'</span>';
+                }
+                $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
                 
                 echo <<<EOF
 <a href="/shop/product/detail?product_id={$_product['product_id']}" class="weui_media_box weui_media_appmsg">

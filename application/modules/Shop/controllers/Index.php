@@ -7,7 +7,9 @@ class IndexController extends BasicController{
         if($total){
             $limit = ['limit'=>10];
             $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-            $homeRecommandProduct = Kissbaby_HomeRecommandProductModel::getList([], '*', $limit);
+            $homeRecommandProduct = Kissbaby_HomeRecommandProductModel::getList([], 'product_id', $limit);
+            
+            $homeRecommandProduct = Kissbaby_ProductModel::getList(['product_id'=>array_column($homeRecommandProduct, 'product_id')], '*');
         }
         
         $result = ['list'=>$homeRecommandProduct, 'total'=>$total];
