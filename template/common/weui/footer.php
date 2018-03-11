@@ -89,17 +89,18 @@
                         <p class="weui_tabbar_label">账户中心</p>
                     </a>
                 <?php }else{?>
-                    <a href="/wechat/manage_menu/index" id="contact" class="weui_tabbar_item <?php if($controllerName==='manage_menu'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
-                        <p class="weui_tabbar_label">菜单</p>
+                        <p class="weui_tabbar_label">购物车</p>
+                        <p class="cart_product_num">0</p>
                     </a>
-                    <a href="/wechat/manage_material/index" class="weui_tabbar_item <?php if($controllerName==='manage_material'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/order/index" class="weui_tabbar_item <?php if($controllerName==='order' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                         </div>
-                        <p class="weui_tabbar_label">素材</p>
+                        <p class="weui_tabbar_label">订单</p>
                     </a>
                     <a href="/wechat/manage_account/index" class="weui_tabbar_item <?php if($moduleName==='wechat'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
