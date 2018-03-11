@@ -39,7 +39,7 @@ class OrderController extends BasicController{
         }
         
         if(!$result['list']){
-            header('location: /shop/index/notfound?code=404&msg=异常...&title=订单数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=订单数据丢失...&detail=/shop/account/index');exit;
         }
         
         $this->_view->assign('title', '订单中心');
@@ -53,16 +53,16 @@ class OrderController extends BasicController{
     public function detailAction(){
         $orderCode = $this->_request->getQuery('order_code');
         if(empty($orderCode)){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
+            header('location: /shop/index/succ?title=错误&msg=请求非法&detail=/shop/order/index');exit;
         }
         
         if(!$order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode])){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=订单数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=订单数据丢失...&detail=/shop/order/index');exit;
         }
         
         $orderProduct = Kissbaby_OrderProductModel::getList(['order_id'=>$order['id']]);
         if($order['order_status']!=='INIT'){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=订单明细丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=订单明细丢失...&detail=/shop/order/index');exit;
         }
         
         $this->_view->assign('title', '订单中心');

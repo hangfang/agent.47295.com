@@ -12,7 +12,7 @@ class ActivityController extends BasicController{
                 lExit(502, '请求非法');
             }
             
-            header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
+            header('location: /shop/index/succ?title=错误&msg=非法请求&detail=/shop/activity/index');exit;
         }
         
         if(!$activity = Kissbaby_ActivityModel::getRow(['activity_id'=>$activityId])){
@@ -20,7 +20,7 @@ class ActivityController extends BasicController{
                 lExit(502, '活动数据丢失...');
             }
             
-            header('location: /shop/index/notfound?code=404&title=异常&msg=活动数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=活动数据丢失...&detail=/shop/activity/index');exit;
         }
         
         $total = Kissbaby_ActivityProductModel::count(['activity_id'=>$activityId]);
@@ -38,7 +38,7 @@ class ActivityController extends BasicController{
         }
         
         if(!$result['list']){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=活动商品数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=活动商品数据丢失...&detail=/shop/activity/index');exit;
         }
         
         $this->_view->assign('activity', $activity);
@@ -61,7 +61,7 @@ class ActivityController extends BasicController{
         }
         
         if(!$activityList){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=活动数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=活动数据丢失...&detail=/shop/index/index');exit;
         }
         
         $this->_view->assign('title', '限时活动');

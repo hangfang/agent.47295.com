@@ -8,11 +8,11 @@ class ProductController extends BasicController{
     public function detailAction(){
         $productId = $this->_request->getQuery('product_id');
         if(!$productId){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=请求非法');exit;
+            header('location: /shop/index/succ?title=错误&msg=请求非法&detail=/shop/product/index');exit;
         }
         
         if(!$product = Kissbaby_ProductModel::getRow(['product_id'=>$productId])){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
+            header('location: /shop/index/succ?title=错误&msg=商品数据丢失...&detail=/shop/product/index');exit;
         }
         
         Kissbaby_ProductModel::update(['product_views'=>++$product['product_views']], ['product_id'=>$productId]);
@@ -34,7 +34,7 @@ class ProductController extends BasicController{
             if($this->_request->isXmlHttpRequest()){
                 lExit(502, '分类数据不存在');
             }
-            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据不存在');exit;
+            header('location: /shop/index/succ?title=错误&msg=分类数据不存在...&detail=/shop/category/index');exit;
         }
         
         $categoryId = $this->_request->getQuery('category_id');
@@ -46,7 +46,7 @@ class ProductController extends BasicController{
                 if($this->_request->isXmlHttpRequest()){
                     lExit(502, '商品一级分类不存在');
                 }
-                header('location: /shop/index/notfound?code=404&title=异常&msg=商品一级分类不存在');exit;
+                header('location: /shop/index/succ?title=错误&msg=商品一级分类不存在...&detail=/shop/category/index');exit;
             }
         }
         
@@ -57,7 +57,7 @@ class ProductController extends BasicController{
             if($this->_request->isXmlHttpRequest()){
                 lExit(502, '商品二级分类不存在');
             }
-            header('location: /shop/index/notfound?code=404&title=异常&msg=商品二级分类不存在');exit;
+            header('location: /shop/index/succ?title=错误&msg=商品二级分类不存在...&detail=/shop/category/subcategory?category_id='.$categoryId);exit;
         }
         
         $where = [];
@@ -82,7 +82,13 @@ class ProductController extends BasicController{
         }
         
         if(!$productList){
-            header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
+            if($categoryId){
+                header('location: /shop/index/succ?title=错误&msg=商品数据丢失...&detail=/shop/category/index');exit;
+            }
+            
+            if($subCategoryId){
+                header('location: /shop/index/succ?title=错误&msg=商品数据丢失...&detail=/shop/category/subcategory?category_id='.$subCategoryId);exit;
+            }
         }
         
         $title = '';
