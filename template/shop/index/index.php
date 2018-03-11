@@ -6,7 +6,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     .weui_media_desc .add_to_cart {float:right;}
 </style>
 <div class="weui_panel weui_panel_access">
-    <div class="weui_panel_hd"><?php echo $title;?></div>
+    <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
     <div class="weui_panel_bd">
         <?php 
             $STATIC_CDN_URL = STATIC_CDN_URL;
@@ -23,7 +23,9 @@ include BASE_PATH.'/template/common/weui/header.php';
                 $_productData = json_encode($_product);
                 $_extra = '';
                 if(BaseModel::isAdmin()){
-                    $_extra .= '<span class="weui_desc_extra">会员价:$'. $_product['product_vip_price'] .'</span>';
+                    $_extra .= '<span class="weui_desc_extra">会员价:￥'. $_product['product_vip_price'] .'</span>';
+                }else{
+                    $_extra .= '<span class="weui_desc_extra">浏览量:'. $_product['product_views'] .'</span>';
                 }
                 $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
                 
@@ -34,14 +36,14 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
     <div class="weui_media_bd">
         <h4 class="weui_media_title">{$_product['product_name']}</h4>
-        <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>加入购物车</span></p>
+        <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>+购物车</span></p>
     </div>
 </a>
 EOF;
             }
         ?>
     </div>
-    <a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>
+    <?php if($data['total']>10){ echo '<a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>';}?>
 </div>
 <script>
     (function(){
@@ -94,8 +96,15 @@ EOF;
                             }else{
                                 product['product_image'] = '';
                             }
+                            <?php
+                                if(BaseModel::isAdmin()){
+                                    echo 'var extra = \'<span class="weui_desc_extra">Vip价:￥\'+ product[\'product_vip_price\'] +\'</span>\';';
+                                }else{
+                                    echo 'var extra = \'<span class="weui_desc_extra">浏览量:\'+ product[\'product_views\'] +\'</span>\';';
+                                }
+                            ?>
 
-                            <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? 'var extra = \'<span class="weui_desc_extra">会员价:\$\'+ product[\'product_vip_price\'] +\'</span>\';' : 'var extra = \'<span class="weui_desc_extra">\'+ product[\'product_short_name\'] +\'</span>\';'; ?>
+                            extra += '<span class="weui_desc_extra">销量:'+ product['product_purchased'] +'</span>';
                             var imgSrc = product['product_image'] ? product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') : '';
                             
                             html += '<a href="/shop/product/detail?product_id='+ product['product_id'] +'" class="weui_media_box weui_media_appmsg">\
@@ -104,7 +113,7 @@ EOF;
     </div>\
     <div class="weui_media_bd">\
         <h4 class="weui_media_title">'+ product['product_name'] +'</h4>\
-        <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data=\''+ JSON.stringify(product) +'\'>加入购物车</span></p>\
+        <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data=\''+ JSON.stringify(product) +'\'>+购物车</span></p>\
     </div>\
 </a>';
                         }

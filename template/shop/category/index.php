@@ -1,55 +1,33 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include $viewPath.'header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
-<div id="banner" class="banner" style="display:none;">
-	<div class="container">
-		<div class="banner_desc">
-			<h1>琳玲Dai购</h1>
-			<h2>最贴心的生活助手</h2>
-			<div class="button">
-                <a href="javascritp:void(0)" class="hvr-shutter-out-horizontal">Shop Now</a>
-            </div>
-		</div>
-	</div>
-</div>
-<div class="content_top">
-	<h3 class="m_1" style="display:none;">一级分类</h3>
-	<div class="container">
-	   <div class="box_1">
-	       <div class="col-md-7-bak">
-               <?php 
-                $STATIC_CDN_URL = STATIC_CDN_URL;
-                for($i=0,$len=count($categoryList); $i<$len; $i++){
-                    if(($i+1)%3==0){
-                        echo '<div class="section group">';
-                    }
+<style>
+    .weui_media_desc .add_to_cart {float:right;}
+</style>
+<div class="weui_panel weui_panel_access">
+    <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
+    <div class="weui_panel_bd">
+        <?php 
+            $STATIC_CDN_URL = STATIC_CDN_URL;
+            for($i=0,$len=count($categoryList); $i<$len; $i++){
+                $_category = $categoryList[$i];
 
-                    $_category = $categoryList[$i];
-                    $_imgSrc = empty($_category['category_banner']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_category['category_banner']);
-                    echo <<<EOF
-<div class="col_1_of_3 span_1_of_3">
-    <div class="shop-holder">
-         <div class="product-img">
-            <a href="/shop/category/subcategory?category_id={$_category['category_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default.png" class="lazy img-responsive"  alt="item4">
-            </a>
-            <a href="javascript:void(0);" class="button " style="background:transparent;border:none;"></a>
-        </div>
+                $_imgSrc = empty($_category['product_banner']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_category['product_banner']);
+                
+                echo <<<EOF
+<a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
+    <div class="weui_media_hd">
+        <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
-    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-            <div><a href="/shop/category/subcategory?category_id={$_category['category_id']}" rel="tag">{$_category['category_name']}</a></div>
+    <div class="weui_media_bd">
+        <h4 class="weui_media_title">{$_category['category_name']}</h4>
+        <p class="weui_media_desc" style="margin: 0px;line-height: 1rem;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="margin:0px;" onclick="location.href='/shop/category/subcategory?category_id={$_category['category_id']}'">选子分类</span><span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" style="float:right;margin:0 1rem 0 0;" onclick="location.href='/shop/category/product?category_id={$_category['category_id']}'">选商品</span></p>
     </div>
-</div>
+</a>
 EOF;
-                    if(($i+1)%3==0){
-                        echo '<div class="clearfix"></div></div>';
-                    }
-                }
-                ?>
-		</div>
-		<div class="clearfix"></div>
-	</div>
+            }
+        ?>
+    </div>
 </div>
-</div>
-<?php include $viewPath.'footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>

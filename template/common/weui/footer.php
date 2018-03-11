@@ -254,9 +254,10 @@
         
         $('#shop_entry_btn').click(function(){
             var menu = [
+                {'url':'/shop/product/index','text':'超市'},
                 {'url':'/shop/category/index','text':'分类'},
+                {'url':'/shop/index/index','text':'精选推荐'},
                 {'url':'/shop/activity/index','text':'限时活动'},
-                {'url':'/shop/index/index','text':'新品到货'},
             ];
             layer.actionSheet(menu);
         });

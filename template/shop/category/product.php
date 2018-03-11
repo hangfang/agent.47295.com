@@ -1,150 +1,135 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include $viewPath.'header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
-<div id="banner" class="banner" style="display:none;">
-	<div class="container">
-		<div class="banner_desc">
-			<h1>琳玲Dai购</h1>
-			<h2>最贴心的生活助手</h2>
-			<div class="button">
-                <a href="javascritp:void(0)" class="hvr-shutter-out-horizontal">Shop Now</a>
-            </div>
-		</div>
-	</div>
-</div>
-<div class="content_top">
-	<h3 class="m_1" style="display:none;">活动商品</h3>
-	<div class="container" id="container">
-	   <div class="box_1">
-	       <div class="col-md-7-bak">
-               <?php 
-                $STATIC_CDN_URL = STATIC_CDN_URL;
-                for($i=0,$len=count($data['list']); $i<$len; $i++){
-                    if(($i+1)%3==0){
-                        echo '<div class="section group">';
-                    }
-
-                    $_product = $data['list'][$i];
-                    
-                    $_product['product_image'] = empty($_product['product_image']) ? [] : explode(',', $_product['product_image']);
-                    $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image'][0]);
-                    $_extra = !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<span><span class="amount">会员价:$'.$_product['product_vip_price'].'</span></span>' : '';
-                    echo <<<EOF
-<div class="col_1_of_3 span_1_of_3">
-    <div class="shop-holder">
-         <div class="product-img">
-            <a href="/shop/product/detail?product_id={$_product['product_id']}">
-                <img width_bak="225" height_bak="265" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/default215x215.png" class="lazy img-responsive"  alt="item4" style="height:17rem;">
-            </a>
-            <a href="javascript:void(0);" class="button "></a>
-        </div>
-    </div>
-    <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-            <div><a href="/shop/product/detail?product_id={$_product['product_id']}" rel="tag" style="display: block;height: 20px;overflow: hidden;">{$_product['product_name']}</a></div>
-            <h3><a href="/shop/product/detail?product_id={$_product['product_id']}">Non-charac</a></h3>
-            {$_extra}
-    </div>
-</div>
-EOF;
-                    if(($i+1)%3==0){
-                        echo '<div class="clearfix"></div></div>';
-                    }
+<style>
+    .weui_media_desc .add_to_cart {float:right;}
+</style>
+<div class="weui_panel weui_panel_access">
+    <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
+    <div class="weui_panel_bd">
+        <?php 
+            $STATIC_CDN_URL = STATIC_CDN_URL;
+            for($i=0,$len=count($data['list']); $i<$len; $i++){
+                $_product = $data['list'][$i];
+                if(!empty($_product['product_image'])){
+                    $_product['product_image'] = explode(',', $_product['product_image']);
+                    $_product['product_image'] = $_product['product_image'][0];
+                }else{
+                    $_product['product_image'] = '';
                 }
-                ?>
-		</div>
-		<div class="clearfix"></div>
-	</div>
-</div>
-</div>
 
+                $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image']);
+                $_productData = json_encode($_product);
+                $_extra = '';
+                if(BaseModel::isAdmin()){
+                    $_extra .= '<span class="weui_desc_extra">会员价:￥'. $_product['product_vip_price'] .'</span>';
+                }else{
+                    $_extra .= '<span class="weui_desc_extra">浏览量:'. $_product['product_views'] .'</span>';
+                }
+                $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
+                
+                echo <<<EOF
+<a href="/shop/product/detail?product_id={$_product['product_id']}" class="weui_media_box weui_media_appmsg">
+    <div class="weui_media_hd">
+        <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
+    </div>
+    <div class="weui_media_bd">
+        <h4 class="weui_media_title">{$_product['product_name']}</h4>
+        <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>+购物车</span></p>
+    </div>
+</a>
+EOF;
+            }
+        ?>
+    </div>
+    <?php if($data['total']>10){ echo '<a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>';}?>
+</div>
 <script>
     (function(){
         var total = <?php echo $data['total'];?>;
-        var offset = 11;
+        var offset = 10;
         $(function(){
             var xhrIng = false;
-            var flag = true;
-            $(document).scroll(function(){
-                var tmp = $(document).height() / ($(document).scrollTop() + window.innerHeight);
-                if(tmp < 1.05){
-                    if(offset>=total-1){
-                        flag && $('.col-md-7-bak').append('<div class="col_1_of_3 span_1_of_3" style="margin: 0 auto; text-align: center; width: 100%; color: gray; border-top: dashed #bbb 1px; padding-top: 10px;">已加载完毕</div>');
-                        return flag = false;
-                    }
-                    
-                    $.ajax({
-                        url:'/shop/category/product',
-                        type:'get',
-                        dataType:'json',
-                        data:{'offset':offset, 'length':12, 'category_id':<?php echo $category['category_id'];?>},
-                        beforeSend:function(xhr){
-                            if(xhrIng){
-                                xhr.abort();
-                                return false;
-                            }
-                            
-                            xhrIng = true;
-                        },
-                        complete:function(){
-                            xhrIng = false;
-                        },
-                        success:function(data, xhr){
-                            if(!data){
-                                alert('请求失败,请稍后再试...');
-                                return false;
-                            }
-                            
-                            if(data.rtn!=0){
-                                alert(data.error_msg);
-                                return false;
-                            }
-                            
-                            var html = '';
-                            for(var i=0,len=data.data.list.length;i<len;i++){
-                                
-                                var product = data.data.list[i];
-                                if((i+1)%3==0){
-                                    html += '<div class="section group">';
-                                }
-                                
-                                if(product['product_image']){
-                                    product['product_image'] = product['product_image'].split(',');
-                                    product['product_image'] = product['product_image'][0];
-                                }else{
-                                    product['product_image'] = '';
-                                }
-                                
-                                <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? 'var extra = \'<span><span class="amount">会员价:\$\'+ product[\'product_vip_price\'] +\'</span></span>\';' : 'var extra = \'\';'; ?>
-                                var imgSrc = product['product_image'] ? product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') : '';
-                                html += '<div class="col_1_of_3 span_1_of_3">\
-    <div class="shop-holder">\
-         <div class="product-img">\
-            <a href="/shop/product/detail?product_id='+ product['product_id'] +'">\
-                <img width_bak="225" height_bak="265" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/default215x215.png\';" class="lazy img-responsive"  alt="item4" style="height:17rem;">\
-            </a>\
-            <a href="javascript:void(0);" class="button "></a>\
-        </div>\
-    </div>\
-    <div class="shop-content" style="height: 50px;margin-top: .7rem;">\
-            <div><a href="/shop/product/detail?product_id='+ product['product_id'] +'" rel="tag">'+ product['product_name'] +'</a></div>\
-            <h3><a href="/shop/product/detail?product_id='+ product['product_id'] +'">Non-charac</a></h3>\
-            '+ extra +'\
-    </div>\
-</div>';
-                                if((i+1)%3==0){
-                                    html += '<div class="clearfix"></div></div>';
-                                }
-                            }
-                            
-                            $('.col-md-7-bak').append(html);
-                            offset += 12;
-                            xhrIng = false;
+            $('.weui_panel_ft').click(function(){
+                var _this = this;
+                if(offset>=total-1){
+                    $(_this).remove();
+                    return false;
+                }
+
+                $.ajax({
+                    url:'/shop/category/product',
+                    type:'get',
+                    dataType:'json',
+                    data:{'offset':offset, 'length':10},
+                    beforeSend:function(xhr){
+                        if(xhrIng){
+                            xhr.abort();
+                            return false;
                         }
-                    });
-                }  
+
+                        xhrIng = true;
+                    },
+                    complete:function(){
+                        xhrIng = false;
+                    },
+                    success:function(data, xhr){
+                        if(!data){
+                            layer.error('请求失败,请稍后再试...');
+                            return false;
+                        }
+
+                        if(data.rtn!=0){
+                            layer.error(data.error_msg);
+                            return false;
+                        }
+
+                        var html = '';
+                        for(var i=0,len=data.data.list.length;i<len;i++){
+
+                            var product = data.data.list[i];
+
+                            if(product['product_image']){
+                                product['product_image'] = product['product_image'].split(',');
+                                product['product_image'] = product['product_image'][0];
+                            }else{
+                                product['product_image'] = '';
+                            }
+
+                            <?php
+                                if(BaseModel::isAdmin()){
+                                    echo 'var extra = \'<span class="weui_desc_extra">Vip价:￥\'+ product[\'product_vip_price\'] +\'</span>\';';
+                                }else{
+                                    echo 'var extra = \'<span class="weui_desc_extra">浏览量:\'+ product[\'product_views\'] +\'</span>\';';
+                                }
+                            ?>
+
+                            extra += '<span class="weui_desc_extra">销量:'+ product['product_purchased'] +'</span>';
+                            var imgSrc = product['product_image'] ? product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') : '';
+                            
+                            html += '<a href="/shop/product/detail?product_id='+ product['product_id'] +'" class="weui_media_box weui_media_appmsg">\
+    <div class="weui_media_hd">\
+        <img class="weui_media_appmsg_thumb" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg\'" >\
+    </div>\
+    <div class="weui_media_bd">\
+        <h4 class="weui_media_title">'+ product['product_name'] +'</h4>\
+        <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data=\''+ JSON.stringify(product) +'\'>+购物车</span></p>\
+    </div>\
+</a>';
+                        }
+
+                        $('.weui_panel_bd').append(html);
+                        offset += 10;
+                        if(offset>=total-1){
+                            $(_this).remove();
+                            return false;
+                        }
+                        xhrIng = false;
+                    }
+                });
             });
         })
     })();
 </script>
-<?php include $viewPath.'footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>

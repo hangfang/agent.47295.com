@@ -25,16 +25,54 @@ class ProductController extends BasicController{
     }
     
     /**
-     * 新品到货
+     * 商品列表
      * @return boolean
      */
-    public function latestAction(){
-        $total = Kissbaby_ProductModel::count();
+    public function indexAction(){
+        $categoryList=Kissbaby_CategoryModel::getList(['parent_id'=>0]);
+        if(!$categoryList){
+            if($this->_request->isXmlHttpRequest()){
+                lExit(502, '分类数据不存在');
+            }
+            header('location: /shop/index/notfound?code=404&title=异常&msg=分类数据不存在');exit;
+        }
+        
+        $categoryId = $this->_request->getQuery('category_id');
+        $subCategoryId = $this->_request->getQuery('sub_category_id');
+        
+        $subCategoryList = [];
+        if($categoryId){
+            if(!in_array($categoryId, array_column($categoryList, 'category_id'))){
+                if($this->_request->isXmlHttpRequest()){
+                    lExit(502, '商品一级分类不存在');
+                }
+                header('location: /shop/index/notfound?code=404&title=异常&msg=商品一级分类不存在');exit;
+            }
+        }
+        
+        $where = [];
+        $categoryId && $where['parent_id'] = $categoryId;
+        $subCategoryList = Kissbaby_CategoryModel::getList($where);
+        if(!$subCategoryList || ($subCategoryId && !in_array($subCategoryId, array_column($subCategoryList, 'category_id')))){
+            if($this->_request->isXmlHttpRequest()){
+                lExit(502, '商品二级分类不存在');
+            }
+            header('location: /shop/index/notfound?code=404&title=异常&msg=商品二级分类不存在');exit;
+        }
+        
+        $where = [];
+        if($subCategoryId){
+            $where['category_id'] = $subCategoryId;
+        }elseif($categoryId){
+            $where['category_id'] = array_merge([$categoryId], array_column($subCategoryList, 'category_id'));
+        }
+            
+        $total = Kissbaby_ProductModel::count($where);
         $productList = [];
         if($total){
             $limit = ['limit'=>12];
             $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-            $productList = Kissbaby_ProductModel::getList([], '*', $limit);
+            $productList = Kissbaby_ProductModel::getList($where, '*', $limit, 'id asc');
         }
         
         $result = ['list'=>$productList, 'total'=>$total];
@@ -43,7 +81,36 @@ class ProductController extends BasicController{
             lExit($result);
         }
         
-        $this->_view->assign('title', '新品到货');
+        if(!$productList){
+            header('location: /shop/index/notfound?code=404&title=异常&msg=商品数据丢失...');exit;
+        }
+        
+        $title = '';
+        if($categoryId || $subCategoryId){
+            foreach($subCategoryList as $_subCategory){
+                if($subCategoryId == $_subCategory['category_id']){
+                    $title = '商品列表-'.$_subCategory['category_name'];
+                    break;
+                }
+            }
+            
+            if(!$title){
+                foreach($categoryList as $_category){
+                    if($categoryId == $_category['category_id']){
+                        $title = '商品列表-'.$_category['category_name'];
+                        break;
+                    }
+                }
+            }
+        }else{
+            $title = '商品列表';
+        }
+
+        $this->_view->assign('title', $title);
+        $this->_view->assign('category', $categoryList);
+        $this->_view->assign('subCategory', $subCategoryList);
+        $this->_view->assign('categoryId', $categoryId);
+        $this->_view->assign('subCategoryId', $subCategoryId);
         $this->_view->assign('data', $result);
         return true;
     }
