@@ -13,16 +13,16 @@ include BASE_PATH.'/template/common/weui/header.php';
             for($i=0,$len=count($categoryList); $i<$len; $i++){
                 $_category = $categoryList[$i];
 
-                $_imgSrc = empty($_category['product_banner']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_category['product_banner']);
+                $_imgSrc = empty($_category['category_banner']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_category['category_banner']);
                 
                 echo <<<EOF
 <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd">
-        <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
+        <img class="lazy weui_media_appmsg_thumb" src="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg'" >
     </div>
     <div class="weui_media_bd">
         <h4 class="weui_media_title">{$_category['category_name']}</h4>
-        <p class="weui_media_desc" style="margin: 0px;line-height: 1rem;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="margin:0px;" onclick="location.href='/shop/category/subcategory?category_id={$_category['category_id']}'">选子分类</span><span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" style="float:right;margin:0 1rem 0 0;" onclick="location.href='/shop/category/product?category_id={$_category['category_id']}'">选商品</span></p>
+        <p class="weui_media_desc" style="margin: 0px;position: relative;line-height: 1rem;width: 100%;height: 3rem;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:7rem;margin:0px;" onclick="location.href='/shop/category/subcategory?category_id={$_category['category_id']}'">选子分类</span><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:0px;margin:0 1rem 0 0;" onclick="location.href='/shop/category/product?category_id={$_category['category_id']}'">选商品</span></p>
     </div>
 </a>
 EOF;
