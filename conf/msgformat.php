@@ -162,7 +162,40 @@ $msgformat['news_format'] = <<<EOF
 </Articles>
 </xml> 
 EOF;
-    
+
+$msgformat['msg_news_web'] = <<<EOF
+<div class="container-fluid">
+<!--<div class="hd">
+<h1 class="page_title">资讯</h1>
+</div>-->
+<div class="bd">
+<ul class="list-group">%s%s</ul>
+</div>
+</div>
+EOF;
+
+$msgformat['msg_news_banner'] = <<<EOF
+<li class="list-group-item">
+<a class="bg-wrapper" href="%s">
+<img src="%s" class="carousel-inner img-responsive" onerror="this.src='%s'"/>
+<div class="banner">
+<h5 class="font16">%s</h5>
+</div>
+</a>
+</li>
+EOF;
+
+$msgformat['msg_news_list'] = <<<EOF
+<li class="list-group-item">
+<a class="row" href="%s">
+<div class="col-xs-9 no-new-line">
+<div class="txt"><span>%s</span></div>
+</div>
+<div class="col-xs-3"><img src="%s" class="pull-right img" onerror="this.src='%s'"/></div>
+</a>
+</li>
+EOF;
+
 $msgformat['send_format'] = array(
     'transfer_customer_service' => array('touser'=>'', 'msgtype'=>'transfer_customer_service', 'transinfo'=>array('kfaccount'=>'')),
     'text' => array('touser'=>'', 'msgtype'=>'text', 'text'=>array('content'=>'')),
@@ -203,36 +236,3 @@ $msgformat['receive_format'] = array(
     'link' => array('ToUserName', 'FromUserName', 'CreateTime', 'MsgType', 'Title', 'Description', 'Url', 'MsgId'),
     'event' => array('ToUserName', 'FromUserName', 'CreateTime', 'MsgType', 'Event', 'EventKey', 'SendLocationInfo', 'Latitude', 'Longitude', 'Precision', 'Ticket', 'MsgId', 'SendPicsInfo', 'ScanCodeInfo'),
 );
-
-$msgformat['msg_news_web'] = <<<EOF
-<div class="container-fluid">
-<!--<div class="hd">
-<h1 class="page_title">资讯</h1>
-</div>-->
-<div class="bd">
-<ul class="list-group">%s%s</ul>
-</div>
-</div>
-EOF;
-
-$msgformat['msg_news_banner'] = <<<EOF
-<li class="list-group-item">
-<a class="bg-wrapper" href="%s">
-<img src="%s" class="carousel-inner img-responsive" onerror="this.src='%s'"/>
-<div class="banner">
-<h5 class="font16">%s</h5>
-</div>
-</a>
-</li>
-EOF;
-
-$msgformat['msg_news_list'] = <<<EOF
-<li class="list-group-item">
-<a class="row" href="%s">
-<div class="col-xs-9 no-new-line">
-<div class="txt"><span>%s</span></div>
-</div>
-<div class="col-xs-3"><img src="%s" class="pull-right img" onerror="this.src='%s'"/></div>
-</a>
-</li>
-EOF;
