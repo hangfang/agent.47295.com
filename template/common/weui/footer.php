@@ -68,14 +68,15 @@
                         </div>
                         <p class="weui_tabbar_label">导航</p>
                     </a>
-                <?php if(empty($_SESSION['user']) || $_SESSION['user']['user_type']!=='admin'){ ?>
-                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($controllerName==='order'){echo 'weui_bar_item_on';}?>">
+                <?php if(!BaseModel::isAdmin()){ ?>
+                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
                         <p class="weui_tabbar_label">购物车</p>
+                        <p class="cart_product_num">0</p>
                     </a>
-                    <a href="/shop/activity/index" class="weui_tabbar_item <?php if($controllerName==='activity'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/order/index" class="weui_tabbar_item <?php if($controllerName==='order' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                         </div>
@@ -125,6 +126,148 @@
 </body>
 </html>
 <script>
+    var cart = {
+        refresh: function(){
+            try{
+                if(typeof localStorage.cart==='undefined'){
+                    $('.cart_product_num').html(0).hide();
+                    return 0;
+                }
+
+                var number = 0;
+                var cartData = JSON.parse(localStorage.cart);
+                for(var i in cartData){
+                    if(typeof cartData[i].product_number!=='undefined'){
+                        number += cartData[i].product_number;
+                    }
+                }
+                
+                if(number>0){
+                    $('.cart_product_num').html(number>99 ? 99 : number).show();
+                }else if(number==0){
+                    $('.cart_product_num').html(0).hide();
+                }
+                return number;
+            }catch(e){
+                layer.error('计算购物车商品数量失败');
+                return 0;
+            }
+        },
+        num: function(){
+            try{
+                if(typeof localStorage.cart==='undefined'){
+                    $('.cart_product_num').html(0).hide();
+                    return 0;
+                }
+
+                var number = 0;
+                var cartData = JSON.parse(localStorage.cart);
+                for(var i in cartData){
+                    if(typeof cartData[i].product_number!=='undefined'){
+                        number += cartData[i].product_number;
+                    }
+                }
+                
+                return number;
+            }catch(e){
+                layer.error('计算购物车商品数量失败');
+                return 0;
+            }
+        },
+        add: function(data, obj){
+            try{
+                var json = JSON.parse(data);
+                if(typeof localStorage.cart==='undefined'){
+                    var tmp = {};
+                    json.product_number = 1;
+                    tmp[json.product_id] = json;
+                    $(obj).attr('data', JSON.stringify(json));
+                    localStorage.cart = JSON.stringify(tmp);
+                    cart.refresh();
+                    return false;
+                }
+
+                var cartData = JSON.parse(localStorage.cart);
+                if(Object.prototype.toString.call(cart)!=='[object Object]'){
+                    json.product_number = 1;
+                    cartData[json.product_id] = json;
+                    $(obj).attr('data', JSON.stringify(cartData[i]));
+                    localStorage.cart = JSON.stringify(cartData);
+                    cart.refresh();
+                    return false;
+                }
+                
+                var productExist = false;
+                for(var i in cartData){
+                    if(json.product_id==i){
+                        productExist = true;
+                        cartData[i].product_number++;
+                        $(obj).attr('data', JSON.stringify(cartData[i]));
+                        localStorage.cart = JSON.stringify(cartData);
+                        cart.refresh();
+                        return false
+                    }
+                }
+
+                if(!productExist){
+                    json.product_number = 1;
+                    cartData[json.product_id] = json;
+                    $(obj).attr('data', JSON.stringify(cartData[i]));
+                    localStorage.cart = JSON.stringify(cartData);
+                    cart.refresh();
+                    return false;
+                }
+            }catch(e){
+                layer.error('添加购物车商品失败');
+                return false;
+            }
+        },
+        minus: function(data, obj){
+            try{
+                var json = JSON.parse(data);
+                if(typeof localStorage.cart==='undefined'){
+                    localStorage.cart = JSON.stringify({});
+                    cart.refresh();
+                    layer.error('购物车里没有此商品');
+                    return false;
+                }
+
+                var cartData = JSON.parse(localStorage.cart);
+                if(Object.prototype.toString.call(cart)!=='[object Object]'){
+                    localStorage.cart = JSON.stringify({});
+                    cart.refresh();
+                    layer.error('数据格式错误');
+                    return false;
+                }
+                
+                var productExist = false;
+                for(var i in cartData){
+                    if(json.product_id==i){
+                        productExist = true;
+                        if(cartData[i].product_number>1){
+                            cartData[i].product_number--;
+                            $(obj).attr('data', JSON.stringify(cartData[i]));
+                            break;
+                        }else{
+                            delete cartData[i];
+                        }
+                    }
+                }
+                
+                if(!productExist){
+                    layer.error('购物车里没有此商品');
+                    return false;
+                }
+
+                localStorage.cart = JSON.stringify(cartData);
+                cart.refresh();
+                return false;
+            }catch(e){
+                layer.error('删减购物车商品失败');
+                return false;
+            }
+        }
+    }
     var layer = {
         toast:function(msg){
             $('#toast').find('p').html(msg).end().show();
@@ -132,10 +275,13 @@
                 $('#toast').find('p').html('已完成').end().hide();
             }, 2000);
         },
-        error:function(msg){
+        error:function(msg, yes){
             $('#dialog2').find('.weui_dialog_bd').html(msg).end().show();
             $('#dialog2').find('a').one('click', function(){
                 $('#dialog2').find('.weui_dialog_bd').html('弹窗内容，告知当前页面信息等').end().hide();
+                if(typeof yes === 'function'){
+                    yes.call();
+                }
             });
         },
         loading:function(show){
@@ -221,34 +367,11 @@
         }
     };
     $(function(){
+        cart.refresh();
         $("img.lazy").lazyload({effect: "fadeIn"});
         
         $('.add_to_cart').click(function(){
-            var data = $(this).attr('data');
-
-            if(data){
-                try{
-                    var json = JSON.parse(data);
-                    if(typeof localStorage.cart==='undefined'){
-                        localStorage.cart = JSON.stringify([json]);
-                    }else{
-                        var cart = JSON.parse(localStorage.cart);
-                        if(Object.prototype.toString.call(cart)!=='[object Array]'){
-                            cart = [json];
-                        }else{
-                            cart.unshift(json);
-                        }
-                        localStorage.cart = JSON.stringify(cart);
-                        layer.toast('成功');
-                    }
-                }catch(e){
-                    layer.error('加入购物车失败，请稍后再试');
-                    return false;
-                }
-                
-                return false;
-            }
-            
+            var num = cart.add($(this).attr('data'), $(this));
             return false;
         });
         
@@ -263,4 +386,3 @@
         });
     });
 </script>
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=55696994" charset="UTF-8"></script>

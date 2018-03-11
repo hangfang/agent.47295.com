@@ -19,6 +19,60 @@
         body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft YaHei,'宋体' , Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif;}
         p.weui_tabbar_label {padding: 0; margin:0;}
         .weui_tabbar_icon + .weui_tabbar_label {margin: 0;}
+        .cart_plus {
+            position: absolute;
+            bottom: -3px;
+            right: 0px;
+            width: 40px;
+            height: 40px;
+            background: url(/static/shop/images/plus.png) no-repeat 8px 8px #F54D5B;
+            color: #fff;
+            text-align: center;
+            line-height: 33px;
+            border: 4px solid #fff;
+            font-size: 11px;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-top-right-radius: 50%;
+            /* border-bottom-right-radius: 50%; */
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+        }
+        .cart_minus {
+            position: absolute;
+            bottom: -3px;
+            right: 7rem;
+            width: 40px;
+            height: 40px;
+            background: url(/static/shop/images/minus.png) no-repeat 8px 8px #F54D5B;
+            color: #fff;
+            text-align: center;
+            line-height: 33px;
+            border: 4px solid #fff;
+            font-size: 11px;
+            border-top-left-radius: 50%;
+            border-top-right-radius: 50%;
+            border-top-right-radius: 50%;
+            /* border-bottom-right-radius: 50%; */
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+        }
+        .cart_number {
+            position: absolute;
+            bottom: -3px;
+            right: 3.1rem;
+            width: 50px;
+            height: 40px;
+            overflow:hidden;
+            color: red;
+            text-align: center;
+            line-height: 38px;
+            font-size: 11px;
+        }
     </style>
     <?php if(ini_get('environ') === 'product'){ ?>
     <script>

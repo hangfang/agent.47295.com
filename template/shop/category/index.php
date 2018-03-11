@@ -17,12 +17,11 @@ include BASE_PATH.'/template/common/weui/header.php';
                 
                 echo <<<EOF
 <a href="javascript:void(0);" class="weui_media_box weui_media_appmsg">
-    <div class="weui_media_hd">
+    <div class="weui_media_hd" style="width: 20rem;height: 120px;">
         <img class="lazy weui_media_appmsg_thumb" src="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg'" >
     </div>
-    <div class="weui_media_bd">
-        <h4 class="weui_media_title">{$_category['category_name']}</h4>
-        <p class="weui_media_desc" style="margin: 0px;position: relative;line-height: 1rem;width: 100%;height: 3rem;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:7rem;margin:0px;" onclick="location.href='/shop/category/subcategory?category_id={$_category['category_id']}'">选子分类</span><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:0px;margin:0 1rem 0 0;" onclick="location.href='/shop/category/product?category_id={$_category['category_id']}'">选商品</span></p>
+    <div class="weui_media_bd" style="width: 60px;height: 120px;">
+        <p class="weui_media_desc" style="margin: 0px;position: relative;line-height: 1rem;width: 100%;height: 100%;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:0px;margin:0px;bottom:12px;" onclick="location.href='/shop/category/subcategory?category_id={$_category['category_id']}'">选子分类</span><span class="weui_btn weui_btn_mini weui_btn_primary" style="position:absolute;right:0px;margin:0;bottom:43px;" onclick="location.href='/shop/category/product?category_id={$_category['category_id']}'">选商品</span></p>
     </div>
 </a>
 EOF;

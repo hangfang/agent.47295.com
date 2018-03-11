@@ -1,52 +1,63 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include $viewPath.'header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
-<div id="banner" class="banner" style="display:none;">
-	<div class="container">
-		<div class="banner_desc">
-			<h1>琳玲Dai购</h1>
-			<h2>最贴心的生活助手</h2>
-			<div class="button">
-                <a href="javascritp:void(0)" class="hvr-shutter-out-horizontal">Shop Now</a>
-            </div>
-		</div>
-	</div>
+<style>
+    .weui_media_desc .add_to_cart {float:right;}
+</style>
+<div class="weui_panel weui_panel_access">
+    <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
+    <div class="weui_panel_bd" id="cart">
+        
+    </div>
 </div>
-<div class="content_top">
-	<h3 class="m_1" style="display:none;">新品到货</h3>
-	<div class="container" id="container">
-        <div class="box_1">
-            <div class="col-md-7-bak">
-                <div class="col_1_of_3 span_1_of_3">
-                     <div class="shop-holder">
-                          <div class="cart-img">
-                             <a href="/shop/product/detail?product_id=2253">
-                                 <img width_bak="225" height_bak="265" data-original="data/JPgoods/2253\9f8316123ef70c4da8f8300b2d72ca59.jpg" src="http://agent.47295.com/static/shop/images/default215x215.png" class="lazy img-responsive" alt="item4">
-                             </a>
-                             <a href="javascript:void(0);" class="button "></a>
-                         </div>
-                     </div>
-                     <div class="shop-content" style="height: 50px;margin-top: .7rem;">
-                         <div><a href="/shop/product/detail?product_id=2253" rel="tag">环保驱蚊剂</a></div>
-                         <h3><a href="/shop/product/detail?product_id=2253">Non-charac</a></h3>
-                         <span><span class="amount">会员价:$13.64</span></span>
-                     </div>
-                 </div>	
-             </div>
-            <div class="clearfix"></div>
-         </div>
-     </div>
-</div>
-
 <script>
     $(function(){
-        $(document).scroll(function(){
-            var tmp = $(document).height() / ($(document).scrollTop() + window.innerHeight);
-            if(tmp < 1.05 ){
-                console.log(tmp);
-            }  
-        });
-    })
+        if(typeof localStorage.cart==='undefined'){
+            layer.error('购物车空空如也,立即选货吧', function(){location.href='/shop/index/index'});
+        }else{
+            var json = localStorage.cart;
+            var cart = JSON.parse(json);
+            var html = '';
+            for(var i in cart){
+                var product = cart[i];
+                
+                var extra = '';
+                <?php
+                    if(BaseModel::isAdmin()){
+                        echo 'var extra = \'<span class="weui_desc_extra">Vip价:￥\'+ product[\'product_vip_price\'] +\'</span>\';';
+                    }
+                ?>
+
+                            
+                html += '<div class="weui_media_box weui_media_appmsg">\
+        <div class="weui_media_hd">\
+            <img class="lazy weui_media_appmsg_thumb" src="'+ product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') +'" onerror="this.src=\'<?php echo STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg\'" >\
+        </div>\
+        <div class="weui_media_bd">\
+            <h4 class="weui_media_title" style="margin: 0px;">'+ product['product_name'] +'</h4>\
+            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="line-height: 33px;position: absolute;bottom: 0;width: 59px;" onclick="location.href=\'/shop/product/detail?product_id='+ product['product_id'] +'\'">详情</span>'+ extra +'<span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_number'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
+        </div>\
+    </div>';
+
+                $('#cart').html(html);
+            }
+        };
+    });
 </script>
-<?php include $viewPath.'footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>
+<script>
+    $('#cart').on('click', '.cart_plus', function(){
+        cart.add($(this).attr('data'), $(this));
+        var num = cart.refresh();
+        $('.cart_number').html(num>99 ? 99 : num).show();
+        return false;
+    });
+
+    $('#cart').on('click', '.cart_minus', function(){
+        cart.minus($(this).attr('data'), $(this));
+        var num = cart.refresh();
+        $('.cart_number').html(num>99 ? 99 : num).show();
+        return false;
+    });
+</script>
