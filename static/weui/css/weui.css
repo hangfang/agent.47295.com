@@ -2027,7 +2027,7 @@ input[type="search"]::-webkit-search-results-decoration {
     height: 1.5rem;
     text-align: center;
     color: #fff;
-    line-height: 1.19;
+    line-height: 1.49rem;
     background: red;
     border: 1px solid red;
     border-top-left-radius: 50%;
