@@ -98,7 +98,7 @@ EOF;
 <a class="weui_cell" href="/shop/product/detail?product_id={$_related['product_id']}">
     <div class="weui_cell_hd"><img src="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/default215x215.png';" alt="" style="width:20px;margin-right:5px;display:block"></div>
     <div class="weui_cell_bd weui_cell_primary">
-        <p style="margin:0px;line-height: 1.4rem;height: 1.4rem;overflow:hidden;">{$_related['product_name']}</p>
+        <p style="margin:0px;line-height: 1.5rem;height: 1.5rem;overflow:hidden;">{$_related['product_name']}</p>
     </div>
     <span class="weui_cell_ft"></span>
 </a>
