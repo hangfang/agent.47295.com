@@ -98,9 +98,9 @@ include BASE_PATH.'/template/common/weui/header.php';
                 <div class="weui_cell_ft">
                 </div>
             </a>
-            <a class="weui_cell" href="javascript:;">
+            <a class="weui_cell" href="/wechat/manage_kaifang/index">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>设置</p>
+                    <p>查开房</p>
                 </div>
                 <div class="weui_cell_ft">
                 </div>
