@@ -7,13 +7,12 @@ include BASE_PATH.'/template/common/weui/header.php';
 </style>
 <div class="weui_cells_title">指定分类</div>
 <div class="weui_cells">
-    <div class="weui_cell weui_cell_select weui_select_after">
+    <div class="weui_cell weui_cell_select weui_select_after" style="float:left;">
         <div class="weui_cell_hd">
-            一级
         </div>
-        <div class="weui_cell_bd weui_cell_primary">
+        <div class="weui_cell_bd weui_cell_primary" style="-webkit-box-flex: 2;-webkit-flex: 2;-ms-flex: 2;flex: 2;">
             <select class="weui_select" name="category_id" id='category_id'>
-                <option <?php $categoryId ? '' : 'selected'?> value="">请选择</option>
+                <option <?php $categoryId ? '' : 'selected'?> value="">父分类</option>
                 <?php
                     foreach($category as $_category){
                         echo '<option '. ($_category['category_id']==$categoryId ? 'selected' : '') .' value='. $_category['category_id'] .'>'. $_category['category_name'] .'</option>';
@@ -24,11 +23,10 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
     <div class="weui_cell weui_cell_select weui_select_after">
         <div class="weui_cell_hd">
-            二级
         </div>
-        <div class="weui_cell_bd weui_cell_primary">
+        <div class="weui_cell_bd weui_cell_primary" style="-webkit-box-flex: 2;-webkit-flex: 2;-ms-flex: 2;flex: 2;">
             <select class="weui_select" name="sub_category_id" id='sub_category_id'>
-                <option <?php $subCategoryId ? '' : 'selected'?> value="">请选择</option>
+                <option <?php $subCategoryId ? '' : 'selected'?> value="">子分类</option>
                 <?php
                     foreach($subCategory as $_subCategory){
                         echo '<option '. ($_subCategory['category_id']==$subCategoryId ? 'selected' : '') .' value='. $_subCategory['category_id'] .'>'. $_subCategory['category_name'] .'</option>';
@@ -80,6 +78,7 @@ EOF;
 </div>
 <script>
     (function(){
+        var category = '<?php echo str_replace('\'', '\\\'', json_encode($category));?>';
         var total = <?php echo $data['total'];?>;
         var offset = 10;
         $(function(){
@@ -164,18 +163,38 @@ EOF;
                 });
             });
             
-            $('#category_id,#sub_category_id').change(function(){
+            $('#category_id').change(function(){
                 var categoryId = $('#category_id').val();
-                var subCategoryId = $('#sub_category_id').val();
-                if(subCategoryId){
-                    location.href = '/shop/product/index?category_id='+categoryId+'&sub_category_id='+subCategoryId;
-                    return false;
-                }
+                var subCategoryId = $('#sub_category_id').val('');
                 
                 if(categoryId){
                     location.href = '/shop/product/index?category_id='+categoryId;
                     return false;
                 }
+            });
+            
+            $('#sub_category_id').change(function(){
+                var categoryId = $('#category_id').val();
+                var subCategoryId = $('#sub_category_id').val();
+                if(subCategoryId){
+                    for(var i in subCategoryId){
+                        if(subCategoryId[i].category_id==subCategoryId){
+                            categoryId = subCategoryId[i].parent_id;
+                        }
+                    }
+                    
+                    if(!categoryId){
+                        layer.error('父分类不存在');
+                        return false;
+                    }
+                    
+                    $('#category_id').val(categoryId);
+                    location.href = '/shop/product/index?category_id='+categoryId+'&sub_category_id='+subCategoryId;
+                    return false;
+                }
+                
+                layer.error('分类不存在');
+                return false;
             });
         })
     })();
