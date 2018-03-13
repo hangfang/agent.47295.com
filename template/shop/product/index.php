@@ -29,7 +29,9 @@ include BASE_PATH.'/template/common/weui/header.php';
                 <option <?php $subCategoryId ? '' : 'selected'?> value="">子分类</option>
                 <?php
                     foreach($subCategory as $_subCategory){
-                        echo '<option '. ($_subCategory['category_id']==$subCategoryId ? 'selected' : '') .' value='. $_subCategory['category_id'] .'>'. $_subCategory['category_name'] .'</option>';
+                        if($categoryId && $categoryId==$_subCategory['parent_id']){
+                            echo '<option '. ($_subCategory['category_id']==$subCategoryId ? 'selected' : '') .' value='. $_subCategory['category_id'] .'>'. $_subCategory['category_name'] .'</option>';
+                        }
                     }
                 ?>
             </select>
