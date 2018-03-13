@@ -39,16 +39,20 @@ include BASE_PATH.'/template/common/weui/header.php';
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>
 <script>
     $('#cart').on('click', '.cart_plus', function(){
-        cart.add($(this).attr('data'), $(this));
-        var num = cart.refresh();
-        $(this).siblings('.cart_number').html(num>99 ? 99 : num).show();
+        var data = $(this).attr('data');
+        cart.add(data, $(this));
+        
+        var json = JSON.parse($(this).attr('data'));
+        $(this).siblings('.cart_number').html(json.product_number>99 ? 99 : json.product_number).show();
         return false;
     });
 
     $('#cart').on('click', '.cart_minus', function(){
-        cart.minus($(this).attr('data'), $(this));
-        var num = cart.refresh();
-        $(this).siblings('.cart_number').html(num>99 ? 99 : num).show();
+        var data = $(this).attr('data');
+        cart.minus(data, $(this));
+        
+        var json = JSON.parse($(this).attr('data'));
+        $(this).siblings('.cart_number').html(json.product_number>99 ? 99 : json.product_number).show();
         return false;
     });
 </script>

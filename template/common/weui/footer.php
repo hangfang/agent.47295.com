@@ -69,7 +69,7 @@
                         <p class="weui_tabbar_label">导航</p>
                     </a>
                 <?php if(!BaseModel::isAdmin()){ ?>
-                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
+                    <a href="/shop/order/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
@@ -89,7 +89,7 @@
                         <p class="weui_tabbar_label">账户中心</p>
                     </a>
                 <?php }else{?>
-                    <a href="/shop/order/cart" id="contact" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
+                    <a href="/shop/order/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
@@ -190,10 +190,11 @@
 
                 var cartData = JSON.parse(localStorage.cart);
                 if(Object.prototype.toString.call(cart)!=='[object Object]'){
+                    var tmp = {};
                     json.product_number = 1;
-                    cartData[json.product_id] = json;
-                    $(obj).attr('data', JSON.stringify(cartData[i]));
-                    localStorage.cart = JSON.stringify(cartData);
+                    tmp[json.product_id] = json;
+                    $(obj).attr('data', JSON.stringify(tmp));
+                    localStorage.cart = JSON.stringify(tmp);
                     cart.refresh();
                     return false;
                 }
@@ -213,7 +214,7 @@
                 if(!productExist){
                     json.product_number = 1;
                     cartData[json.product_id] = json;
-                    $(obj).attr('data', JSON.stringify(cartData[i]));
+                    $(obj).attr('data', JSON.stringify(cartData[json.product_id]));
                     localStorage.cart = JSON.stringify(cartData);
                     cart.refresh();
                     return false;
@@ -250,6 +251,8 @@
                             $(obj).attr('data', JSON.stringify(cartData[i]));
                             break;
                         }else{
+                            cartData[i].product_number = 0;
+                            $(obj).attr('data', JSON.stringify(cartData[i]));
                             delete cartData[i];
                         }
                     }
@@ -378,8 +381,8 @@
         
         $('#shop_entry_btn').click(function(){
             var menu = [
-                {'url':'/shop/product/index','text':'超市'},
                 {'url':'/shop/category/index','text':'分类'},
+                {'url':'/shop/product/index','text':'淘宝贝'},
                 {'url':'/shop/index/index','text':'精选推荐'},
                 {'url':'/shop/activity/index','text':'限时活动'},
             ];
