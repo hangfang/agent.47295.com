@@ -41,14 +41,14 @@ include BASE_PATH.'/template/common/weui/header.php';
     $('#cart').on('click', '.cart_plus', function(){
         cart.add($(this).attr('data'), $(this));
         var num = cart.refresh();
-        $('.cart_number').html(num>99 ? 99 : num).show();
+        $(this).siblings('.cart_number').html(num>99 ? 99 : num).show();
         return false;
     });
 
     $('#cart').on('click', '.cart_minus', function(){
         cart.minus($(this).attr('data'), $(this));
         var num = cart.refresh();
-        $('.cart_number').html(num>99 ? 99 : num).show();
+        $(this).siblings('.cart_number').html(num>99 ? 99 : num).show();
         return false;
     });
 </script>
