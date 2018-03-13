@@ -381,7 +381,6 @@
         
         $('#shop_entry_btn').click(function(){
             var menu = [
-                {'url':'/shop/category/index','text':'分类'},
                 {'url':'/shop/product/index','text':'淘宝贝'},
                 {'url':'/shop/index/index','text':'精选推荐'},
                 {'url':'/shop/activity/index','text':'限时活动'},
