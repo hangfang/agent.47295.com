@@ -141,7 +141,7 @@
                 for(var i in cartData){
                     if(typeof cartData[i].product_number!=='undefined'){
                         number = (cartData[i].product_number-0)+(number-0);
-                        price = new Number((cartData[i].product_number*cartData[i].product_vip_price)+(price-0)).toFixed(2)
+                        price = new Number((cartData[i].product_number*cartData[i].product_vip_price)+(price-0)).toFixed(2);
                     }
                 }
                 
