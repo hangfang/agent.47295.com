@@ -9,7 +9,7 @@ define('BASE_URL', 'http://'.SERVER_NAME);
 /**
  * @var string 静态文件版本号
  */
-define('STATIC_VERSION', PHP_ENV==='develop' ? time() : '######');
+define('STATIC_VERSION', PHP_ENV==='develop' ? time() : '20180314212729');
 
 //OSS配置
 define('OSS_BUCKET', 'agent-47295');
