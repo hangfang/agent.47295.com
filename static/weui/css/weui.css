@@ -832,7 +832,7 @@ input.weui_btn_plain_default {
   margin-bottom: 25px;
 }
 .weui_msg .weui_extra_area {
-  margin-bottom: 4rem;
+  margin-bottom: 10rem;
   font-size: 14px;
   color: #888;
 }
@@ -2022,7 +2022,7 @@ input[type="search"]::-webkit-search-results-decoration {
 .cart_product_num {
     position: absolute;
     top: 0px;
-    right: 0.5rem;
+    right: 2.3rem;
     width: 1.5rem;
     height: 1.5rem;
     text-align: center;
