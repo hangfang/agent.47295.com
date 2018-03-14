@@ -16,7 +16,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             </select>
         </div>
         <div class="weui_cell_bd weui_cell_primary">
-            <input class="weui_input" type="tel" name="search" id="search" placeholder="请输入搜索关键字" style="float:left;width:60%;">
+            <input class="weui_input" type="text" name="search" id="search" placeholder="请输入搜索关键字" style="float:left;width:60%;">
             <a href="javascript:;" class="weui_btn weui_btn_mini weui_btn_primary" style="float:right;" id="do_search">按钮</a>
         </div>
     </div>
@@ -106,7 +106,18 @@ include BASE_PATH.'/template/common/weui/header.php';
                     }
                 });
             });
-        })
+            
+            $("#type").change(function(){
+                var type = (this).val();
+                if(type=='Name'){
+                    $('#search').attr('type', 'text');
+                }else if(type=='Mobile'){
+                    $('#search').attr('type', 'tel');
+                }else if(type=='CtfId'){
+                    $('#search').attr('type', 'number');
+                }
+            });
+        });
     })();
 </script>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>
