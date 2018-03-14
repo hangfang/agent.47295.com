@@ -8,7 +8,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     <div class="weui_panel_bd">
         <div class="weui_media_box weui_media_text">
             <div class="head-img">
-                <img src="<?php echo STATIC_CDN_URL;?>static/public/img/user/head-img.png" style="height:75px;width:100%;">
+                <img src="<?php echo STATIC_CDN_URL;?>static/public/img/user/head-img.png" style="height:75px;width:75px;">
             </div>
             <div class="head-dsb">
                 <p class="dsb-name"><?php echo $_SESSION['user']['user_name'];?></p>
