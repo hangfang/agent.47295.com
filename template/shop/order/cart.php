@@ -27,7 +27,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 productNumber += product['product_number'];
                 var extra = '';
                 <?php if(BaseModel::isAdmin()||1){?>
-                    productVipPrice += product['product_vip_price']*product['product_number'];
+                    productVipPrice = new Number(product['product_vip_price']*product['product_number']+productVipPrice).toFixed(2);;
                     extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">Vip价:￥'+ product['product_vip_price'] +'</span>';
                 <?php } ?>
                 html += '<div class="weui_media_box weui_media_appmsg">\
