@@ -100,7 +100,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             </a>
             <a class="weui_cell" href="/wechat/manage_kaifang/index">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>查开房</p>
+                    <p>查开房(截止到2013-01-01之前)</p>
                 </div>
                 <div class="weui_cell_ft">
                 </div>
