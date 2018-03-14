@@ -19,20 +19,49 @@ include BASE_PATH.'/template/common/weui/header.php';
             var json = localStorage.cart;
             var cart = JSON.parse(json);
             var html = '';
+            var productVipPrice = 0;
+            var productNumber = 0;
+            
             for(var i in cart){
-                var product = cart[i]; 
+                var product = cart[i];
+                productNumber += product['product_number'];
+                var extra = '';
+                <?php if(BaseModel::isAdmin()||1){?>
+                    productVipPrice += product['product_vip_price']*product['product_number'];
+                    extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">Vip价:￥'+ product['product_vip_price'] +'</span>';
+                <?php } ?>
                 html += '<div class="weui_media_box weui_media_appmsg">\
         <div class="weui_media_hd">\
             <img class="lazy weui_media_appmsg_thumb" src="'+ product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') +'" onerror="this.src=\'<?php echo STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg\'" >\
         </div>\
-        <div class="weui_media_bd">\
+        <div class="weui_media_bd" style="height:auto;line-height:0;">\
             <h4 class="weui_media_title" style="margin: 0px;">'+ product['product_name'] +'</h4>\
-            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;"><span class="weui_btn weui_btn_mini weui_btn_primary" style="line-height: 33px;position: absolute;bottom: 0;width: 59px;" onclick="location.href=\'/shop/product/detail?product_id='+ product['product_id'] +'\'">详情</span><span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_number'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
+            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">'+extra+'<span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_number'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
         </div>\
     </div>';
-
-                $('#cart').html(html);
             }
+            
+            var extra = productVipPrice ? '<span class="weui_desc_extra cart_price_total" style="line-height:3;">￥'+ productVipPrice +'</span>' : '';
+            extra += '<span class="weui_desc_extra cart_number_total" style="position:absolute;line-height:3;right:3.1rem;">'+ productNumber +'件</span>';
+            html += '<div class="weui_media_box weui_media_appmsg">\
+    <div class="weui_media_hd" style="height:auto;line-height:0;">\
+    <span class="weui_desc_extra">总计</span>\
+    </div>\
+    <div class="weui_media_bd">\
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">\
+            '+ extra +'\
+        </p>\
+    </div>\
+</div>\
+<div class="weui_media_box weui_media_appmsg">\
+    <div class="weui_media_bd">\
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;display: block;">\
+            <span class="weui_btn weui_btn_mini weui_btn_primary clear_cart" style="float: left;display: block;">清空购物车</span>\
+            <span class="weui_btn weui_btn_mini weui_btn_primary create_order" style="float: right;display: block;margin:0;">下单</span>\
+        </p>\
+    </div>\
+</div>';
+            $('#cart').html(html);
         };
     });
 </script>
@@ -53,6 +82,14 @@ include BASE_PATH.'/template/common/weui/header.php';
         
         var json = JSON.parse($(this).attr('data'));
         $(this).siblings('.cart_number').html(json.product_number>99 ? 99 : json.product_number).show();
+        return false;
+    });
+
+    $('#cart').on('click', '.clear_cart', function(){
+        layer.confirm('确定要清空购物车吗？', function(){
+            delete localStorage.cart;
+            location.href = '/shop/index/index';
+        });
         return false;
     });
 </script>

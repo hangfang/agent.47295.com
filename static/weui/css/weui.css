@@ -1356,7 +1356,7 @@ a.weui_media_box:active {
   padding: 1.2em 20px .5em;
 }
 .weui_dialog_confirm .weui_dialog .weui_dialog_bd {
-  text-align: left;
+/*  text-align: left;*/
 }
 .weui_dialog_hd {
   padding: 1.2em 0 .5em;

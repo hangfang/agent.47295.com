@@ -136,17 +136,27 @@
                 }
 
                 var number = 0;
+                var price = 0;
                 var cartData = JSON.parse(localStorage.cart);
                 for(var i in cartData){
                     if(typeof cartData[i].product_number!=='undefined'){
-                        number += cartData[i].product_number;
+                        number = (cartData[i].product_number-0)+(number-0);
+                        price = (cartData[i].product_number*cartData[i].product_vip_price)+(price-0);
                     }
                 }
                 
                 if(number>0){
                     $('.cart_product_num').html(number>99 ? 99 : number).show();
+                    var tmp = $('.cart_number_total');
+                    tmp.length && tmp.html(number+'件').show();
+                    var tmp = $('.cart_price_total');
+                    tmp.length && tmp.html('￥'+price).show();
                 }else if(number==0){
                     $('.cart_product_num').html(0).hide();
+                    var tmp = $('.cart_number_total');
+                    tmp.length && tmp.html('0件').show();
+                    var tmp = $('.cart_price_total');
+                    tmp.length && tmp.html('￥0').show();
                 }
                 return number;
             }catch(e){
