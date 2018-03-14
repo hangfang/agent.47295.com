@@ -106,17 +106,6 @@ include BASE_PATH.'/template/common/weui/header.php';
                     }
                 });
             });
-            
-            $("#type").change(function(){
-                var type = (this).val();
-                if(type=='Name'){
-                    $('#search').attr('type', 'text');
-                }else if(type=='Mobile'){
-                    $('#search').attr('type', 'tel');
-                }else if(type=='CtfId'){
-                    $('#search').attr('type', 'number');
-                }
-            });
         });
     })();
 </script>
