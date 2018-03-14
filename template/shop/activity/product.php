@@ -21,7 +21,7 @@ include BASE_PATH.'/template/common/weui/header.php';
 
                 $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image']);
                 $_productData = json_encode($_product);
-                $_extra = '';
+                $_extra =  '<span class="weui_desc_extra">Vip价:￥'. $_product['product_vip_price'] .'</span>';
                 if(BaseModel::isAdmin()){
                     $_extra .= '<span class="weui_desc_extra">Vip价:￥'. $_product['product_vip_price'] .'</span>';
                 }
@@ -33,7 +33,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
     <div class="weui_media_bd">
         <h4 class="weui_media_title">{$_product['product_name']}</h4>
-        <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>+购物车</span></p>
+        <p class="weui_media_desc" style="position:relative;line-height:2.23rem;height:2.23rem;">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}' style="position:absolute;right:2rem;line-height:2rem;">+购物车</span></p>
     </div>
 </a>
 EOF;

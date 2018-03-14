@@ -52,9 +52,7 @@ class ActivityController extends BasicController{
      * @return boolean
      */
     public function indexAction(){
-        $limit = ['limit'=>12];
-        $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
-        $activityList = Kissbaby_ActivityModel::getList(['activity_status'=>1, 'activity_visible'=>1, 'start_time<='=>date('Y-m-d H:i:s'), 'end_time>='=>date('Y-m-d H:i:s')], '*', $limit, 'activity_order asc');
+        $activityList = Kissbaby_ActivityModel::getList(['activity_status'=>1, 'activity_visible'=>1, 'start_time<='=>date('Y-m-d H:i:s'), 'end_time>='=>date('Y-m-d H:i:s')], '*', '', 'activity_order asc');
         
         if($this->_request->isXmlHttpRequest()){
             lExit($activityList);
