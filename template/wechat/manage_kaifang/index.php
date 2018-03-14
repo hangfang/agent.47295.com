@@ -72,7 +72,12 @@ include BASE_PATH.'/template/common/weui/header.php';
                             layer.error(data.error_msg);
                             return false;
                         }
-
+                        
+                        if(data.data.length==0){
+                            layer.error('未查询到数据');
+                            return false;
+                        }
+                        
                         var html = '';
                         for(var i=0,len=data.data.length;i<len;i++){
 
