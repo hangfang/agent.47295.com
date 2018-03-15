@@ -116,7 +116,7 @@ class OrderController extends BasicController{
         $db = Database::getInstance('kissbaby');
         $db->startTransaction();
         
-        if(!$order){
+        if(empty($order)){
             $order = [
                 'order_code'            =>  $orderCode=Kissbaby_OrderModel::getOrderCode(),
                 'order_cost_money'      =>  0,
