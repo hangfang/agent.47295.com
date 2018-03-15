@@ -56,7 +56,7 @@ include BASE_PATH.'/template/common/weui/header.php';
 <div class="weui_media_box weui_media_appmsg">\
     <div class="weui_media_bd">\
         <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;display: block;">\
-            <span class="weui_btn weui_btn_mini weui_btn_primary clear_cart" style="float: left;display: block;">清空购物车</span>\
+            <span class="weui_btn weui_btn_mini weui_btn_warn clear_cart" style="float: left;display: block;">清空购物车</span>\
             <span class="weui_btn weui_btn_mini weui_btn_primary create_order" style="float: right;display: block;margin:0;">下单</span>\
         </p>\
     </div>\
