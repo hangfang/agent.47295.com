@@ -103,7 +103,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         var json = JSON.parse(localStorage.cart);
         var productList = [];
         for(var i in json){
-            productList.push({"product_num":json[i]['product_num'],"product_id":i});
+            productList.push({"product_num":json[i]['product_number'],"product_id":i});
         }
         
         if(!productList){
