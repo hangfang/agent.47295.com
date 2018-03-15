@@ -189,6 +189,7 @@ class OrderController extends BasicController{
             $orderUpdate['order_origin_money'] = bcadd($orderUpdate['order_origin_money'], bcmul($_product['product_sale_price'], $_prd['product_num'], 2), 2);
             $orderUpdate['order_product_num'] = bcadd($orderUpdate['order_product_num'], $_prd['product_num']);
             $orderUpdate['order_real_money'] = bcadd($orderUpdate['order_real_money'], bcmul($_product['product_sale_price'], $_prd['product_num'], 2), 2);
+            $orderUpdate['order_image'] = $_productImage;
         }
 
         if(!Kissbaby_OrderModel::update($orderUpdate, ['id'=>$orderId])){

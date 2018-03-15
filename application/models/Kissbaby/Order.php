@@ -33,6 +33,6 @@ class Kissbaby_OrderModel extends BaseModel {
      * @return string
      */
     public static function getOrderCode(){
-        
+        return date('YmdHis').rand(100000, 999999);
     }
 }
