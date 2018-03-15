@@ -6,7 +6,7 @@ class OrderController extends BasicController{
      */
     public function indexAction(){
         $where = [];
-        if($_SESSION['user']['user_type']=='customer'){
+        if(!BaseModel::isAdmin()){
             $where['user_id'] = $_SESSION['user']['id'];
         }
         
@@ -91,8 +91,8 @@ class OrderController extends BasicController{
         }
         
         $userId = $this->_request->getPost('user_id');
-        if(empty($userId) && empty($orderCode) && $_SESSION['user']['user_type']==='admin'){
-            lExit(502, '请指定购买人');
+        if(empty($orderCode) && $_SESSION['user']['user_type']==='admin'){
+            $userId = $userId ? $userId : $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
         }
@@ -203,7 +203,16 @@ class OrderController extends BasicController{
         }
         
         $orderCode = $this->_request->getPost('order_code');
-        if(!empty($orderCode) && $order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode], 'order_code')){
+        if(!empty($orderCode)){
+            lExit(502, '订单号不能为空');
+        }
+        
+        $where = ['order_code'=>$orderCode];
+        if(!BaseModel::isAdmin()){
+            $where['user_id'] = $_SESSION['user']['id'];
+        }
+
+        if(!$order=Kissbaby_OrderModel::getRow($where, 'order_code')){
             lExit(502, '订单不存在');
         }
 
@@ -231,7 +240,7 @@ class OrderController extends BasicController{
             lExit(502, '订单不存在');
         }
 
-        if($_SESSION['user']['user_type']=='customer' && $order['order_status']!='INIT'){
+        if(!BaseModel::isAdmin() && $order['order_status']!='INIT'){
             lExit(502, '订单【'.Kissbaby_OrderModel::getStatusHint($order['order_status']).'】, 不允许编辑');
         }
         
@@ -286,7 +295,7 @@ class OrderController extends BasicController{
             lExit(502, '请求非法');
         }
 
-        if($_SESSION['user']['user_type']=='customer'){
+        if(!BaseModel::isAdmin()){
             lExit(502, '操作未授权');
         }
         
@@ -365,7 +374,7 @@ class OrderController extends BasicController{
             lExit(502, '请求非法');
         }
 
-        if($_SESSION['user']['user_type']=='customer'){
+        if(!BaseModel::isAdmin()){
             lExit(502, '操作未授权');
         }
         
@@ -405,7 +414,16 @@ class OrderController extends BasicController{
         }
         
         $orderCode = $this->_request->getPost('order_code');
-        if(!empty($orderCode) && $order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode])){
+        if(empty($orderCode)){
+            lExit(502, '订单号不能为空');
+        }
+        
+        $where = ['order_code'=>$orderCode];
+        if(!BaseModel::isAdmin()){
+            $where['user_id'] = $_SESSION['user']['id'];
+        }
+
+        if(!$order=Kissbaby_OrderModel::getRow($where)){
             lExit(502, '订单不存在');
         }
         
