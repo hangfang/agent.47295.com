@@ -101,12 +101,12 @@ include BASE_PATH.'/template/common/weui/header.php';
         }
         
         var json = JSON.parse(localStorage.cart);
-        var param = [];
+        var productList = [];
         for(var i in json){
-            param.push({'product_num':json[i]['product_num'],'product_id':i});
+            productList.push({"product_num":json[i]['product_num'],"product_id":i});
         }
         
-        if(!param){
+        if(!productList){
             layer.error('购物车空空如也~', function(){location.href='/shop/index/index'});
             return false;
         }
@@ -115,7 +115,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             url:'/shop/order/add',
             type:'post',
             dataType:'json',
-            data:param,
+            data:{"product_list":productList},
             beforeSend:function(xhr){
                 if(xhrIng){
                     xhr.abort();
