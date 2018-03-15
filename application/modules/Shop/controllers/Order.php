@@ -132,6 +132,7 @@ class OrderController extends BasicController{
             ];
             
             if(!$orderId = Kissbaby_OrderModel::insert($order)){
+                log_message('error', __FUNCTION__.', 插入订单数据失败, insert:'.print_r($order, true));
                 $db->rollBack();
                 lExit(500, '下单失败,请稍后再试...');
             }
@@ -180,6 +181,7 @@ class OrderController extends BasicController{
                     'create_time'           =>  time()
                 ];
                 if(!$orderProductId = Kissbaby_OrderProductModel::insert($insert)){
+                    log_message('error', __FUNCTION__.', 插入订单商品失败, insert:'.print_r($insert, true));
                     $db->rollBack();
                     lExit(500, '新增订单商品失败,请稍后再试...');
                 }
