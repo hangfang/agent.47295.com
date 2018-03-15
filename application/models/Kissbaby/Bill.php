@@ -1,8 +1,8 @@
 <?php
 defined('BASE_PATH') OR exit('No direct script access allowed');
 
-class Kissbaby_OrderModel extends BaseModel {
-    public static $_table = '`order`';
+class Kissbaby_BillModel extends BaseModel {
+    public static $_table = 'bill';
     public static $_database = 'kissbaby';
     
     /**
@@ -32,7 +32,7 @@ class Kissbaby_OrderModel extends BaseModel {
      * 生成订单号
      * @return string
      */
-    public static function getOrderCode(){
+    public static function getBillCode(){
         return date('YmdHis').rand(100000, 999999);
     }
 }

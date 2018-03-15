@@ -69,14 +69,14 @@
                         <p class="weui_tabbar_label">导航</p>
                     </a>
                 <?php if(!BaseModel::isAdmin()){ ?>
-                    <a href="/shop/order/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
+                    <a href="/shop/bill/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
                         <p class="weui_tabbar_label">购物车</p>
                         <p class="cart_product_num">0</p>
                     </a>
-                    <a href="/shop/order/index" class="weui_tabbar_item <?php if($controllerName==='order' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/bill/index" class="weui_tabbar_item <?php if($controllerName==='bill' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                         </div>
@@ -89,14 +89,14 @@
                         <p class="weui_tabbar_label">账户中心</p>
                     </a>
                 <?php }else{?>
-                    <a href="/shop/order/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
+                    <a href="/shop/bill/cart" class="weui_tabbar_item <?php if($actionName==='cart'){echo 'weui_bar_item_on';}?>" style="position:relative;">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_article.png" alt="">
                         </div>
                         <p class="weui_tabbar_label">购物车</p>
                         <p class="cart_product_num">0</p>
                     </a>
-                    <a href="/shop/order/index" class="weui_tabbar_item <?php if($controllerName==='order' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/bill/index" class="weui_tabbar_item <?php if($controllerName==='bill' && $actionName!=='cart'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_msg.png" alt="">
                         </div>
@@ -139,9 +139,9 @@
                 var price = 0;
                 var cartData = JSON.parse(localStorage.cart);
                 for(var i in cartData){
-                    if(typeof cartData[i].product_number!=='undefined'){
-                        number = (cartData[i].product_number-0)+(number-0);
-                        price = new Number((cartData[i].product_number*cartData[i].product_vip_price)+(price-0)).toFixed(2);
+                    if(typeof cartData[i].product_num!=='undefined'){
+                        number = (cartData[i].product_num-0)+(number-0);
+                        price = new Number((cartData[i].product_num*cartData[i].product_vip_price)+(price-0)).toFixed(2);
                     }
                 }
                 
@@ -174,8 +174,8 @@
                 var number = 0;
                 var cartData = JSON.parse(localStorage.cart);
                 for(var i in cartData){
-                    if(typeof cartData[i].product_number!=='undefined'){
-                        number += cartData[i].product_number;
+                    if(typeof cartData[i].product_num!=='undefined'){
+                        number += cartData[i].product_num;
                     }
                 }
                 
@@ -190,7 +190,7 @@
                 var json = JSON.parse(data);
                 if(typeof localStorage.cart==='undefined'){
                     var tmp = {};
-                    json.product_number = 1;
+                    json.product_num = 1;
                     tmp[json.product_id] = json;
                     $(obj).attr('data', JSON.stringify(json));
                     localStorage.cart = JSON.stringify(tmp);
@@ -201,7 +201,7 @@
                 var cartData = JSON.parse(localStorage.cart);
                 if(Object.prototype.toString.call(cart)!=='[object Object]'){
                     var tmp = {};
-                    json.product_number = 1;
+                    json.product_num = 1;
                     tmp[json.product_id] = json;
                     $(obj).attr('data', JSON.stringify(tmp));
                     localStorage.cart = JSON.stringify(tmp);
@@ -213,7 +213,7 @@
                 for(var i in cartData){
                     if(json.product_id==i){
                         productExist = true;
-                        cartData[i].product_number++;
+                        cartData[i].product_num++;
                         $(obj).attr('data', JSON.stringify(cartData[i]));
                         localStorage.cart = JSON.stringify(cartData);
                         cart.refresh();
@@ -222,7 +222,7 @@
                 }
 
                 if(!productExist){
-                    json.product_number = 1;
+                    json.product_num = 1;
                     cartData[json.product_id] = json;
                     $(obj).attr('data', JSON.stringify(cartData[json.product_id]));
                     localStorage.cart = JSON.stringify(cartData);
@@ -256,12 +256,12 @@
                 for(var i in cartData){
                     if(json.product_id==i){
                         productExist = true;
-                        if(cartData[i].product_number>1){
-                            cartData[i].product_number--;
+                        if(cartData[i].product_num>1){
+                            cartData[i].product_num--;
                             $(obj).attr('data', JSON.stringify(cartData[i]));
                             break;
                         }else{
-                            cartData[i].product_number = 0;
+                            cartData[i].product_num = 0;
                             $(obj).attr('data', JSON.stringify(cartData[i]));
                             delete cartData[i];
                         }
@@ -283,11 +283,17 @@
         }
     }
     var layer = {
-        toast:function(msg){
+        toast:function(msg, yes){
             $('#toast').find('p').html(msg).end().show();
-            setTimeout(function(){
-                $('#toast').find('p').html('已完成').end().hide();
-            }, 2000);
+            if(typeof yes === 'function'){
+                setTimeout(function(){
+                    yes.call();
+                }, 2000);
+            }else{
+                setTimeout(function(){
+                    $('#toast').find('p').html('已完成').end().hide();
+                }, 2000);
+            }
         },
         error:function(msg, yes){
             $('#dialog2').find('.weui_dialog_bd').html(msg).end().show();

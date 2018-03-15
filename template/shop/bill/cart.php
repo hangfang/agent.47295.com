@@ -24,10 +24,10 @@ include BASE_PATH.'/template/common/weui/header.php';
             
             for(var i in cart){
                 var product = cart[i];
-                productNumber += product['product_number'];
+                productNumber += product['product_num'];
                 var extra = '';
                 <?php if(BaseModel::isAdmin()||1){?>
-                    productVipPrice = new Number(product['product_vip_price']*product['product_number']+productVipPrice).toFixed(2);;
+                    productVipPrice = new Number(product['product_vip_price']*product['product_num']+productVipPrice).toFixed(2);;
                     extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">Vip价:￥'+ product['product_vip_price'] +'</span>';
                 <?php } ?>
                 html += '<div class="weui_media_box weui_media_appmsg">\
@@ -36,7 +36,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>\
         <div class="weui_media_bd" style="height:auto;line-height:0;">\
             <h4 class="weui_media_title" style="margin: 0px;">'+ product['product_name'] +'</h4>\
-            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">'+extra+'<span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_number'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
+            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">'+extra+'<span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_num'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
         </div>\
     </div>';
             }
@@ -67,12 +67,13 @@ include BASE_PATH.'/template/common/weui/header.php';
 </script>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>
 <script>
+$(function(){
     $('#cart').on('click', '.cart_plus', function(){
         var data = $(this).attr('data');
         cart.add(data, $(this));
         
         var json = JSON.parse($(this).attr('data'));
-        $(this).siblings('.cart_number').html(json.product_number>99 ? 99 : json.product_number).show();
+        $(this).siblings('.cart_number').html(json.product_num>99 ? 99 : json.product_num).show();
         return false;
     });
 
@@ -81,7 +82,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         cart.minus(data, $(this));
         
         var json = JSON.parse($(this).attr('data'));
-        $(this).siblings('.cart_number').html(json.product_number>99 ? 99 : json.product_number).show();
+        $(this).siblings('.cart_number').html(json.product_num>99 ? 99 : json.product_num).show();
         return false;
     });
 
@@ -103,7 +104,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         var json = JSON.parse(localStorage.cart);
         var productList = [];
         for(var i in json){
-            productList.push({"product_number":json[i]['product_number'],"product_id":i});
+            productList.push({"product_num":json[i]['product_num'],"product_id":i});
         }
         
         if(!productList){
@@ -112,7 +113,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         }
         
         $.ajax({
-            url:'/shop/order/add',
+            url:'/shop/bill/add',
             type:'post',
             dataType:'json',
             data:{"product_list":productList},
@@ -138,10 +139,11 @@ include BASE_PATH.'/template/common/weui/header.php';
                     return false;
                 }
                 
-                layer.msg('下单成功', function(){location.href='/shop/order/detail?order_code'=data.data.order_code;});
+                layer.toast('下单成功', function(){location.href='/shop/bill/detail?bill_code='+data.data.bill_code;});
                 return true;
             }
         });
         return false;
     });
+});
 </script>
