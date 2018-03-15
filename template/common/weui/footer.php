@@ -288,6 +288,7 @@
             if(typeof yes === 'function'){
                 setTimeout(function(){
                     yes.call();
+                    $('#toast').find('p').html('已完成').end().hide();
                 }, 2000);
             }else{
                 setTimeout(function(){

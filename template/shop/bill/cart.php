@@ -139,6 +139,7 @@ $(function(){
                     return false;
                 }
                 
+                delete localStorage.cart;
                 layer.toast('下单成功', function(){location.href='/shop/bill/detail?bill_code='+data.data.bill_code;});
                 return true;
             }
