@@ -92,4 +92,56 @@ include BASE_PATH.'/template/common/weui/header.php';
         });
         return false;
     });
+
+    var xhrIng = false;
+    $('#cart').on('click', '.create_order', function(){
+        if(typeof localStorage.cart=='undefined' || localStorage.cart=='{}'){
+            layer.error('购物车空空如也~', function(){location.href='/shop/index/index'});
+            return false;
+        }
+        
+        var json = JSON.parse(localStorage.cart);
+        var param = [];
+        for(var i in json){
+            param.push({'product_num':json[i]['product_num'],'product_id':i});
+        }
+        
+        if(!param){
+            layer.error('购物车空空如也~', function(){location.href='/shop/index/index'});
+            return false;
+        }
+        
+        $.ajax({
+            url:'/shop/order/add',
+            type:'post',
+            dataType:'json',
+            data:param,
+            beforeSend:function(xhr){
+                if(xhrIng){
+                    xhr.abort();
+                    return false;
+                }
+
+                xhrIng = true;
+            },
+            complete:function(){
+                xhrIng = false;
+            },
+            success:function(data, xhr){
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+                
+                layer.msg('下单成功', function(){location.href='/shop/order/detail?order_code'=data.data.order_code;});
+                return true;
+            }
+        });
+        return false;
+    });
 </script>

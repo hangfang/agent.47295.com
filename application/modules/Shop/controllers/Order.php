@@ -191,7 +191,7 @@ class OrderController extends BasicController{
         }
         
         $db->commit();
-        lExit();
+        lExit(['order_code'=>$orderCode]);
     }
     
     /**
