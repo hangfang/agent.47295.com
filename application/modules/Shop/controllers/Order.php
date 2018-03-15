@@ -39,7 +39,7 @@ class OrderController extends BasicController{
         }
         
         if(!$result['list']){
-            header('location: /shop/index/succ?title=错误&msg=订单数据丢失...&detail=/shop/account/index');exit;
+            header('location: /shop/index/succ?title=异常&msg=没有找到您的订单记录...&btn=立即下单&detail=/shop/index/index');exit;
         }
         
         $this->_view->assign('title', '订单中心');
@@ -80,8 +80,14 @@ class OrderController extends BasicController{
         }
         
         $orderCode = $this->_request->getPost('order_code');
-        if(!empty($orderCode) && $order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode])){
-            lExit(502, '订单不存在');
+        if(!empty($orderCode)){
+            if(!$order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode])){
+                lExit(502, '订单不存在');
+            }
+            
+            if($order['order_state']!=='INIT' && !BaseModel::isAdmin()){
+                lExit(502, '订单以确认，如需修改订单，请联系管理员');
+            }
         }
         
         $userId = $this->_request->getPost('user_id');
@@ -91,85 +97,97 @@ class OrderController extends BasicController{
             $userId = $_SESSION['user']['id'];
         }
         
-        $productId = $this->_request->getPost('product_id');
-        if(empty($productId)){
-            lExit(502, '商品不存在');
+        $productList = $this->_request->getPost('product_list');
+        if(empty($productList) || !is_array($productList)){
+            lExit(502, '请至少选择一件商品');
         }
         
-        if(!$product=Kissbaby_ProductModel::getRow(['id'=>$productId])){
-            lExit(502, '商品不存在');
+        $id2product = Kissbaby_ProductModel::getIndexedList(['product_id'=>array_column($productList, 'product_id')], 'product_id');
+        if(count($productList)!==count($id2product)){
+            lExit(502, '部分商品不存在');
         }
-        
-        $productNum = $this->_request->getPost('product_num');
-        if(empty($productNum) || $productNum<=0){
-            lExit(502, '购买数量错误');
-        }
-        
-        $tmp = explode(',', $product['product_image']);
-        $productImage = empty($tmp[0]) ? '' : $tmp[0];
         
         $db = Database::getInstance('kissbaby');
         $db->startTransaction();
+        
         if(!$order){
-            $insert = [
-                'order_code'            =>  Kissbaby_OrderModel::getOrderCode(),
-                'order_cost_money'      =>  bcmul($product['product_vip_price'], $productNum, 2),
+            $order = [
+                'order_code'            =>  $orderCode=Kissbaby_OrderModel::getOrderCode(),
+                'order_cost_money'      =>  0,
                 'order_discount_money'  =>  0,
-                'order_image'           =>  $productImage,
-                'order_origin_money'    =>  bcmul($product['product_sale_price'], $productNum, 2),
-                'order_product_num'     =>  $productNum,
-                'order_real_money'      =>  bcmul($product['product_sale_price'], $productNum, 2),
+                'order_image'           =>  '',
+                'order_origin_money'    =>  0,
+                'order_product_num'     =>  0,
+                'order_real_money'      =>  0,
                 'order_status'          =>  'INIT',
                 'user_id'               =>  $userId,
-                'create_time'           =>  time()
+                'create_time'           =>  time(),
+                'ts'                    =>  date('Y-m-d H:i:s')
             ];
-            if(!$orderId = Kissbaby_OrderModel::insert($insert)){
-                $db->rollBack();
-                lExit(500, '下单失败,请稍后再试...');
-            }
-
-            $insert = [
-                'product_cost_money'    =>  $product['product_vip_price'],
-                'product_image'         =>  $productImage,
-                'product_name'          =>  $product['product_name'],
-                'product_num'           =>  $productNum,
-                'product_real_money'    =>  $product['product_sale_price'],
-                'product_sale_money'    =>  $product['product_sale_price'],
-                'order_id'              =>  $orderId,
-                'product_id'            =>  $product['product_id'],
-                'create_time'           =>  time()
-            ];
-            if(!$orderProductId = Kissbaby_OrderProductModel::insert($insert)){
-                $db->rollBack();
-                lExit(500, '下单失败,请稍后再试...');
-            }
-        }else{
-            $insert = [
-                'product_cost_money'    =>  bcmul($product['product_vip_price'], $productNum, 2),
-                'product_image'         =>  $productImage,
-                'product_name'          =>  $product['product_name'],
-                'product_num'           =>  $productNum,
-                'product_real_money'    =>  bcmul($product['product_sale_price'], $productNum, 2),
-                'product_sale_money'    =>  bcmul($product['product_sale_price'], $productNum, 2),
-                'order_id'              =>  $order['id'],
-                'product_id'            =>  $product['product_id'],
-                'create_time'           =>  time()
-            ];
-            if(!$orderProductId = Kissbaby_OrderProductModel::insert($insert)){
+            
+            if(!$orderId = Kissbaby_OrderModel::insert($order)){
                 $db->rollBack();
                 lExit(500, '下单失败,请稍后再试...');
             }
             
-            $update = [
-                'order_cost_money'      =>  bcadd($order['order_cost_money'], bcmul($product['product_vip_price'], $productNum, 2), 2),
-                'order_origin_money'    =>  bcadd($order['order_origin_money'], bcmul($product['product_sale_price'], $productNum, 2), 2),
-                'order_product_num'     =>  $order['order_product_num'] + $productNum,
-                'order_real_money'      =>  bcadd($order['order_real_money'], bcmul($product['product_sale_price'], $productNum, 2), 2)
-            ];
-            if(!Kissbaby_OrderModel::update($update, ['id'=>$order['id']])){
-                $db->rollBack();
-                lExit(500, '下单失败,请稍后再试...');
+            $order['id'] = $orderId;
+        }
+        
+        $orderUpdate = [
+            'order_cost_money'      =>  0,
+            'order_origin_money'    =>  0,
+            'order_product_num'     =>  0,
+            'order_real_money'      =>  0
+        ];
+        
+        foreach($productList as $_prd){
+            $_product = $id2product[$_prd['product_id']];
+            $tmp = explode(',', $product['product_image']);
+            $_productImage = empty($tmp[0]) ? '' : $tmp[0];
+            
+            if($_orderProduct=Kissbaby_OrderProductModel::getRow(['order_id'=>$orderId, 'product_id'=>$_prd['product_id']])){//订单里已存在的商品
+                if(bccomp($_orderProduct['product_vip_price'], $_product['product_vip_price'], 2)!=0 || bccomp($_orderProduct['product_sale_price'], $_product['product_sale_price'], 2)!=0 || bccomp($_orderProduct['product_num'], $_prd['product_num'], 2)!=0){//价格、数量有变更
+                    $_update = [
+                        'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
+                        'product_image'         =>  $_productImage,
+                        'product_name'          =>  $_product['product_name'],
+                        'product_num'           =>  $_prd['product_num'],
+                        'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                        'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                    ];
+                    
+                    if(!$orderProductId = Kissbaby_OrderProductModel::update($_update, $_where=['order_id'=>$orderId])){
+                        $db->rollBack();
+                        lExit(500, '更新订单商品失败,请稍后再试...');
+                    }
+                }
+            }else{//新增的商品
+                $_insert = [
+                    'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
+                    'product_image'         =>  $_productImage,
+                    'product_name'          =>  $_product['product_name'],
+                    'product_num'           =>  $_prd['product_num'],
+                    'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                    'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                    'order_id'              =>  $orderId,
+                    'product_id'            =>  $_product['product_id'],
+                    'create_time'           =>  time()
+                ];
+                if(!$orderProductId = Kissbaby_OrderProductModel::insert($insert)){
+                    $db->rollBack();
+                    lExit(500, '新增订单商品失败,请稍后再试...');
+                }
             }
+            
+            $orderUpdate['order_cost_money'] = bcadd($orderUpdate['order_cost_money'], bcmul($_product['product_vip_price'], $_prd['product_num'], 2), 2);
+            $orderUpdate['order_origin_money'] = bcadd($orderUpdate['order_origin_money'], bcmul($_product['product_sale_price'], $_prd['product_num'], 2), 2);
+            $orderUpdate['order_product_num'] = bcadd($orderUpdate['order_product_num'], $_prd['product_num']);
+            $orderUpdate['order_real_money'] = bcadd($orderUpdate['order_real_money'], bcmul($_product['product_sale_price'], $_prd['product_num'], 2), 2);
+        }
+
+        if(!Kissbaby_OrderModel::update($orderUpdate, ['id'=>$orderId])){
+            $db->rollBack();
+            lExit(500, '更新订单失败,请稍后再试...');
         }
         
         $db->commit();
@@ -227,22 +245,23 @@ class OrderController extends BasicController{
         }
         
         $productNum = $this->_request->getPost('product_num');
-        if(empty($productNum) || $productNum<=0){
+        if(empty($productNum) || $productNum<0){
             lExit(502, '购买数量错误');
         }
         
         $db = Database::getInstance('kissbaby');
         $db->startTransaction();
         
-        $update = [
-            'order_cost_money'      =>  bcmul($product['product_vip_price'], $productNum, 2),
-            'order_origin_money'    =>  bcmul($product['product_sale_price'], $productNum, 2),
-            'order_product_num'     =>  $productNum,
-            'order_real_money'      =>  bcmul($product['product_sale_price'], $productNum, 2),
-        ];
-        if(!Kissbaby_OrderProductModel::update($update, ['product_id'=>$productId, 'order_id'=>$order['id']])){
-            $db->rollBack();
-            lExit(500, '更新订单【'.$orderCode.'】商品失败');
+        if($productNum>0){
+            if(!Kissbaby_OrderProductModel::update(['product_num'=>$productNum], ['product_id'=>$productId, 'order_id'=>$order['id']])){
+                $db->rollBack();
+                lExit(500, '更新订单【'.$orderCode.'】商品失败');
+            }
+        }else{
+            if(!Kissbaby_OrderProductModel::delete(['product_id'=>$productId, 'order_id'=>$order['id']])){
+                $db->rollBack();
+                lExit(500, '删除订单【'.$orderCode.'】商品失败');
+            }
         }
         
         $productNum = $productNum - $product['product_num'];
@@ -291,15 +310,15 @@ class OrderController extends BasicController{
         $productUpdate = [];
         
         if($tmp=abs(floatval($this->_request->getPost('product_cost_money')))){
-            $productUpdate['product_cost_money'] = bcmul($tmp, $product['product_num'], 2);
+            $productUpdate['product_cost_money'] = $tmp;
         }
         
         if($tmp=abs(floatval($this->_request->getPost('product_sale_money')))){
-            $productUpdate['product_sale_money'] = bcmul($tmp, $product['product_num'], 2);
+            $productUpdate['product_sale_money'] = $tmp;
         }
         
         if($tmp=abs(floatval($this->_request->getPost('product_real_money')))){
-            $productUpdate['product_real_money'] = bcmul($tmp, $product['product_num'], 2);
+            $productUpdate['product_real_money'] = $tmp;
         }
         
         if($productUpdate){
@@ -329,7 +348,7 @@ class OrderController extends BasicController{
             
             if($orderUpdate && !Kissbaby_OrderModel::update($update, ['order_code'=>$orderCode])){
                 $db->rollBack();
-                lExit(502, '更新订单失败');
+                lExit(502, '更新订单金额失败');
             }
             
             $db->commit();
@@ -350,9 +369,28 @@ class OrderController extends BasicController{
             lExit(502, '操作未授权');
         }
         
+        $orderDiscountMoney = intval($this->_request->getPost('order_discount_money'));
+        if(empty($orderDiscountMoney)){
+            lExit(502, '折扣金额不能为空');
+        }
+        
         $orderCode = $this->_request->getPost('order_code');
         if(!empty($orderCode) || $order=Kissbaby_OrderModel::getRow(['order_code'=>$orderCode], 'order_code')){
             lExit(502, '订单不存在');
+        }
+        
+        $orderSaleMoney = bcsub($order['order_sale_money'], $orderDiscountMoney, 2);
+        if(bccomp($orderSaleMoney, 0, 2)<0){
+            lExit(502, '折扣金额不能大于销售价');
+        }
+        
+        $update = [
+            'order_discount_money'  =>  $orderDiscountMoney,
+            'order_sale_money'      =>  $orderSaleMoney,
+        ];
+        if(!Kissbaby_OrderModel::update($update, ['order_id'=>$order['id']])){
+            $db->rollBack();
+            lExit(500, '更新订单【'.$orderCode.'】折扣金额失败');
         }
         
         lExit();

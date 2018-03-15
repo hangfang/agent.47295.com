@@ -33,6 +33,7 @@ class IndexController extends BasicController{
         $this->_view->assign('href', empty($tmp=$this->_request->getQuery('href')) ? BASE_URL : $tmp);
         $this->_view->assign('msg', empty($tmp=$this->_request->getQuery('msg')) ? '操作成功' : $tmp);
         $this->_view->assign('title', empty($tmp=$this->_request->getQuery('title')) ? '操作成功' : $tmp);
+        $this->_view->assign('btn', empty($tmp=$this->_request->getQuery('btn')) ? '确定' : $tmp);
         $this->_view->assign('detail', empty($tmp=$this->_request->getQuery('detail')) ? BASE_URL : $tmp);
         return true;
     }
