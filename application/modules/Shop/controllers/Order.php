@@ -107,6 +107,12 @@ class OrderController extends BasicController{
             lExit(502, '部分商品不存在');
         }
         
+        foreach($productList as $_key=>$_prd){
+            if($_prd['product_number']<=0){
+                lExit(502, '商品【'.$id2product[$_prd['product_id']]['product_name'].'】购买数量错误');
+            }
+        }
+        
         $db = Database::getInstance('kissbaby');
         $db->startTransaction();
         
