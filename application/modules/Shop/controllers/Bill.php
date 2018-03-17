@@ -65,7 +65,7 @@ class BillController extends BasicController{
             header('location: /shop/index/succ?title=错误&msg=订单明细丢失...&detail=/shop/bill/index');exit;
         }
         
-        $this->_view->assign('title', '订单中心');
+        $this->_view->assign('title', '订单详情');
         $this->_view->assign('bill', $bill);
         $this->_view->assign('billProduct', $billProduct);
         return true;
