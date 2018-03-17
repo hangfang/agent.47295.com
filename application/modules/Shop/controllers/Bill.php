@@ -194,7 +194,7 @@ class BillController extends BasicController{
             $billUpdate['bill_image'] = $_productImage;
         }
 
-        if(!Kissbaby_BillModel::update($billUpdate, ['id'=>$billId])){
+        if(false===Kissbaby_BillModel::update($billUpdate, ['id'=>$billId])){
             $db->rollBack();
             lExit(500, '更新订单失败,请稍后再试...');
         }
@@ -229,7 +229,7 @@ class BillController extends BasicController{
             lExit(502, '订单【'.Kissbaby_BillModel::getStatusHint($bill['bill_status']).'】, 不允许取消');
         }
         
-        if(!Kissbaby_BillModel::update(['bill_status'=>'CANCEL'], ['bill_code'=>$billCode])){
+        if(false===Kissbaby_BillModel::update(['bill_status'=>'CANCEL'], ['bill_code'=>$billCode])){
             lExit(502, '取消订单失败');
         }
         
@@ -271,7 +271,7 @@ class BillController extends BasicController{
         $db->startTransaction();
         
         if($productNum>0){
-            if(!Kissbaby_BillProductModel::update(['product_num'=>$productNum], ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
+            if(false===Kissbaby_BillProductModel::update(['product_num'=>$productNum], ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
                 $db->rollBack();
                 lExit(500, '更新订单【'.$billCode.'】商品失败');
             }
@@ -289,7 +289,7 @@ class BillController extends BasicController{
             'bill_product_num'     =>  $bill['bill_product_num'] +  $productNum,
             'bill_sale_money'      =>  bcadd($bill['bill_sale_money'], bcmul($product['product_real_money'], $productNum, 2), 2)
         ];
-        if(!Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             $db->rollBack();
             lExit(502, '更新订单失败');
         }
@@ -342,7 +342,7 @@ class BillController extends BasicController{
         }
         
         if($productUpdate){
-            if(!Kissbaby_BillProductModel::update($productUpdate, ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
+            if(false===Kissbaby_BillProductModel::update($productUpdate, ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
                 $db->rollBack();
                 lExit(500, '更新订单【'.$billCode.'】商品失败');
             }
@@ -366,7 +366,7 @@ class BillController extends BasicController{
                 $billUpdate['bill_sale_money'] = bcadd($bill['bill_sale_money'], $totalMoneyDiff, 2);
             }
             
-            if($billUpdate && !Kissbaby_BillModel::update($billUpdate, ['bill_code'=>$billCode])){
+            if($billUpdate && false===Kissbaby_BillModel::update($billUpdate, ['bill_code'=>$billCode])){
                 $db->rollBack();
                 lExit(502, '更新订单金额失败');
             }
@@ -408,7 +408,7 @@ class BillController extends BasicController{
             'bill_discount_money'  =>  $billDiscountMoney,
             'bill_sale_money'      =>  $billSaleMoney,
         ];
-        if(!Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】折扣金额失败');
         }
         
@@ -464,7 +464,7 @@ class BillController extends BasicController{
             'bill_product_num'     =>  $bill['bill_product_num'] - $product['product_num'],
             'bill_sale_money'      =>  bcadd($bill['bill_sale_money'], bcmul($product['product_real_money'], $product['product_num'], 2), 2)
         ];
-        if(!Kissbaby_BillModel::update($update, ['bill_id'=>$bill['id']])){
+        if(false===Kissbaby_BillModel::update($update, ['bill_id'=>$bill['id']])){
             $db->rollBack();
             lExit(500, '更新订单【'.$billCode.'】失败');
         }
