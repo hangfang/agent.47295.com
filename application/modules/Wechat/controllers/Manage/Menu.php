@@ -258,7 +258,7 @@ class Manage_MenuController extends WechatController {
             [
                 "type"=>"view", 
                 "name"=>"订单管理", 
-                "url"=>BASE_URL."/shop/manage/orderlist", 
+                "url"=>BASE_URL."/shop/bill/index", 
                 "sub_button"=>[ ]
             ],
             [
