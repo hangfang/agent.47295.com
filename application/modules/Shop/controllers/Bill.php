@@ -390,7 +390,7 @@ class BillController extends BasicController{
         }
         
         $billDiscountMoney = floatval($this->_request->getPost('bill_discount_money'));
-        if(empty($billDiscountMoney) || bccomp($billDiscountMoney, 0, 2)<0){
+        if(bccomp($billDiscountMoney, 0, 2)<0){
             lExit(502, '折扣金额错误');
         }
         
