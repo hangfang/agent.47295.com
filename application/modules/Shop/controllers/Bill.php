@@ -28,7 +28,7 @@ class BillController extends BasicController{
         $total = Kissbaby_BillModel::count($where);
         $billList = [];
         if($total){
-            $limit = ['limit'=>12];
+            $limit = ['limit'=>10];
             $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
             $billList = Kissbaby_BillModel::getList($where, '*', $limit, 'id desc');
         }

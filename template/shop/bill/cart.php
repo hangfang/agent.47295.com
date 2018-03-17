@@ -26,7 +26,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 var product = cart[i];
                 productNumber += product['product_num'];
                 var extra = '';
-                <?php if(BaseModel::isAdmin()||1){?>
+                <?php if(BaseModel::isAdmin()){?>
                     productVipPrice = new Number(product['product_vip_price']*product['product_num']+productVipPrice).toFixed(2);;
                     extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">Vip价:￥'+ product['product_vip_price'] +'</span>';
                 <?php } ?>
