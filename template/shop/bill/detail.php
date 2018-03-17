@@ -110,7 +110,7 @@ EOF;
                 <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
                     <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;">成交(<?php echo $productRealMoney;?>)</span>
                     <span class="weui_desc_extra" style="line-height:3;font-size:13px;">-</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;visibility: hidden;width:4rem;">优惠<?php echo $bill['bill_discount_money'];?></span>
+                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;visibility: hidden;width:5rem;">优惠<?php echo $bill['bill_discount_money'];?></span>
                     <span class="weui_desc_extra" style="line-height:3;font-size:13px;">=</span>
                     <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;">应收(<?php echo bcsub($productRealMoney, $bill['bill_discount_money'], 2);?>)</span>
                 </p>
