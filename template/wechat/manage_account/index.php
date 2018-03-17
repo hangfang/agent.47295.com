@@ -91,9 +91,9 @@ include BASE_PATH.'/template/common/weui/header.php';
                 <div class="weui_cell_ft">
                 </div>
             </a>
-            <a class="weui_cell" href="javascript:;">
+            <a class="weui_cell" href="/wechat/manage_user/index">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>周边推荐</p>
+                    <p>粉丝管理</p>
                 </div>
                 <div class="weui_cell_ft">
                 </div>
