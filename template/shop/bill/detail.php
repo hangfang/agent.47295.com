@@ -110,19 +110,10 @@ EOF;
                 <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
                     <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">成交(<?php echo $productRealMoney;?>)</span>
                     <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;visibility: hidden;width:5.5rem;padding:0;">优惠<?php echo $bill['bill_discount_money'];?></span>
+                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:5.5rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="<?php echo $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';?>"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="<?php echo $bill['bill_code'];?>"/></span>
                     <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
                     <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应收(<?php echo bcsub($productRealMoney, $bill['bill_discount_money'], 2);?>)</span>
                 </p>
-                
-                <div class="weui_cell" style="padding:15px 0;position:absolute;left: 10.5rem;top: 48px;">
-                    <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;color:#999999;">优惠</label>
-                    </div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input bill_discount_money" type="number" placeholder="请输入优惠金额" value="<?php echo $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';?>" style="width:4rem;vertical-align: top;position: absolute;top: 17px;color:#000;" bill_code="<?php echo $bill['bill_code'];?>">
-                    </div>
-                </div>
             </div>
         </div>
         <div class="weui_media_box weui_media_appmsg">
