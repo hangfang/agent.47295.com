@@ -108,14 +108,14 @@ EOF;
                     <span class="weui_desc_extra bill_number_total" style="position:absolute;line-height:3;left:17rem;font-size:13px;"><?php echo $productNum;?>件</span>
                 </p>
                 <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
-                    <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;">成交(<?php echo $productRealMoney;?>)</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;">-</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;visibility: hidden;width:5rem;">优惠<?php echo $bill['bill_discount_money'];?></span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;">=</span>
-                    <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;">应收(<?php echo bcsub($productRealMoney, $bill['bill_discount_money'], 2);?>)</span>
+                    <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">成交(<?php echo $productRealMoney;?>)</span>
+                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
+                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;visibility: hidden;width:5.5rem;padding:0;">优惠<?php echo $bill['bill_discount_money'];?></span>
+                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
+                    <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应收(<?php echo bcsub($productRealMoney, $bill['bill_discount_money'], 2);?>)</span>
                 </p>
                 
-                <div class="weui_cell" style="padding:15px 0;position:absolute;left: 11.5rem;top: 48px;">
+                <div class="weui_cell" style="padding:15px 0;position:absolute;left: 10.5rem;top: 48px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;color:#999999;">优惠</label>
                     </div>
