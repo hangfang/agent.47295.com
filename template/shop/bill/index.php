@@ -19,7 +19,8 @@ include BASE_PATH.'/template/common/weui/header.php';
                 if(BaseModel::isAdmin() || in_array($_bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
                     $_extra = '<span class="weui_desc_extra">成交价:￥'. $_bill['bill_sale_money'] .'</span>'.$_extra;
                 }
-                $_extra .= '<span class="weui_desc_extra">下单时间:'. date('Y-m-d H:i:s', $_bill['create_time']) .'</span>';
+                
+                $_time = date('Y-m-d', $_bill['create_time']);
                 $_bill['bill_status'] = BILL_STATUS_HINT[$_bill['bill_status']];
                 echo <<<EOF
 <a href="/shop/bill/detail?bill_code={$_bill['bill_code']}" class="weui_media_box weui_media_appmsg">
@@ -27,7 +28,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
     <div class="weui_media_bd">
-        <h4 class="weui_media_title" style="display:inline;">订单号:{$_bill['bill_code']}</h4><span style="float: right;color:#E64340">{$_bill['bill_status']}</span>
+        <h4 class="weui_media_title" style="display:inline;">{$_SESSION['user']['user_name']}:{$_time}</h4><span style="float: right;color:#E64340">{$_bill['bill_status']}</span>
         <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary" onclick="location.href='/shop/bill/detail?bill_code={$_bill['bill_code']}';" style="float:right;">详情</span></p>
     </div>
 </a>
