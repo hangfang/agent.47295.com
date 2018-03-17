@@ -1,83 +1,88 @@
 <?php 
 defined('BASE_PATH') OR exit('No direct script access allowed');
-include BASE_PATH.'/template/shop/header.php';
+include BASE_PATH.'/template/common/weui/header.php';
 ?>
-<div class="single_top">
-	 <div class="container"> 
-	     <div class="register">
-		  	  <form style="display:none;" id="register"> 
-				 <div class="register-top-grid">
-					<h3>注册信息</h3>
-                    <a class="news-letter" href="javascript:void(0);">
-                      <label class="checkbox" style="margin-top:0px;padding-left:0px;"><input type="checkbox" name="checkbox">已有账号?</label>
-                    </a>
-					 <div style="clear:left;">
-						<span>真实姓名</span>
-                        <input type="text" name="user_name" class="user_name" max-length="16" placeholder="请输入姓名"> 
-					 </div>
-					 <div>
-						<span>手机号码</span>
-						<input type="tel" name="user_mobile" class="user_mobile" placeholder="请输入手机号码">
-					 </div>
-					 <div>
-						 <span>登录密码</span>
-						 <input type="password" name="user_pwd" class="user_pwd" placeholder="请输入密码"> 
-					 </div>
-					 <div>
-						 <span>确认密码</span>
-						 <input type="password" name="user_pwd_repeat" class="user_pwd_repeat" placeholder="请再次输入密码"> 
-					 </div>
-                    </div>
-                  
-				<div class="clearfix"> </div>
-				<div class="register-but">
-					   <input type="submit" value="确 定" class="submit">
-					   <div class="clearfix"> </div>
-				</div>
-				</form>
-             <div class="clearfix"> </div>
-                <form id="bind"> 
-				     <div class="register-bottom-grid">
-						    <h3>绑定账号</h3>
-                                <a class="news-letter" href="javascript:void(0);">
-                                <label class="checkbox" style="margin-top:0px;padding-left:0px;"><input type="checkbox" name="checkbox">没有账号?</label>
-                              </a>
-							 <div style="clear:left;">
-								<span>手机号码</span>
-								<input type="tel" name="user_mobile" class="user_mobile" placeholder="请输入手机号码">
-							 </div>
-							 <div>
-                                <span>登录密码</span>
-                                <input type="password" name="user_pwd" class="user_pwd" placeholder="请输入密码"> 
-                            </div>
-							 <div class="clearfix"> </div>
-                            <div class="register-but" style="clear:left;">
-                                   <input type="submit" value="确 定" class="submit">
-                                   <div class="clearfix"> </div>
-                            </div>
-					 </div>
-				</form>
-		   </div>
-     </div>
+<style>
+    .weui_label {width:auto;}
+</style>
+<div class="input">
+    <div class="hd">
+        <h1 class="page_title">登录信息</h1>
+    </div>
+    <div class="bd">
+        <div class="weui_cells_title" style="display:none;">账户信息</div>
+        <form class="weui_cells weui_cells_form" style="display:none;" id="register">
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">真实姓名</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_name" type="text" name="user_name" placeholder="请输入姓名">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">手机号码</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_mobile" type="tel" name="user_mobile" placeholder="请输入手机号码">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">登录密码</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_pwd" type="password" name="user_pwd" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">确认密码</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_pwd_repeat" type="password" name="user_pwd_repeat" placeholder="请再次输入密码">
+                </div>
+            </div>
+            <a href="javascript:;" class="weui_btn weui_btn_primary register-btn">注  册</a><a href="javascript:;" class="weui_btn weui_btn_warn go-login">去登录</a>
+        </form>
+        <form class="weui_cells weui_cells_form" style="" id="bind">
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">手机号码</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_mobile" type="tel" name="user_mobile" placeholder="请输入手机号码">
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_hd">
+                    <label class="weui_label">登录密码</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input user_pwd" type="password" name="user_pwd" placeholder="请输入密码">
+                </div>
+            </div>
+            <a href="javascript:;" class="weui_btn weui_btn_primary login-btn">登  录</a><a href="javascript:;" class="weui_btn weui_btn_warn go-register">去注册</a>
+        </form>
+    </div>
 </div>
 <script>
     $(function(){
-       $('#register .news-letter').click(function(){
+       $('#register .go-login').click(function(){
             $('#register').hide();
             $('#bind').show();
+            $('.page_title').html('登录信息');
        });
        
        
-       $('#bind .news-letter').click(function(){
+       $('#bind .go-register').click(function(){
             $('#register').show();
             $('#bind').hide();
+            $('.page_title').html('注册信息');
        });
        
-       $('#register,#bind').submit(function(e){
-           return false;
-       });
-       
-       $('#register .submit').click(function(){
+       $('#register .register-btn').click(function(){
             var params = {};
            
             var tmp = $('#register .user_name').val().replace(/\s/ig, '');
@@ -127,7 +132,7 @@ include BASE_PATH.'/template/shop/header.php';
             });
        });
        
-       $('#bind .submit').click(function(){
+       $('#bind .login-btn').click(function(){
             var params = {};
            
             var tmp = $('#bind .user_mobile').val().replace(/\s/ig, '');
@@ -166,4 +171,4 @@ include BASE_PATH.'/template/shop/header.php';
        });
     });
 </script>
-<?php include BASE_PATH.'/template/shop/footer.php';?>
+<?php include BASE_PATH.'/template/common/weui/footer.php';?>

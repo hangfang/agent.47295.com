@@ -27,7 +27,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
     <div class="weui_media_bd">
-        <h4 class="weui_media_title" style="display:inline;">订单号:{$_bill['bill_code']}</h4><span style="float: right;">{$_bill['bill_status']}</span>
+        <h4 class="weui_media_title" style="display:inline;">订单号:{$_bill['bill_code']}</h4><span style="float: right;color:#E64340">{$_bill['bill_status']}</span>
         <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary" onclick="location.href='/shop/bill/detail?bill_code={$_bill['bill_code']}';" style="float:right;">详情</span></p>
     </div>
 </a>
@@ -99,7 +99,7 @@ EOF;
         <img class="weui_media_appmsg_thumb" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg\'" >\
     </div>\
     <div class="weui_media_bd">\
-        <h4 class="weui_media_title" style="display:inline;">订单号:'+ bill['bill_code'] +'</h4><span style="float: right;">'+ billStatusHint[bill['bill_status']] +'</span>\
+        <h4 class="weui_media_title" style="display:inline;">订单号:'+ bill['bill_code'] +'</h4><span style="float: right;color:#E64340">'+ billStatusHint[bill['bill_status']] +'</span>\
         <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary" onclick="location.href=\'/shop/bill/detail?bill_code='+ bill['bill_code'] +'\';" style="float:right;">详情</span></p>\
     </div>\
 </a>';
