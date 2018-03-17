@@ -87,27 +87,27 @@ include BASE_PATH.'/template/common/weui/header.php';
            
             var tmp = $('#register .user_name').val().replace(/\s/ig, '');
             if(!tmp){
-                alert('姓名不能留空!');
+                layer.error('姓名不能留空!');
                 return false;
             }
             params['user_name'] = tmp;
            
             var tmp = $('#register .user_mobile').val().replace(/\s/ig, '');
             if(!tmp.match(/^1[\d]{10}$/g)){
-                alert('手机号码格式错误!');
+                layer.error('手机号码格式错误!');
                 return false;
             }
             params['user_mobile'] = tmp;
            
             var tmp = $('#register .user_pwd').val();
             if(tmp.length<6){
-                alert('登录密码不能少于6个字符!');
+                layer.error('登录密码不能少于6个字符!');
                 return false;
             }
             params['user_pwd'] = tmp;
            
             if(tmp!=$('#register .user_pwd_repeat').val()){
-                alert('密码输入不一致!');
+                layer.error('密码输入不一致!');
                 return false;
             }
 
@@ -118,12 +118,12 @@ include BASE_PATH.'/template/common/weui/header.php';
                dataType: 'json',
                success:function(data, xhr){
                    if(!data){
-                       alert('服务器内部错误，请稍后再试...');
+                       layer.error('服务器内部错误，请稍后再试...');
                        return false;
                    }
                    
                    if(data.rtn!=0){
-                       alert(data.error_msg);
+                       layer.error(data.error_msg);
                        return false;
                    }
                    
@@ -137,14 +137,14 @@ include BASE_PATH.'/template/common/weui/header.php';
            
             var tmp = $('#bind .user_mobile').val().replace(/\s/ig, '');
             if(!tmp.match(/^1[\d]{10}$/g)){
-                alert('手机号码格式错误!');
+                layer.error('手机号码格式错误!');
                 return false;
             }
             params['user_mobile'] = tmp;
            
             var tmp = $('#bind .user_pwd').val();
             if(tmp.length<6){
-                alert('登录密码不能少于6个字符!');
+                layer.error('登录密码不能少于6个字符!');
                 return false;
             }
             params['user_pwd'] = tmp;
@@ -156,12 +156,12 @@ include BASE_PATH.'/template/common/weui/header.php';
                dataType: 'json',
                success:function(data, xhr){
                    if(!data){
-                       alert('服务器内部错误，请稍后再试...');
+                       layer.error('服务器内部错误，请稍后再试...');
                        return false;
                    }
                    
                    if(data.rtn!=0){
-                       alert(data.error_msg);
+                       layer.error(data.error_msg);
                        return false;
                    }
                    

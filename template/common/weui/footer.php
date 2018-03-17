@@ -150,13 +150,13 @@
                     var tmp = $('.cart_number_total');
                     tmp.length && tmp.html(number+'件').show();
                     var tmp = $('.cart_price_total');
-                    tmp.length && tmp.html('￥'+price).show();
+                    tmp.length && tmp.html('Vip价:￥'+price).show();
                 }else if(number==0){
                     $('.cart_product_num').html(0).hide();
                     var tmp = $('.cart_number_total');
                     tmp.length && tmp.html('0件').show();
                     var tmp = $('.cart_price_total');
-                    tmp.length && tmp.html('￥0').show();
+                    tmp.length && tmp.html('Vip价:￥0').show();
                 }
                 return number;
             }catch(e){

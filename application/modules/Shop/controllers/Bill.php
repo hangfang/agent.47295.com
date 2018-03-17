@@ -212,7 +212,7 @@ class BillController extends BasicController{
         }
         
         $billCode = $this->_request->getPost('bill_code');
-        if(!empty($billCode)){
+        if(empty($billCode)){
             lExit(502, '订单号不能为空');
         }
         
@@ -245,7 +245,7 @@ class BillController extends BasicController{
         }
         
         $billCode = $this->_request->getPost('bill_code');
-        if(!empty($billCode) || $bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'bill_code')){
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
             lExit(502, '订单不存在');
         }
 
@@ -290,9 +290,11 @@ class BillController extends BasicController{
             'bill_sale_money'      =>  bcadd($bill['bill_sale_money'], bcmul($product['product_real_money'], $productNum, 2), 2)
         ];
         if(!Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            $db->rollBack();
             lExit(502, '更新订单失败');
         }
         
+        $db->commit();
         lExit();
     }
     
@@ -309,7 +311,7 @@ class BillController extends BasicController{
         }
         
         $billCode = $this->_request->getPost('bill_code');
-        if(!empty($billCode) || $bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'bill_code')){
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
             lExit(502, '订单不存在');
         }
         
@@ -358,13 +360,13 @@ class BillController extends BasicController{
                 $billUpdate['bill_origin_money'] = bcadd($bill['bill_origin_money'], $totalMoneyDiff, 2);
             }
             
-            if(isset($productUpdate['product_sale_money'])){
+            if(isset($productUpdate['product_real_money'])){
                 $singlePriceDiff = bcsub($productUpdate['product_real_money'], $product['product_real_money'], 2);
                 $totalMoneyDiff = bcmul($singlePriceDiff, $product['product_num'], 2);
                 $billUpdate['bill_sale_money'] = bcadd($bill['bill_sale_money'], $totalMoneyDiff, 2);
             }
             
-            if($billUpdate && !Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            if($billUpdate && !Kissbaby_BillModel::update($billUpdate, ['bill_code'=>$billCode])){
                 $db->rollBack();
                 lExit(502, '更新订单金额失败');
             }
@@ -387,13 +389,13 @@ class BillController extends BasicController{
             lExit(502, '操作未授权');
         }
         
-        $billDiscountMoney = intval($this->_request->getPost('bill_discount_money'));
-        if(empty($billDiscountMoney)){
-            lExit(502, '折扣金额不能为空');
+        $billDiscountMoney = floatval($this->_request->getPost('bill_discount_money'));
+        if(empty($billDiscountMoney) || bccomp($billDiscountMoney, 0, 2)<0){
+            lExit(502, '折扣金额错误');
         }
         
         $billCode = $this->_request->getPost('bill_code');
-        if(!empty($billCode) || $bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'bill_code')){
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
             lExit(502, '订单不存在');
         }
         
@@ -406,8 +408,7 @@ class BillController extends BasicController{
             'bill_discount_money'  =>  $billDiscountMoney,
             'bill_sale_money'      =>  $billSaleMoney,
         ];
-        if(!Kissbaby_BillModel::update($update, ['bill_id'=>$bill['id']])){
-            $db->rollBack();
+        if(!Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】折扣金额失败');
         }
         

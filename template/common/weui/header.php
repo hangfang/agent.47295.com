@@ -22,6 +22,7 @@
         .weui_panel_bd p {margin:0;}
         .cart_plus {
             position: absolute;
+            cursor: pointer;
             bottom: -3px;
             right: 0px;
             width: 40px;
@@ -43,6 +44,7 @@
         }
         .cart_minus {
             position: absolute;
+            cursor: pointer;
             bottom: -3px;
             right: 7rem;
             width: 40px;
