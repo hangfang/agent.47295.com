@@ -82,7 +82,7 @@ class BillController extends BasicController{
                 lExit(502, '订单不存在');
             }
             
-            if($bill['bill_state']!=='INIT' && !BaseModel::isAdmin()){
+            if($bill['bill_status']!=='INIT' && !BaseModel::isAdmin()){
                 lExit(502, '订单以确认，如需修改订单，请联系管理员');
             }
         }
@@ -149,7 +149,7 @@ class BillController extends BasicController{
             $tmp = explode(',', $_product['product_image']);
             $_productImage = empty($tmp[0]) ? '' : $tmp[0];
             
-            if($_billProduct=Kissbaby_BillProductModel::getRow(['bill_id'=>$billId, 'product_id'=>$_prd['product_id']])){//订单里已存在的商品
+            if($_billProduct=Kissbaby_BillProductModel::getRow(['bill_id'=>$bill['id'], 'product_id'=>$_prd['product_id']])){//订单里已存在的商品
                 if(bccomp($_billProduct['product_vip_price'], $_product['product_vip_price'], 2)!=0 || bccomp($_billProduct['product_sale_price'], $_product['product_sale_price'], 2)!=0 || bccomp($_billProduct['product_num'], $_prd['product_num'], 2)!=0){//价格、数量有变更
                     $_update = [
                         'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
@@ -160,7 +160,7 @@ class BillController extends BasicController{
                         'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
                     ];
                     
-                    if(!$billProductId = Kissbaby_BillProductModel::update($_update, $_where=['bill_id'=>$billId])){
+                    if(!$billProductId = Kissbaby_BillProductModel::update($_update, $_where=['bill_id'=>$bill['id']])){
                         $db->rollBack();
                         lExit(500, '更新订单商品失败,请稍后再试...');
                     }
@@ -173,7 +173,7 @@ class BillController extends BasicController{
                     'product_num'           =>  $_prd['product_num'],
                     'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
                     'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
-                    'bill_id'              =>  $billId,
+                    'bill_id'              =>  $bill['id'],
                     'product_id'            =>  $_product['product_id'],
                     'create_time'           =>  time()
                 ];
@@ -191,7 +191,7 @@ class BillController extends BasicController{
             $billUpdate['bill_image'] = $_productImage;
         }
 
-        if(false===Kissbaby_BillModel::update($billUpdate, ['id'=>$billId])){
+        if(false===Kissbaby_BillModel::update($billUpdate, ['id'=>$bill['id']])){
             $db->rollBack();
             lExit(500, '更新订单失败,请稍后再试...');
         }
@@ -507,7 +507,7 @@ class BillController extends BasicController{
      */
     public function cartAction(){
         $this->_view->assign('title', '我的购物车');
-        $this->_view->assign('userList', Agent_UserModel::getList());
+        $this->_view->assign('userList', BaseModel::isAdmin() ? Agent_UserModel::getList() : Agent_UserModel::getList(['id'=>$_SESSION['user']['id']]));
         return true;
     }
 }

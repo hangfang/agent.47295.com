@@ -54,6 +54,13 @@ include BASE_PATH.'/template/common/weui/header.php';
         %s\
         </select>\
     </div>\
+</div>\
+<div class="weui_cell weui_cell_select weui_select_after">\
+    <div class="weui_cell_hd">订单</div>\
+    <div class="weui_cell_bd weui_cell_primary">\
+        <select class="weui_select" name="bill_code" id="bill_code">\
+        </select>\
+    </div>\
 </div>
 EOF;
                 $_options = '';
@@ -121,6 +128,47 @@ $(function(){
         });
         return false;
     });
+    
+    $.ajax({
+        url:'/shop/bill/index',
+        type:'post',
+        dataType:'json',
+        data:{"offset":0},
+        beforeSend:function(xhr){
+            if(xhrIng){
+                xhr.abort();
+                return false;
+            }
+
+            xhrIng = true;
+        },
+        complete:function(){
+            xhrIng = false;
+        },
+        success:function(data, xhr){
+            layer.loading(false);
+            if(!data){
+                layer.error('请求失败,请稍后再试...');
+                return false;
+            }
+
+            if(data.rtn!=0){
+                layer.error(data.error_msg);
+                return false;
+            }
+            
+            var options = '<option value="">新订单</option>';
+            for(var i in data.data.list){
+                var bill = data.data.list[i];
+                var d = new Date(bill.create_time*1000);
+                var datetime = d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+                options += '<option value="'+ bill.bill_code +'">'+ datetime +'</option>';
+            }
+            
+            $('#bill_code').html(options);
+            return true;
+        }
+    });
 
     var xhrIng = false;
     $('#cart').on('click', '.create_order', function(){
@@ -145,7 +193,7 @@ $(function(){
             url:'/shop/bill/add',
             type:'post',
             dataType:'json',
-            data:{"product_list":productList},
+            data:{"product_list":productList, "bill_code":$('#bill_code').length?$('#bill_code').val():''},
             beforeSend:function(xhr){
                 if(xhrIng){
                     xhr.abort();
@@ -171,6 +219,49 @@ $(function(){
                 
                 delete localStorage.cart;
                 layer.toast('下单成功', function(){location.href='/shop/bill/detail?bill_code='+data.data.bill_code;});
+                return true;
+            }
+        });
+        return false;
+    });
+    
+    $('#cart').on('change', '.user_id', function(){
+        var userId = $(this).val();
+        if(!userId){
+            layer.error('客户数据错误');
+            return false;
+        }
+        
+        layer.loading(true);
+        $.ajax({
+            url:'/shop/bill/getlist',
+            type:'post',
+            dataType:'json',
+            data:{"user_id":userId},
+            beforeSend:function(xhr){
+                if(xhrIng){
+                    xhr.abort();
+                    return false;
+                }
+
+                xhrIng = true;
+            },
+            complete:function(){
+                xhrIng = false;
+            },
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+                
+                
                 return true;
             }
         });
