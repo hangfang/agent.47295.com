@@ -510,4 +510,33 @@ class BillController extends BasicController{
         $this->_view->assign('userList', BaseModel::isAdmin() ? Agent_UserModel::getList() : Agent_UserModel::getList(['id'=>$_SESSION['user']['id']]));
         return true;
     }
+    
+    /**
+     * 更新订单备注
+     */
+    public function updateMemoAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        $billMemo = $this->_request->getPost('bill_memo');
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
+            lExit(502, '订单不存在');
+        }
+        
+        $update = [
+            'bill_memo'  =>  $billMemo
+        ];
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            lExit(500, '更新订单【'.$billCode.'】备注失败');
+        }
+        
+        lExit();
+    }
 }

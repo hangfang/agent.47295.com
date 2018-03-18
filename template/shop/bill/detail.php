@@ -132,7 +132,7 @@ EOF;
         </p>
     </div>
 </div>
-<div class="radio">
+<div style="border-top: solid 1px #eee;">
     <div class="hd" style="display:none;">
         <h1 class="page_title">Radio</h1>
     </div>
@@ -168,6 +168,13 @@ EOF;
 EOF;
         }
         ?>
+            </div>
+        </div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="<?php echo $bill['bill_code'];?>"></textarea>
+                </div>
             </div>
         </div>
         <div class="weui_media_box weui_media_appmsg">
@@ -545,6 +552,45 @@ $(function(){
                 }
                 
                 layer.toast('成功', function(){location.reload();});
+            }
+        });
+        return false;
+    });
+
+    $('#bill_memo').on('blur', function(){
+        var billMemo = $(this).val();
+        if(!billMemo){
+            layer.error('订单备注不能为空');
+            return false;
+        }
+        
+        var param = {"bill_memo":billMemo};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        
+        layer.loading(true);
+        $.ajax({
+            url:'/shop/bill/updatememo',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('已更新订单备注');
             }
         });
         return false;
