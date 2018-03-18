@@ -17,7 +17,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
-<div class="weui_panel panel2">
+<div class="weui_panel panel2" style='height:7%;'>
     <div class="weui_panel_bd">
         <div class="weui_media_box weui_media_text">
             <ul>

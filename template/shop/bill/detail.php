@@ -48,32 +48,25 @@ include BASE_PATH.'/template/common/weui/header.php';
                         <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                     </div>
                 </div>';
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:17rem;top:0;">
-                    <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
-                    </div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
-                    </div>
-                </div>';
             }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:8.5rem;top:0;">
+                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;top:0;">
                     <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
+                        <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入成本" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
-                    </div>
-                </div>';
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:17rem;top:0;">
-                    <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
-                    </div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
                     </div>
                 </div>';
             }
+            
+            $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;right:4rem;top:0;">
+                <div class="weui_cell_hd">
+                    <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                </div>
+            </div>';
             
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg bill_product">
@@ -89,31 +82,92 @@ include BASE_PATH.'/template/common/weui/header.php';
 </div>
 EOF;
         }
+        
+        if(BaseModel::isAdmin()){
+            $bill['bill_discount_money'] = $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';
+            $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
+            
+            $_radio = <<<EOF
+<div class="weui_cell weui_cell_select weui_select_after">
+    <div class="weui_cell_hd">
+        国家/地区
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <select class="weui_select bill_status" name="bill_status" bill_code="{$bill['bill_code']}">
+EOF;
+            foreach(BILL_STATUS_HINT as $_status=>$_hint){
+                $_selected = '';
+                if($bill['bill_status']===$_status){
+                    $_selected = 'selected';
+                }
+                
+                $_radio .= <<<EOF
+<option value="{$_status}" {$_selected}>{$_hint}</option>
+EOF;
+            }
+            
+            $_radio .= <<<EOF
+        </select>
+    </div>
+</div>
+EOF;
+            echo <<<EOF
+<div class="weui_media_box weui_media_appmsg">
+    <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
+        <span class="weui_desc_extra">总计</span>
+    </div>
+    <div class="weui_media_bd">
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
+            <span class="weui_desc_extra bill_cost_money_total" style="line-height:3;font-size:13px;display:none;">成本{$productCostMoney}</span>
+            <span class="weui_desc_extra bill_sale_money_total" style="line-height:3;font-size:13px;position:absolute;">市价{$productSaleMoney}</span>
+            <span class="weui_desc_extra bill_real_money_total" style="line-height:3;position:absolute;left:8.5rem;font-size:13px;">售价{$productRealMoney}</span>
+            <span class="weui_desc_extra bill_number_total" style="position:absolute;line-height:3;right:4rem;font-size:13px;">{$productNum}件</span>
+        </p>
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
+            <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">售价{$productRealMoney}</span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:6rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="{$bill['bill_discount_money']}"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="{$bill['bill_code']}"/></span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
+            <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应收{$_payMoney}</span>
+        </p>
+    </div>
+</div>
+<div class="radio">
+    <div class="hd" style="display:none;">
+        <h1 class="page_title">Radio</h1>
+    </div>
+    <div class="bd">
+        <div class="weui_cells_title">订单状态</div>
+        <div class="weui_cells weui_cells_radio">
+            {$_radio}
+        </div>
+    </div>
+</div>
+EOF;
+        }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
+            $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
+            echo <<<EOF
+<div class="weui_media_box weui_media_appmsg">
+    <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
+        <span class="weui_desc_extra">总计</span>
+    </div>
+    <div class="weui_media_bd">
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
+            <span class="weui_desc_extra bill_real_money_total" style="line-height:3;position:absolute;font-size:13px;">售价{$productRealMoney}</span>
+            <span class="weui_desc_extra bill_number_total" style="position:absolute;line-height:3;right:4rem;font-size:13px;">{$productNum}件</span>
+        </p>
+        <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
+            <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">售价{$productRealMoney}</span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:6rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="{$bill['bill_discount_money']}"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="{$bill['bill_code']}" readonly/></span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
+            <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应付{$_payMoney}</span>
+        </p>
+    </div>
+</div>
+EOF;
+        }
         ?>
-        <div class="weui_media_box weui_media_appmsg">
-            <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
-                <span class="weui_desc_extra">总计</span>
-            </div>
-            <div class="weui_media_bd">
-                <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
-                    <?php
-                    if(BaseModel::isAdmin()){
-                        echo '<span class="weui_desc_extra bill_cost_money_total" style="line-height:3;font-size:13px;display:none;">成本'. $productCostMoney .'</span>';
-                        echo '<span class="weui_desc_extra bill_sale_money_total" style="line-height:3;font-size:13px;position:absolute;">市价'. $productSaleMoney .'</span>';
-                        echo '<span class="weui_desc_extra bill_real_money_total" style="line-height:3;position:absolute;left:8.5rem;font-size:13px;">售价'. $productRealMoney .'</span>';
-                    }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
-                        echo '<span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;left:8.5rem;">售价'. $productRealMoney .'</span>';
-                    }
-                    ?>
-                    <span class="weui_desc_extra bill_number_total" style="position:absolute;line-height:3;left:17rem;font-size:13px;"><?php echo $productNum;?>件</span>
-                </p>
-                <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
-                    <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">成交(<?php echo $productRealMoney;?>)</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:6rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="<?php echo $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';?>"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="<?php echo $bill['bill_code'];?>"/></span>
-                    <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
-                    <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应收(<?php echo bcsub($productRealMoney, $bill['bill_discount_money'], 2);?>)</span>
-                </p>
             </div>
         </div>
         <div class="weui_media_box weui_media_appmsg">
@@ -457,6 +511,41 @@ $(function(){
                     location.href = '/shop/bill/index';
                 }
             });
+        });
+        return false;
+    });
+    
+    $('#bill').on('change', '.bill_status', function(){
+        var _this = this;
+        var param = {};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        param.bill_status = $(this).val();
+        layer.loading(true);
+
+        $.ajax({
+            url:'/shop/bill/updatestatus',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+                
+                layer.toast('成功', function(){location.reload();});
+            }
         });
         return false;
     });

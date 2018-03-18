@@ -61,9 +61,6 @@ class BillController extends BasicController{
         }
         
         $billProduct = Kissbaby_BillProductModel::getList(['bill_id'=>$bill['id']]);
-        if($bill['bill_status']!=='INIT'){
-            header('location: /shop/index/succ?title=错误&msg=订单明细丢失...&detail=/shop/bill/index');exit;
-        }
         
         $this->_view->assign('title', '订单详情');
         $this->_view->assign('bill', $bill);
@@ -221,7 +218,7 @@ class BillController extends BasicController{
             $where['user_id'] = $_SESSION['user']['id'];
         }
 
-        if(!$bill=Kissbaby_BillModel::getRow($where, 'bill_code')){
+        if(!$bill=Kissbaby_BillModel::getRow($where)){
             lExit(502, '订单不存在');
         }
 
@@ -410,6 +407,38 @@ class BillController extends BasicController{
         ];
         if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】折扣金额失败');
+        }
+        
+        lExit();
+    }
+    
+    /**
+     * 更新订单状态
+     */
+    public function updateStatusAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        $billStatus = $this->_request->getPost('bill_status');
+        if(!in_array($billStatus, array_keys(BILL_STATUS_HINT))){
+            lExit(502, '订单状态错误');
+        }
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
+            lExit(502, '订单不存在');
+        }
+        
+        $update = [
+            'bill_status'  =>  $billStatus
+        ];
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            lExit(500, '更新订单【'.$billCode.'】状态失败');
         }
         
         lExit();
