@@ -8,7 +8,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             $_name = empty($_user['remark']) ? $_user['nickname'] : $_user['remark'];
             $_url = sprintf('/wechat/manage_user/detail?user_openid=%s', $_user['openid']);
             echo <<<EOF
-<a class="weui_cell" href="{$_url}">
+<a class="weui_cell" href="{$_url}" style="height: 4rem;overflow: hidden;">
     <div class="weui_cell_hd"><img src="{$_user['headimgurl']}" alt="" style="width:20px;margin-right:5px;display:block"></div>
     <div class="weui_cell_bd weui_cell_primary">
         <p style="margin:0;">{$_name}</p>
