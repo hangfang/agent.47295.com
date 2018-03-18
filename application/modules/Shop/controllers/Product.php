@@ -70,7 +70,7 @@ class ProductController extends BasicController{
         $total = Kissbaby_ProductModel::count($where);
         $productList = [];
         if($total){
-            $limit = ['limit'=>12];
+            $limit = ['limit'=>10];
             $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
             $productList = Kissbaby_ProductModel::getList($where, '*', $limit, 'id asc');
         }
@@ -117,6 +117,39 @@ class ProductController extends BasicController{
         $this->_view->assign('subCategory', $subCategoryList);
         $this->_view->assign('categoryId', $categoryId);
         $this->_view->assign('subCategoryId', $subCategoryId);
+        $this->_view->assign('data', $result);
+        return true;
+    }
+    
+    /**
+     * 热搜排行
+     * @return boolean
+     */
+    public function searchAction(){
+        $result = ['list'=>[], 'total'=>0, 'search'=>''];
+        $search = $this->_request->getQuery('search');
+        
+        if(!empty($search)){
+            $where = ['%product_name%'=>$search];
+            $total = Kissbaby_ProductModel::count($where);
+            $productList = [];
+            if($total){
+                $limit = ['limit'=>10];
+                $limit['offset'] = is_numeric($tmp=$this->_request->getQuery('offset')) ? intval($tmp) : 0;
+                $productList = Kissbaby_ProductModel::getList($where, '*', $limit, 'id asc');
+            }
+
+            $result['list'] = $productList;
+            $result['total'] = $total;
+            $result['search'] = $search;
+        }
+
+        if($this->_request->isXmlHttpRequest()){
+            lExit($result);
+        }
+
+        $result['hot'] = Kissbaby_HotSearchModel::getList();
+        $this->_view->assign('title', '热搜排行');
         $this->_view->assign('data', $result);
         return true;
     }

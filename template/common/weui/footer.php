@@ -392,7 +392,7 @@
         $("img.lazy").lazyload({effect: "fadeIn"});
         
         $('.add_to_cart').click(function(){
-            var num = cart.add($(this).attr('data'), $(this));
+            var num = cart.add($(this).attr('data').replace('###', '\''), $(this));
             return false;
         });
         
@@ -401,6 +401,7 @@
                 {'url':'/shop/product/index','text':'淘宝贝'},
                 {'url':'/shop/index/index','text':'精选推荐'},
                 {'url':'/shop/activity/index','text':'限时活动'},
+                {'url':'/shop/product/search','text':'热搜排行'},
             ];
             layer.actionSheet(menu);
         });

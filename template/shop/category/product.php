@@ -20,7 +20,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 }
 
                 $_imgSrc = empty($_product['product_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_product['product_image']);
-                $_productData = json_encode($_product);
+                $_productData = str_replace('\'', '###', json_encode($_product));
                 $_extra = '';
                 if(BaseModel::isAdmin()){
                     $_extra .= '<span class="weui_desc_extra">会员价:￥'. $_product['product_vip_price'] .'</span>';
@@ -114,7 +114,7 @@ EOF;
     </div>\
     <div class="weui_media_bd">\
         <h4 class="weui_media_title">'+ product['product_name'] +'</h4>\
-        <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data=\''+ JSON.stringify(product) +'\'>+购物车</span></p>\
+        <p class="weui_media_desc">'+ extra +'<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data=\''+ JSON.stringify(product).replace('\'', '###') +'\'>+购物车</span></p>\
     </div>\
 </a>';
                         }

@@ -15,6 +15,8 @@ define('HOME_RECOMMAND', 'http://kiss.api.niaobushi360.com/index.php?route=modul
 define('ACTIVITY_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=module/special/appGetSalesNew&limit=20&page=0&device=android&version=111');
 //活动商品列表
 define('ACTIVITY_PRODUCT_LIST', 'http://kiss.api.niaobushi360.com/index.php?route=product/sale/getSaleInfo&sale_id=%s&sort=popular&order=desc&page=%s&limit=%s&device=android&version=111');
+//热搜关键词列表
+define('HOT_SEARCH', 'http://kiss.api.niaobushi360.com/index.php/?route=product/search/info&version=40');
 
 //图片的域名
 define('IMAGE_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'kissbaby'.DIRECTORY_SEPARATOR);
@@ -774,5 +776,58 @@ EOF;
             $oss->uploadFile(OSS_BUCKET, 'upload/kissbaby/'.$_imagePath, $_path);
         }
         return true;//
+    }
+    
+    /**
+     * 从kissbaby获取热搜关键词
+     */
+    public function getHotSearchAction(){
+        $hotSearch = http($_tmp=['url'=>sprintf(HOT_SEARCH)]);
+        if(!$hotSearch){
+            log_message('error', '从kissbaby获取热搜关键词失败');
+            echo 'get hot search from kissbaby failed...'."\n";
+            exit;
+        }
+
+        if(empty($hotSearch['hot'])){
+            log_message('error', '没有返回热搜关键词, url:'.$_tmp['url']);
+            echo 'hot search empty..., url:'.$_tmp['url']."\n";
+            exit;
+        }
+
+        $_update = [];
+        $search = $hotSearch['hot'] ? $hotSearch['hot'] : [];
+        foreach($search as $_search){
+            if(empty($_search['query'])){
+                continue;
+            }
+            
+            $_update[] = [
+                'search_word'   =>  $_search['query'],
+                'create_time'   =>  time(),
+                'ts'            =>  date('Y-m-d H:i:s'),
+            ];
+        }
+        log_message('error', print_r($_update, true));
+        $db = Database::getInstance('kissbaby');
+        $db->startTransaction();
+        
+        if(Kissbaby_HotSearchModel::delete()!==false){
+            echo 'delete kissbaby hot search succ...'."\n";
+            if(false===Kissbaby_HotSearchModel::batchInsert($_update)){
+                $db->rollBack();
+                log_message('error', '插入kissbaby热搜关键词失败');
+                echo 'insert kissbaby hot search failed...'."\n";
+            }else{
+                $db->commit();
+                echo 'insert kissbaby hot search succ...'."\n";
+            }
+        }else{
+            $db->rollBack();
+            log_message('error', '删除kissbaby热搜关键词失败');
+            echo 'delete kissbaby hot search failed...'."\n";
+        }
+        
+        echo __FUNCTION__.',更新热搜关键词成功'."\n";
     }
 }

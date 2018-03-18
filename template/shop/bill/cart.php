@@ -25,6 +25,8 @@ include BASE_PATH.'/template/common/weui/header.php';
             for(var i in cart){
                 var product = cart[i];
                 productNumber += product['product_num'];
+                product['product_image'] = typeof product['product_image']=='string' ? product['product_image'] : product['product_image'][0];
+                
                 var extra = '';
                 <?php if(BaseModel::isAdmin()){?>
                     productVipPrice = new Number(product['product_vip_price']*product['product_num']+productVipPrice).toFixed(2);
@@ -36,7 +38,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>\
         <div class="weui_media_bd" style="height:auto;line-height:0;">\
             <h4 class="weui_media_title" style="margin: 0px;">'+ product['product_name'] +'</h4>\
-            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">'+extra+'<span class="cart_plus" data=\''+ JSON.stringify(product) +'\'></span><span class="cart_number">'+ product['product_num'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product) +'\'></span></p>\
+            <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">'+extra+'<span class="cart_plus" data=\''+ JSON.stringify(product).replace('\'', '###') +'\'></span><span class="cart_number">'+ product['product_num'] +'</span><span class="cart_minus" data=\''+ JSON.stringify(product).replace('\'', '###') +'\'></span></p>\
         </div>\
     </div>';
             }
