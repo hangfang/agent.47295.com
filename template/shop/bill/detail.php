@@ -223,7 +223,7 @@ $(function(){
         $('#bill .bill_pay_money_total').html('应收'+new Number(billRealMoneyTotal-$('#bill .bill_discount_money').val()).toFixed(2));
     }
     
-    $('#bill').on('click', '.update_bill', function(){
+    $('.update_bill').on('click', function(){
        location.href = '/shop/bill/index'; 
     });
 
@@ -482,7 +482,7 @@ $(function(){
         });
     });
     
-    $('#bill').on('click', '.cancel_bill', function(){
+    $('.cancel_bill').on('click', function(){
         var _this = this;
         layer.confirm('确定要取消订单吗？', function(){
             var param = {};
