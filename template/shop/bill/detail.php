@@ -173,7 +173,7 @@ EOF;
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="<?php echo $bill['bill_code'];?>"></textarea>
+                    <textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="<?php echo $bill['bill_code'];?>"><?php echo $bill['bill_memo'];?></textarea>
                 </div>
             </div>
         </div>
