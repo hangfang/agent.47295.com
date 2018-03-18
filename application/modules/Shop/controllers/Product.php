@@ -141,7 +141,7 @@ class ProductController extends BasicController{
 
             $result['list'] = $productList;
             $result['total'] = $total;
-            $result['search'] = $search;
+            $result['search'] = htmlentities($search);
         }
 
         if($this->_request->isXmlHttpRequest()){

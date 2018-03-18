@@ -34,6 +34,19 @@ include BASE_PATH.'/template/common/weui/header.php';
     <div class="weui_panel_bd">
         <?php 
             $STATIC_CDN_URL = STATIC_CDN_URL;
+            if(empty($data['list'])){
+                echo <<<EOF
+<a href="javascript:void(0)" class="weui_media_box weui_media_appmsg">
+    <div class="weui_media_hd">
+        <img class="weui_media_appmsg_thumb" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
+    </div>
+    <div class="weui_media_bd">
+        <h4 class="weui_media_title"><span style="color:red;">{$data['search']}</span>未搜索到结果</h4>
+        <p class="weui_media_desc"></p>
+    </div>
+</a>
+EOF;
+            }
             for($i=0,$len=count($data['list']); $i<$len; $i++){
                 $_product = $data['list'][$i];
                 if(!empty($_product['product_image'])){
@@ -53,13 +66,14 @@ include BASE_PATH.'/template/common/weui/header.php';
                 }
                 $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
                 
+                $_productName = str_replace($data['search'], '<span style="color:red;">'.$data['search'].'</span>', $_product['product_name']);
                 echo <<<EOF
 <a href="/shop/product/detail?product_id={$_product['product_id']}" class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd">
         <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
     <div class="weui_media_bd">
-        <h4 class="weui_media_title">{$_product['product_name']}</h4>
+        <h4 class="weui_media_title">{$_productName}</h4>
         <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>+购物车</span></p>
     </div>
 </a>
@@ -86,6 +100,7 @@ EOF;
 </div>
 <script>
     $(function(){
+        var search = '<?php echo $data['search'];?>';
         var total = <?php echo $data['total'];?>;
         var offset = 10;
         var xhrIng = false;
@@ -124,21 +139,22 @@ EOF;
                         }
 
                         if(typeof localStorage.search==='undefined'){
-                            var search = {};
+                            var tmp = {};
                         }else{
                             var json = localStorage.search;
-                            var search = JSON.parse(json);
+                            var tmp = JSON.parse(json);
                         }
                         
-                        search[keyword] = keyword;
-                        localStorage.search = JSON.stringify(search);
+                        tmp[keyword] = keyword;
+                        localStorage.search = JSON.stringify(tmp);
                         
                         var html = '';
                         for(var i in data.data.list){
                             var product = data.data.list[i];
+                            productName = product['product_name'].replace(search, '<span style="color:red;">'+ search +'</span>');
                             html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
                                         <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
-                                            <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ product['product_name'] +'</a></p>\
+                                            <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ productName +'</a></p>\
                                         </div>\
                                     </div>';
                         }
@@ -228,6 +244,7 @@ EOF;
                         extra += '<span class="weui_desc_extra">销量:'+ product['product_purchased'] +'</span>';
                         var imgSrc = product['product_image'] ? product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') : '';
 
+                        productName = product['product_name'].replace(search, '<span style="color:red;">'+ search +'</span>');
                         html += '<a href="/shop/product/detail?product_id='+ product['product_id'] +'" class="weui_media_box weui_media_appmsg">\
 <div class="weui_media_hd">\
     <img class="weui_media_appmsg_thumb" src="'+ imgSrc +'" onerror="this.src=\'<?php echo $STATIC_CDN_URL.$staticDir;?>images/qrcode_for_gh_a103c9f558fa_258.jpg\'" >\
@@ -254,9 +271,9 @@ EOF;
             $('#history_search').append('<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;color: #777;width:100%;text-align:center;">还没有所搜历史</li>');
         }else{
             var json = localStorage.search;
-            var search = JSON.parse(json);
+            var tmp = JSON.parse(json);
             var html = '';
-            for(var i in search){
+            for(var i in tmp){
                 html += '<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;"><a href="/shop/product/search?search='+ i +'" style="color: #777;text-decoration:underline;">'+ i +'</a></li>';
             }
             
