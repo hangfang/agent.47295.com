@@ -273,8 +273,12 @@ EOF;
             var json = localStorage.search;
             var tmp = JSON.parse(json);
             var html = '';
+            var index = 0;
             for(var i in tmp){
                 html += '<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;"><a href="/shop/product/search?search='+ i +'" style="color: #777;text-decoration:underline;">'+ i +'</a></li>';
+                if(++index>30){
+                    break;
+                }
             }
             
             $('#history_search').append(html);
