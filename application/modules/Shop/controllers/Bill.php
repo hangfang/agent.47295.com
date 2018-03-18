@@ -387,9 +387,6 @@ class BillController extends BasicController{
         }
         
         $billDiscountMoney = floatval($this->_request->getPost('bill_discount_money'));
-        if(bccomp($billDiscountMoney, 0, 2)<0){
-            lExit(502, '折扣金额错误');
-        }
         
         $billCode = $this->_request->getPost('bill_code');
         if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){

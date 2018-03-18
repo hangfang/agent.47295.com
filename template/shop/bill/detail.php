@@ -449,10 +449,6 @@ $(function(){
         param.bill_code = tmp;
         
         var billDiscountMoney = $(this).val();
-        if(billDiscountMoney<0){
-            layer.error('优惠金额不能小于0');
-            return false;
-        }
         
         var billRealMoney = $('#bill').find('.bill_real_money_total').eq(0).html().replace(/[^\d\.]/ig, '');
         var billPayMoney = billRealMoney - billDiscountMoney;
