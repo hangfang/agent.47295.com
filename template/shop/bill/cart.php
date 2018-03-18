@@ -30,7 +30,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 var extra = '';
                 <?php if(BaseModel::isAdmin()){?>
                     productVipPrice = new Number(product['product_vip_price']*product['product_num']+productVipPrice).toFixed(2);
-                    extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">Vip价:￥'+ product['product_vip_price'] +'</span>';
+                    extra += '<span class="weui_desc_extra" style="position: absolute;bottom: -3px;width: 120px;height: 40px;overflow: hidden;line-height: 38px;font-size: 11px;">成本:'+ product['product_vip_price'] +'</span>';
                 <?php } ?>
                 html += '<div class="weui_media_box weui_media_appmsg">\
         <div class="weui_media_hd">\
@@ -43,7 +43,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>';
             }
             
-            var extra = productVipPrice ? '<span class="weui_desc_extra cart_price_total" style="line-height:3;">Vip价:￥'+ productVipPrice +'</span>' : '';
+            var extra = productVipPrice ? '<span class="weui_desc_extra cart_price_total" style="line-height:3;">成本:'+ productVipPrice +'</span>' : '';
             extra += '<span class="weui_desc_extra cart_number_total" style="position:absolute;line-height:3;right:3.1rem;">'+ productNumber +'件</span>';
             html += '<div class="weui_media_box weui_media_appmsg">\
     <div class="weui_media_hd" style="height:auto;line-height:0;">\

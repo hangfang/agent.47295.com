@@ -15,9 +15,9 @@ include BASE_PATH.'/template/common/weui/header.php';
 
                 $_imgSrc = empty($_bill['bill_image']) ? '' : str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $_bill['bill_image']);
 
-                $_extra = '<span class="weui_desc_extra">商品数:'. $_bill['bill_product_num'] .'</span>';
+                $_extra = '<span class="weui_desc_extra">数量:'. $_bill['bill_product_num'] .'</span>';
                 if(BaseModel::isAdmin() || in_array($_bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
-                    $_extra = '<span class="weui_desc_extra">成交价:￥'. $_bill['bill_sale_money'] .'</span>'.$_extra;
+                    $_extra = '<span class="weui_desc_extra">售价:'. $_bill['bill_sale_money'] .'</span>'.$_extra;
                 }
                 
                 $_time = date('Y-m-d', $_bill['create_time']);
