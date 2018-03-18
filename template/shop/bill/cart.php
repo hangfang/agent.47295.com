@@ -43,9 +43,34 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>';
             }
             
+            <?php
+            $_select = '';
+            if(BaseModel::isAdmin()){
+                $_select = <<<EOF
+<div class="weui_cell weui_cell_select weui_select_after">\
+    <div class="weui_cell_hd">客户</div>\
+    <div class="weui_cell_bd weui_cell_primary">\
+        <select class="weui_select user_id" name="user_id">\
+        %s\
+        </select>\
+    </div>\
+</div>
+EOF;
+                $_options = '';
+                foreach($userList as $_user){
+                    $_options .= <<<EOF
+<option value="{$_user['id']}">{$_user['user_name']}</option>
+EOF;
+                }
+
+                $_select = sprintf($_select, $_options);
+            }
+            ?>
+            
+            var select = '<?php echo $_select;?>';
             var extra = productVipPrice ? '<span class="weui_desc_extra cart_price_total" style="line-height:3;">成本:'+ productVipPrice +'</span>' : '';
             extra += '<span class="weui_desc_extra cart_number_total" style="position:absolute;line-height:3;right:3.1rem;">'+ productNumber +'件</span>';
-            html += '<div class="weui_media_box weui_media_appmsg">\
+            html += '<div class="weui_media_box weui_media_appmsg" style="padding-left: 0px;">\
     <div class="weui_media_hd" style="height:auto;line-height:0;">\
     <span class="weui_desc_extra">总计</span>\
     </div>\
@@ -55,6 +80,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </p>\
     </div>\
 </div>\
+'+ select +'\
 <div class="weui_media_box weui_media_appmsg">\
     <div class="weui_media_bd">\
         <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;display: block;">\

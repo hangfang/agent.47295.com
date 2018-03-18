@@ -507,6 +507,7 @@ class BillController extends BasicController{
      */
     public function cartAction(){
         $this->_view->assign('title', '我的购物车');
+        $this->_view->assign('userList', Agent_UserModel::getList());
         return true;
     }
 }
