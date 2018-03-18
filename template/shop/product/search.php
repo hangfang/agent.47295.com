@@ -190,7 +190,7 @@ EOF;
        
        $('.weui_panel_ft').click(function(){
             var _this = this;
-            if(offset>=total-1){
+            if(offset>=total){
                 $(_this).remove();
                 return false;
             }

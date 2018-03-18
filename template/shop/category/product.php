@@ -53,7 +53,7 @@ EOF;
             var xhrIng = false;
             $('.weui_panel_ft').click(function(){
                 var _this = this;
-                if(offset>=total-1){
+                if(offset>=total){
                     $(_this).remove();
                     return false;
                 }
@@ -121,7 +121,7 @@ EOF;
 
                         $('.weui_panel_bd').append(html);
                         offset += 10;
-                        if(offset>=total-1){
+                        if(offset>=total){
                             $(_this).remove();
                             return false;
                         }
