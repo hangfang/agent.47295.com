@@ -7,7 +7,7 @@ class ProductController extends BasicController{
      */
     public function detailAction(){
         $productId = $this->_request->getQuery('product_id');
-        if(!$productId){
+        if(!is_numeric($productId)){
             header('location: /shop/index/succ?title=错误&msg=请求非法&detail=/shop/product/index');exit;
         }
         

@@ -2,6 +2,9 @@
 defined('BASE_PATH') OR exit('No direct script access allowed');
 include BASE_PATH.'/template/common/weui/header.php';
 ?>
+<style>
+    .weui_cell:before {content:'';border:none;}
+</style>
 <div class="weui_panel weui_panel_access">
     <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
     <div class="weui_panel_bd" id="bill">
@@ -68,6 +71,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 </div>
             </div>';
             
+            $_product['product_name'] =  $_product['product_id']==0 ? '<input class="weui_input product_name" type="text" placeholder="请输入名称" value="'.$_product['product_name'].'" style="width:100%;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'.$bill['bill_code'].'" product_id="'.$_product['product_id'].'"/>' : $_product['product_name'];
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg bill_product">
     <div class="weui_media_hd">
@@ -186,6 +190,11 @@ EOF;
                     }
                     ?>
                     <span class="weui_btn weui_btn_mini weui_btn_primary update_bill" style="float: right;display: block;margin:0;">确定</span>
+                    <?php
+                    if(BaseModel::isAdmin()){
+                        echo '<span class="weui_btn weui_btn_mini weui_btn_primary add_bak" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">+替补</span>';
+                    }
+                    ?>
                 </p>
             </div>
         </div>
@@ -587,6 +596,84 @@ $(function(){
                 }
 
                 layer.toast('已更新订单备注');
+            }
+        });
+        return false;
+    });
+
+    $('#bill').on('blur', '.product_name', function(){
+        var productName = $(this).val();
+        if(!productName){
+            layer.error('商品名称不能为空');
+            return false;
+        }
+        
+        var param = {"bill_name":productName};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        
+        var tmp = $(this).attr('product_id');
+        if(!tmp){
+            layer.error('商品id非法');
+            return false;
+        }
+        param.product_id = tmp;
+        
+        layer.loading(true);
+        $.ajax({
+            url:'/shop/bill/updateproductname',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('已更新商品名称');
+            }
+        });
+        return false;
+    });
+
+    $('.add_bak').on('click', function(){
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        var param = {"bill_code":tmp};
+        
+        layer.loading(true);
+        $.ajax({
+            url:'/shop/bill/addbak',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('成功', function(){location.reload();});
             }
         });
         return false;

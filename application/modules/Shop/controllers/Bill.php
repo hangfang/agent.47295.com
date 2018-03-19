@@ -95,8 +95,13 @@ class BillController extends BasicController{
         }
         
         $productList = $this->_request->getPost('product_list');
-        if(empty($productList) || !is_array($productList)){
+        if(empty($productList) || !is_array($productList) || !$productId=array_column($productList, 'product_id')){
             lExit(502, '请至少选择一件商品');
+        }
+        
+        if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>$productId])){//订单里已存在的商品
+            $db->rollBack();
+            lExit(500, '商品已被加入订单,请勿重复购买');
         }
         
         $id2product = Kissbaby_ProductModel::getIndexedList(['product_id'=>array_column($productList, 'product_id')], 'product_id');
@@ -149,39 +154,21 @@ class BillController extends BasicController{
             $tmp = explode(',', $_product['product_image']);
             $_productImage = empty($tmp[0]) ? '' : $tmp[0];
             
-            if($_billProduct=Kissbaby_BillProductModel::getRow(['bill_id'=>$bill['id'], 'product_id'=>$_prd['product_id']])){//订单里已存在的商品
-                if(bccomp($_billProduct['product_vip_price'], $_product['product_vip_price'], 2)!=0 || bccomp($_billProduct['product_sale_price'], $_product['product_sale_price'], 2)!=0 || bccomp($_billProduct['product_num'], $_prd['product_num'], 2)!=0){//价格、数量有变更
-                    $_update = [
-                        'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
-                        'product_image'         =>  $_productImage,
-                        'product_name'          =>  $_product['product_name'],
-                        'product_num'           =>  $_prd['product_num'],
-                        'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
-                        'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
-                    ];
-                    
-                    if(!$billProductId = Kissbaby_BillProductModel::update($_update, $_where=['bill_id'=>$bill['id']])){
-                        $db->rollBack();
-                        lExit(500, '更新订单商品失败,请稍后再试...');
-                    }
-                }
-            }else{//新增的商品
-                $_insert = [
-                    'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
-                    'product_image'         =>  $_productImage,
-                    'product_name'          =>  $_product['product_name'],
-                    'product_num'           =>  $_prd['product_num'],
-                    'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
-                    'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
-                    'bill_id'              =>  $bill['id'],
-                    'product_id'            =>  $_product['product_id'],
-                    'create_time'           =>  time()
-                ];
-                if(!$billProductId = Kissbaby_BillProductModel::insert($_insert)){
-                    log_message('error', __FUNCTION__.', 插入订单商品失败, insert:'.print_r($_insert, true));
-                    $db->rollBack();
-                    lExit(500, '新增订单商品失败,请稍后再试...');
-                }
+            $_insert = [
+                'product_cost_money'    =>  bcmul($_product['product_vip_price'], $_prd['product_num'], 2),
+                'product_image'         =>  $_productImage,
+                'product_name'          =>  $_product['product_name'],
+                'product_num'           =>  $_prd['product_num'],
+                'product_real_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                'product_sale_money'    =>  bcmul($_product['product_sale_price'], $_prd['product_num'], 2),
+                'bill_id'              =>  $bill['id'],
+                'product_id'            =>  $_product['product_id'],
+                'create_time'           =>  time()
+            ];
+            if(!$billProductId = Kissbaby_BillProductModel::insert($_insert)){
+                log_message('error', __FUNCTION__.', 插入订单商品失败, insert:'.print_r($_insert, true));
+                $db->rollBack();
+                lExit(500, '新增订单商品失败,请稍后再试...');
             }
             
             $billUpdate['bill_cost_money'] = bcadd($billUpdate['bill_cost_money'], bcmul($_product['product_vip_price'], $_prd['product_num'], 2), 2);
@@ -251,7 +238,7 @@ class BillController extends BasicController{
         }
         
         $productId = $this->_request->getPost('product_id');
-        if(empty($productId)){
+        if(!is_numeric($productId)){
             lExit(502, '参数错误');
         }
         
@@ -271,7 +258,7 @@ class BillController extends BasicController{
             if(false===Kissbaby_BillProductModel::update(['product_num'=>$productNum], ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
                 $db->rollBack();
                 lExit(500, '更新订单【'.$billCode.'】商品失败');
-            }
+        }
         }else{
             if(!Kissbaby_BillProductModel::delete(['product_id'=>$productId, 'bill_id'=>$bill['id']])){
                 $db->rollBack();
@@ -313,7 +300,7 @@ class BillController extends BasicController{
         }
         
         $productId = $this->_request->getPost('product_id');
-        if(empty($productId)){
+        if(!is_numeric($productId)){
             lExit(502, '参数错误');
         }
         
@@ -468,7 +455,7 @@ class BillController extends BasicController{
         }
         
         $productId = $this->_request->getPost('product_id');
-        if(empty($productId)){
+        if(!is_numeric($productId)){
             lExit(502, '参数错误');
         }
         
@@ -535,5 +522,94 @@ class BillController extends BasicController{
         }
         
         lExit();
+    }
+    
+    /**
+     * 更新订单商品名称
+     */
+    public function updateProductNameAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        $productId = $this->_request->getPost('product_id');
+        if(!is_numeric($productId)){
+            lExit(502, '参数错误');
+        }
+        
+        if($productId!=0){
+            lExit(502, '只能更新完成替身商品的名称');
+        }
+        
+        $productName = $this->_request->getPost('product_name');
+        if(empty($productName)){
+            lExit(502, '商品名称不能修改为空');
+        }
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
+            lExit(502, '订单不存在');
+        }
+        
+        if(!$product=Kissbaby_BillProductModel::getRow(['product_id'=>$productId, 'bill_id'=>$bill['id']])){
+            lExit(500, '订单【'.$billCode.'】里未找到要修改的商品');
+        }
+        
+        if(false===Kissbaby_BillProductModel::update(['product_name'=>$productName], ['product_id'=>$productId, 'bill_id'=>$bill['id']])){
+            lExit(500, '更新订单【'.$billCode.'】商品名称失败');
+        }
+        
+        lExit();
+    }
+    
+    /**
+     * 添加替补商品
+     */
+    public function addBakAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'id')){
+            lExit(502, '订单不存在');
+        }
+        
+        if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>0])){//订单里已存在的商品
+            $db->rollBack();
+            lExit(500, '商品已被加入订单,请勿重复购买');
+        }
+        
+        $product = Kissbaby_ProductModel::getRow(['product_id'=>0]);
+        if(!$product){
+            lExit(502, '替补商品不存在');
+        }
+        
+        $_insert = [
+            'product_cost_money'    =>  0,
+            'product_image'         =>  '',
+            'product_name'          =>  $product['product_name'],
+            'product_num'           =>  1,
+            'product_real_money'    =>  0,
+            'product_sale_money'    =>  0,
+            'bill_id'               =>  $bill['id'],
+            'product_id'            =>  0,
+            'create_time'           =>  time()
+        ];
+        if(!Kissbaby_BillProductModel::insert($_insert)){
+            log_message('error', __FUNCTION__.', 插入订单商品失败, insert:'.print_r($_insert, true));
+            $db->rollBack();
+            lExit(500, '新增订单商品失败,请稍后再试...');
+        }
+        
+        lExit(['bill_code'=>$billCode]);
     }
 }
