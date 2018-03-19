@@ -608,7 +608,7 @@ $(function(){
             return false;
         }
         
-        var param = {"bill_name":productName};
+        var param = {"product_name":productName};
         var tmp = $(this).attr('bill_code');
         if(!tmp){
             layer.error('订单号非法');
