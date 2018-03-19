@@ -27,51 +27,65 @@ include BASE_PATH.'/template/common/weui/header.php';
             $_extra = '';
             
             if(BaseModel::isAdmin()){
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:0px;top:0;display:none;">
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:0px;top:20px;display:none;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="'. $_product['product_cost_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="'. $_product['product_cost_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
                     </div>
                 </div>';
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:0px;top:0;">
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:0px;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">市价</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_sale_money" type="number" placeholder="请输入市价" value="'. $_product['product_sale_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                        <input class="weui_input product_sale_money" type="number" placeholder="请输入市价" value="'. $_product['product_sale_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                     </div>
                 </div>';
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;left:8.5rem;top:0;">
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:8.5rem;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                     </div>
                 </div>';
             }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
-                $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;top:0;">
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
                     </div>
                 </div>';
             }
             
-            $_extra .= '<div class="weui_cell" style="padding:15px 0;position:absolute;right:4rem;top:0;">
+            $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
                 <div class="weui_cell_hd">
                     <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                 </div>
             </div>';
             
-            $_product['product_name'] =  $_product['product_id']==0 ? '<input class="weui_input product_name" type="text" placeholder="请输入名称" value="'.$_product['product_name'].'" style="width:100%;vertical-align: top;position: absolute;top: 13px;color:#000;" bill_code="'.$bill['bill_code'].'" product_id="'.$_product['product_id'].'"/>' : $_product['product_name'];
+            if($_product['product_id']==0){
+                $_product['product_name'] =   '<input class="weui_input product_name" type="text" placeholder="请输入名称" value="'.$_product['product_name'].'" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="'.$bill['bill_code'].'" product_id="'.$_product['product_id'].'"/>';
+                
+                $_extra .= <<<EOF
+<div class="weui_cell" style="padding:0;position:absolute;top:44px;">
+    <div class="weui_cell_hd">
+        <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="{$_product['product_cost_money']}" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="{$bill['bill_code']}" product_id="{$_product['product_id']}">
+    </div>
+</div>
+EOF;
+            }
+            
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg bill_product">
     <div class="weui_media_hd">
@@ -79,7 +93,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
     <div class="weui_media_bd" style="height:auto;line-height:0;">
         <h4 class="weui_media_title" style="margin: 0px;">{$_product['product_name']}</h4>
-        <div class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
+        <div class="weui_media_desc" style="height: 60px;width: 100%;margin: 0;position:relative;">
             {$_extra}
         </div>
     </div>
@@ -409,6 +423,84 @@ $(function(){
             return false;
         }
         var param = {"product_real_money":productRealMoney};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        
+        var tmp = $(this).attr('product_id');
+        if(!tmp){
+            layer.error('商品id非法');
+            return false;
+        }
+        param.product_id = tmp;
+        
+        layer.loading(true);
+
+        $.ajax({
+            url:'/shop/bill/updateproductprice',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                refreshBill();
+            }
+        });
+        return false;
+    });
+
+    $('#bill').on('keyup', '.product_cost_money', function(){
+        var productCostMoney = $(this).val();
+        if(productCostMoney<0){
+            layer.error('成本不能小于0');
+            return false;
+        }
+        
+        var productSaleMoney = $(this).parent('.product_list').find('.product_sale_money').val();
+        if(productCostMoney -  productSaleMoney > 0){
+            layer.error('成本不能大于市场价');
+            return false;
+        }
+        
+        var productRealMoney = $(this).parent('.product_list').find('.product_real_money').val();
+        if(productRealMoney - productCostMoney < 0){
+            layer.error('成本不能大于售价');
+            return false;
+        }
+    });
+
+    $('#bill').on('blur', '.product_cost_money', function(){
+        var productCostMoney = $(this).val();
+        if(productCostMoney<0){
+            layer.error('成本不能小于0');
+            return false;
+        }
+        
+        var productSaleMoney = $(this).parent('.product_list').find('.product_sale_money').val();
+        if(productCostMoney -  productSaleMoney > 0){
+            layer.error('成本不能大于市场价');
+            return false;
+        }
+        
+        var productRealMoney = $(this).parent('.product_list').find('.product_real_money').val();
+        if(productRealMoney - productCostMoney < 0){
+            layer.error('成本不能大于售价');
+            return false;
+        }
+        var param = {"product_cost_money":productCostMoney};
         var tmp = $(this).attr('bill_code');
         if(!tmp){
             layer.error('订单号非法');

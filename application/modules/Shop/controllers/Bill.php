@@ -76,6 +76,11 @@ class BillController extends BasicController{
             lExit(502, '请求非法');
         }
         
+        $productList = $this->_request->getPost('product_list');
+        if(empty($productList) || !is_array($productList) || !$productId=array_column($productList, 'product_id')){
+            lExit(502, '请至少选择一件商品');
+        }
+        
         $billCode = $this->_request->getPost('bill_code');
         if(!empty($billCode)){
             if(!$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
@@ -85,6 +90,11 @@ class BillController extends BasicController{
             if($bill['bill_status']!=='INIT' && !BaseModel::isAdmin()){
                 lExit(502, '订单以确认，如需修改订单，请联系管理员');
             }
+        
+            if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>$productId])){//订单里已存在的商品
+                $db->rollBack();
+                lExit(500, '商品已被加入订单,请勿重复购买');
+            }
         }
         
         $userId = $this->_request->getPost('user_id');
@@ -92,16 +102,6 @@ class BillController extends BasicController{
             $userId = $userId ? $userId : $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
-        }
-        
-        $productList = $this->_request->getPost('product_list');
-        if(empty($productList) || !is_array($productList) || !$productId=array_column($productList, 'product_id')){
-            lExit(502, '请至少选择一件商品');
-        }
-        
-        if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>$productId])){//订单里已存在的商品
-            $db->rollBack();
-            lExit(500, '商品已被加入订单,请勿重复购买');
         }
         
         $id2product = Kissbaby_ProductModel::getIndexedList(['product_id'=>array_column($productList, 'product_id')], 'product_id');
@@ -584,7 +584,6 @@ class BillController extends BasicController{
         }
         
         if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>0])){//订单里已存在的商品
-            $db->rollBack();
             lExit(500, '商品已被加入订单,请勿重复购买');
         }
         
@@ -606,7 +605,6 @@ class BillController extends BasicController{
         ];
         if(!Kissbaby_BillProductModel::insert($_insert)){
             log_message('error', __FUNCTION__.', 插入订单商品失败, insert:'.print_r($_insert, true));
-            $db->rollBack();
             lExit(500, '新增订单商品失败,请稍后再试...');
         }
         
