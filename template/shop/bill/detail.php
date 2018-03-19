@@ -143,10 +143,6 @@ EOF;
 EOF;
             }
             
-            $_billExpress .= <<<EOF
-
-EOF;
-            
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
@@ -193,12 +189,7 @@ EOF;
         }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
             $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
             
-            $_billExpress = <<<EOF
-<div class="weui_cell weui_cell_select weui_select_before">
-    <div class="weui_cell_hd">
-        <select class="weui_select express_com" name="express_com" readonly>
-
-EOF;
+            $_billExpress = '';
             $_expressConf = get_var_from_conf('kdniao');
             foreach($_expressConf as $_zhName=>$_com){
                 $_selected = '';
@@ -210,26 +201,16 @@ EOF;
 <option value="{$_com}" {$_selected}>{$_zhName}</option>
 EOF;
             }
-            
-            $_billExpress .= <<<EOF
+        
+            echo <<<EOF
+<div class="weui_cell weui_cell_select weui_select_after">
+    <div class="weui_cell_hd">
+        <select class="weui_select express_com" name="express_com" readonly>
+            {$_billExpress}
         </select>
     </div>
     <div class="weui_cell_bd weui_cell_primary">
-        <input class="weui_input express_num" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" readonly>
-    </div>
-</div>
-EOF;
-        
-            echo <<<EOF
-<div style="border-top: solid 1px #eee;">
-    <div class="hd" style="display:none;">
-        <h1 class="page_title">Radio</h1>
-    </div>
-    <div class="bd">
-        <div class="weui_cells_title">物流信息</div>
-        <div class="weui_cells weui_cells_radio">
-            {$_billExpress}
-        </div>
+        <input class="weui_input express_detail" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" readonly>
     </div>
 </div>
 <div class="weui_media_box weui_media_appmsg">
@@ -876,6 +857,10 @@ $(function(){
             }
         });
         return false;
+    });
+    
+    $('.express_detail').on('click', function(){
+       layer.error('敬请期待'); 
     });
 });
 </script>
