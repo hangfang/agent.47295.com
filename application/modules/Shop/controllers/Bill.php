@@ -429,6 +429,45 @@ class BillController extends BasicController{
     }
     
     /**
+     * 更新快递单号状态
+     */
+    public function updateExpressAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        $expressConf = get_var_from_conf('kdniao');
+        $expressCom = $this->_request->getPost('express_com');
+        if(!in_array($expressCom, array_values($expressConf))){
+            lExit(502, '快递公司不存在');
+        }
+        
+        $expressNum = $this->_request->getPost('express_num');
+        if(strlen($expressNum)<5){
+            lExit(502, '物流单号太短');
+        }
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
+            lExit(502, '订单不存在');
+        }
+        
+        $update = [
+            'express_com'  =>  $expressCom,
+            'express_num'  =>  $expressNum
+        ];
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            lExit(500, '更新订单【'.$billCode.'】物流信息失败');
+        }
+        
+        lExit();
+    }
+    
+    /**
      * 订单删除商品
      */
     public function delProductAction(){

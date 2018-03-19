@@ -105,7 +105,7 @@ EOF;
             $bill['bill_discount_money'] = $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';
             $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
             
-            $_radio = <<<EOF
+            $_billStatus = <<<EOF
 <div class="weui_cell weui_cell_select weui_select_after">
     <div class="weui_cell_hd">
         国家/地区
@@ -119,16 +119,34 @@ EOF;
                     $_selected = 'selected';
                 }
                 
-                $_radio .= <<<EOF
+                $_billStatus .= <<<EOF
 <option value="{$_status}" {$_selected}>{$_hint}</option>
 EOF;
             }
             
-            $_radio .= <<<EOF
+            $_billStatus .= <<<EOF
         </select>
     </div>
 </div>
 EOF;
+
+            $_billExpress = '';
+            $_expressConf = get_var_from_conf('kdniao');
+            foreach($_expressConf as $_zhName=>$_com){
+                $_selected = '';
+                if($bill['express_com']===$_com){
+                    $_selected = 'selected';
+                }
+                
+                $_billExpress .= <<<EOF
+<option value="{$_com}" {$_selected}>{$_zhName}</option>
+EOF;
+            }
+            
+            $_billExpress .= <<<EOF
+
+EOF;
+            
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
@@ -157,14 +175,63 @@ EOF;
     <div class="bd">
         <div class="weui_cells_title">订单状态</div>
         <div class="weui_cells weui_cells_radio">
-            {$_radio}
+            {$_billStatus}
         </div>
+    </div>
+</div>
+<div class="weui_cell weui_cell_select weui_select_before">
+    <div class="weui_cell_hd">
+        <select class="weui_select express_com" name="express_com">
+            {$_billExpress}
+        </select>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <input class="weui_input express_num" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}">
     </div>
 </div>
 EOF;
         }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
             $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
+            
+            $_billExpress = <<<EOF
+<div class="weui_cell weui_cell_select weui_select_before">
+    <div class="weui_cell_hd">
+        <select class="weui_select express_com" name="express_com" readonly>
+
+EOF;
+            $_expressConf = get_var_from_conf('kdniao');
+            foreach($_expressConf as $_zhName=>$_com){
+                $_selected = '';
+                if($bill['express_com']===$_com){
+                    $_selected = 'selected';
+                }
+                
+                $_billExpress .= <<<EOF
+<option value="{$_com}" {$_selected}>{$_zhName}</option>
+EOF;
+            }
+            
+            $_billExpress .= <<<EOF
+        </select>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <input class="weui_input express_num" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" readonly>
+    </div>
+</div>
+EOF;
+        
             echo <<<EOF
+<div style="border-top: solid 1px #eee;">
+    <div class="hd" style="display:none;">
+        <h1 class="page_title">Radio</h1>
+    </div>
+    <div class="bd">
+        <div class="weui_cells_title">物流信息</div>
+        <div class="weui_cells weui_cells_radio">
+            {$_billExpress}
+        </div>
+    </div>
+</div>
 <div class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd" style="height:auto;line-height:0;display:none;">
         <span class="weui_desc_extra">总计</span>
@@ -535,6 +602,46 @@ $(function(){
                 }
 
                 refreshBill();
+            }
+        });
+        return false;
+    });
+
+    $('.express_num').on('blur', function(){
+        var expressNum = $(this).val();
+        if(expressNum.length<5){
+            layer.error('物流单号长度错误');
+            return false;
+        }
+        
+        var param = {"express_num":expressNum, "express_com":$('.express_com').val()};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        
+        layer.loading(true);
+
+        $.ajax({
+            url:'/shop/bill/updateexpress',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('成功');
             }
         });
         return false;
