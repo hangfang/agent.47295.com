@@ -27,14 +27,6 @@ include BASE_PATH.'/template/common/weui/header.php';
             $_extra = '';
             
             if(BaseModel::isAdmin()){
-                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:0px;top:20px;display:none;">
-                    <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
-                    </div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="'. $_product['product_cost_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
-                    </div>
-                </div>';
                 $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:0px;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">市价</label>
@@ -71,11 +63,8 @@ include BASE_PATH.'/template/common/weui/header.php';
                 </div>
             </div>';
             
-            if($_product['product_id']==0){
-                $_product['product_name'] =   '<input class="weui_input product_name" type="text" placeholder="请输入名称" value="'.$_product['product_name'].'" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="'.$bill['bill_code'].'" product_id="'.$_product['product_id'].'"/>';
-                
-                $_extra .= <<<EOF
-<div class="weui_cell" style="padding:0;position:absolute;top:44px;">
+            $_extra .= <<<EOF
+<div class="weui_cell" style="padding:0;position:absolute;top:3.9rem;">
     <div class="weui_cell_hd">
         <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
     </div>
@@ -84,6 +73,9 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
 </div>
 EOF;
+            $_readOnly = '';
+            if($_product['product_id']==0){
+                $_readOnly =   'readonly';
             }
             
             echo <<<EOF
@@ -92,7 +84,9 @@ EOF;
         <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg'">
     </div>
     <div class="weui_media_bd" style="height:auto;line-height:0;">
-        <h4 class="weui_media_title" style="margin: 0px;">{$_product['product_name']}</h4>
+        <h4 class="weui_media_title" style="margin: 0px;">
+            <input class="weui_input product_name" type="text" placeholder="请输入名称" value="{$_product['product_name']}" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="{$bill['bill_code']}" product_id="{$_product['product_id']}" {$_readOnly}/>
+        </h4>
         <div class="weui_media_desc" style="height: 60px;width: 100%;margin: 0;position:relative;">
             {$_extra}
         </div>
