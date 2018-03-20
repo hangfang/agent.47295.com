@@ -43,27 +43,8 @@ include BASE_PATH.'/template/common/weui/header.php';
                         <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                     </div>
                 </div>';
-            }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
-                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;top:20px;">
-                    <div class="weui_cell_hd">
-                        <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
-                    </div>
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
-                    </div>
-                </div>';
-            }
             
-            $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
-                <div class="weui_cell_hd">
-                    <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
-                </div>
-            </div>';
-            
-            $_extra .= <<<EOF
+                $_extra .= <<<EOF
 <div class="weui_cell" style="padding:0;position:absolute;top:3.9rem;">
     <div class="weui_cell_hd">
         <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
@@ -73,6 +54,35 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
 </div>
 EOF;
+            
+            $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
+                <div class="weui_cell_hd">
+                    <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                </div>
+            </div>';
+            }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;top:20px;">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                    </div>
+                </div>';
+            
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                    </div>
+                </div>';
+            }
+            
             $_readOnly = '';
             if($_product['product_id']!=0){
                 $_readOnly =   'disabled';
