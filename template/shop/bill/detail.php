@@ -74,8 +74,8 @@ include BASE_PATH.'/template/common/weui/header.php';
 </div>
 EOF;
             $_readOnly = '';
-            if($_product['product_id']==0){
-                $_readOnly =   'readonly';
+            if($_product['product_id']!=0){
+                $_readOnly =   'disabled';
             }
             
             echo <<<EOF
@@ -792,7 +792,7 @@ $(function(){
         
         var tmp = $(this).attr('product_id');
         if(!tmp){
-            layer.error('商品id非法');
+            layer.error('只能更新替身产品的名称');
             return false;
         }
         param.product_id = tmp;
