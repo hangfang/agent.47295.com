@@ -193,7 +193,7 @@ $(function(){
             url:'/shop/bill/add',
             type:'post',
             dataType:'json',
-            data:{"product_list":productList, "bill_code":$('#bill_code').length?$('#bill_code').val():''},
+            data:{"product_list":productList, "bill_code":$('#bill_code').length?$('#bill_code').val():'', "user_id":$('.user_id').val()},
             beforeSend:function(xhr){
                 if(xhrIng){
                     xhr.abort();
