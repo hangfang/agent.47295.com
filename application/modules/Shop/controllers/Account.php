@@ -129,6 +129,7 @@ class AccountController extends BasicController{
         $this->_view->assign('title', '用户资料-'.$user['user_name']);
         $this->_view->assign('user', $user);
         $this->_view->assign('billList', Kissbaby_BillModel::getList(['user_id'=>$userId], '*', '', 'id desc'));
+        $this->_view->assign('addressList', Agent_AddressModel::getList(['user_id'=>$userId, 'address_status'=>0]));
         return true;
     }
     
@@ -221,11 +222,6 @@ class AccountController extends BasicController{
         $addressStatus = $this->_request->getPost('address_status');
         $addressDefault = $this->_request->getPost('address_default');
         
-        $address = [];
-        $id = $this->_request->getPost('address_id');
-        if($id && !$address = Agent_AddressModel::getRow(['id'=>$id])){
-            lExit('收货地址不存在');
-        }
         
         $userId = $this->_request->getPost('user_id');
         if(BaseModel::isAdmin()){
@@ -235,6 +231,12 @@ class AccountController extends BasicController{
             $userId = $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
+        }
+        
+        $address = [];
+        $id = $this->_request->getPost('address_id');
+        if($id && !$address = Agent_AddressModel::getRow(['id'=>$id, 'user_id'=>$userId])){
+            lExit('收货地址不存在');
         }
         
         $db = Database::getInstance();
@@ -257,7 +259,7 @@ class AccountController extends BasicController{
                 'address_status'=>$addressStatus,
                 'address_default'=>$addressDefault
             ];
-            if(!$addressId = Agent_AddressModel::update($update, ['id'=>$id])){
+            if(!$addressId = Agent_AddressModel::update($update, ['id'=>$id, 'user_id'=>$userId])){
                 $db->rollBack();
                 lExit('更新收货地址失败');
             }
