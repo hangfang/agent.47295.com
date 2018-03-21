@@ -211,7 +211,7 @@ EOF;
         <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;">
             <span class="weui_desc_extra bill_real_money_total" style="line-height:3;font-size:13px;padding:0;">售价{$productRealMoney}</span>
             <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">-</span>
-            <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:6rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="{$bill['bill_discount_money']}"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="{$bill['bill_code']}" readonly/></span>
+            <span class="weui_desc_extra" style="line-height:3;font-size:13px;width:6rem;padding:0;">优惠<input type="number" class="bill_discount_money" value="{$bill['bill_discount_money']}"style="position: absolute;border: none;width: 4rem;color:#000;" bill_code="{$bill['bill_code']}" disabled/></span>
             <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
             <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应付{$_payMoney}</span>
         </p>
