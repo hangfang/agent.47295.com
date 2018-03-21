@@ -119,6 +119,17 @@ include BASE_PATH.'/template/common/weui/header.php';
             foreach($_expressConf as $_zhName=>$_com){
                 $_billExpress .= '<option value="'. $_com .'" '. ($bill['express_com']===$_com ? 'selected' : '') .'>'. $_zhName .'</option>';
             }
+
+            $_billAddress = '<option value="">请选择</option><option value="-1">新增收货地址</option>';
+            foreach($addressList as $_address){
+                $_selected = '';
+                if($bill['address_id']){
+                    $_selected = $bill['address_id']===$_address['id'] ? 'selected' : '';
+                }else{
+                    $_selected = $_address['address_default'] ? 'selected' : '';
+                }
+                $_billAddress .= '<option value="'. $_address['id'] .'" '. $_selected .'>'. $_address['address_detail'] .'</option>';
+            }
             
             echo <<<EOF
 <div class="weui_media_box weui_media_appmsg">
@@ -161,6 +172,26 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
+<div style="border-top: solid 1px #eee;">
+    <div class="hd" style="display:none;">
+        <h1 class="page_title">Radio</h1>
+    </div>
+    <div class="bd">
+        <div class="weui_cells_title" style="display:none;">收货地址</div>
+        <div class="weui_cells weui_cells_radio">
+            <div class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_hd">
+                    收货地址
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select address_id" name="address_id" bill_code="{$bill['bill_code']}" user_id="{$bill['user_id']}">
+                        {$_billAddress}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="weui_cell weui_cell_select weui_select_before">
     <div class="weui_cell_hd">
         <select class="weui_select express_com" name="express_com">
@@ -178,25 +209,36 @@ EOF;
             $_billExpress = '';
             $_expressConf = get_var_from_conf('kdniao');
             foreach($_expressConf as $_zhName=>$_com){
-                $_selected = '';
-                if($bill['express_com']===$_com){
-                    $_selected = 'selected';
-                }
-                
-                $_billExpress .= <<<EOF
-<option value="{$_com}" {$_selected}>{$_zhName}</option>
-EOF;
+                $_billExpress .= '<option value="'. $_com .'" '. ($bill['express_com']===$_com ? 'selected' : '') .'>'. $_zhName .'</option>';
             }
         
+            $_billAddress = '';
+            if($bill['address_id']){
+                foreach($billAddressList as $_address){
+                    if($bill['address_id']==$_address['id']){
+                        $_billAddress = $_address['address_province'].' '.$_address['address_city'] .' '. $_address['address_district'].' '. $_address['address_detail'];
+                    }
+                }
+            }
             echo <<<EOF
 <div class="weui_cell weui_cell_select weui_select_after">
     <div class="weui_cell_hd">
-        <select class="weui_select express_com" name="express_com" disabled>
+        <select class="weui_select" disabled>
             {$_billExpress}
         </select>
     </div>
     <div class="weui_cell_bd weui_cell_primary">
-        <input class="weui_input express_num" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" disabled>
+        <input class="weui_input" type="tel" value="{$bill['express_num']}" disabled>
+    </div>
+</div>
+<div class="weui_cell weui_cell_select weui_select_after">
+    <div class="weui_cell_hd">
+        <select class="weui_select" disabled>
+            <option value="">收货地址</option>
+        </select>
+    </div>
+    <div class="weui_cell_bd weui_cell_primary">
+        <input class="weui_input" type="text" value="{$_billAddress}" disabled>
     </div>
 </div>
 <div class="weui_media_box weui_media_appmsg">
@@ -215,6 +257,41 @@ EOF;
             <span class="weui_desc_extra" style="line-height:3;font-size:13px;padding:0;">=</span>
             <span class="weui_desc_extra bill_pay_money_total" style="line-height:3;font-size:13px;color:red;padding:0;">应付{$_payMoney}</span>
         </p>
+    </div>
+</div>
+EOF;
+        }else{
+            $_billAddress = '<option value="">请选择</option><option value="-1">新增收货地址</option>';
+            foreach($addressList as $_address){
+                $_selected = '';
+                if($bill['address_id']){
+                    $_selected = $bill['address_id']===$_address['id'] ? 'selected' : '';
+                }else{
+                    $_selected = $_address['address_default'] ? 'selected' : '';
+                }
+                
+                $_billAddress .= '<option value="'. $_address['id'] .'" '. $_selected .'>'. $_address['address_detail'] .'</option>';
+            }
+            
+            echo <<<EOF
+<div style="border-top: solid 1px #eee;">
+    <div class="hd" style="display:none;">
+        <h1 class="page_title">Radio</h1>
+    </div>
+    <div class="bd">
+        <div class="weui_cells_title" style="display:none;">收货地址</div>
+        <div class="weui_cells weui_cells_radio">
+            <div class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_hd">
+                    收货地址
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select address_id" name="address_id" bill_code="{$bill['bill_code']}" user_id="{$bill['user_id']}">
+                        {$_billAddress}
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 EOF;
@@ -867,6 +944,50 @@ $(function(){
         }
         
         location.href = '/shop/product/detail?product_id='+productId;
+        return false;
+    });
+    
+    $('.address_id').on('change', function(){
+        var addressId = $(this).val();
+        if(addressId==-1){
+            var userId = $(this).attr('user_id');
+            if(!userId){
+                layer.error('用户id非法');
+                return false;
+            }
+
+            location.href = '/shop/account/addressupdate?user_id='+userId;
+            return false;
+        }
+        
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        var param = {"bill_code":tmp, "address_id":addressId};
+        
+        layer.loading(true);
+        $.ajax({
+            url:'/shop/bill/updateaddress',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('成功');
+            }
+        });
         return false;
     });
 });

@@ -27,7 +27,7 @@ EOF;
     </div>
 </div>
 <?php } ?>
-<a href="/shop/account/useradd" class="weui_btn weui_btn_primary">新增用户</a>
+<a href="/shop/account/useradd" class="weui_btn weui_btn_primary" style="margin-top:5px;">新增用户</a>
 <script>
     (function(){
         var total = <?php echo $data['total'];?>;

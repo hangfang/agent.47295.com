@@ -59,21 +59,6 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
 </div>
 
-<div class="weui_cell panel4">
-    <div class="bd">
-        <div class="weui_cells weui_cells_access">
-            <a class="weui_cell" href="javascript:;">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>推送通知</p>
-                </div>
-                <div class="weui_cell_ft">
-                    <input class="weui_switch" type="checkbox" id="switch" checked="">
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
 <div class="weui_cell panel5">
     <div class="bd">
         <div class="weui_cells weui_cells_access">

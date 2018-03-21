@@ -60,11 +60,16 @@ class BillController extends BasicController{
             header('location: /shop/index/succ?title=错误&msg=订单数据丢失...&detail=/shop/bill/index');exit;
         }
         
-        $billProduct = Kissbaby_BillProductModel::getList(['bill_id'=>$bill['id']]);
+        $where = ['bill_id'=>$bill['id']];
+        if(!BaseModel::isAdmin()){
+            $where['user_id'] = $_SESSION['user']['id'];
+        }
+        $billProduct = Kissbaby_BillProductModel::getList();
         
         $this->_view->assign('title', '订单详情');
         $this->_view->assign('bill', $bill);
         $this->_view->assign('billProduct', $billProduct);
+        $this->_view->assign('addressList', Agent_AddressModel::getList(['user_id'=>$bill['user_id'], 'address_status'=>0]));
         return true;
     }
     
@@ -660,7 +665,7 @@ class BillController extends BasicController{
         $this->_view->assign('title', '物流信息');
         $this->_view->assign('expressCom', $kdniao[$bill['express_com']]);
         $this->_view->assign('expressNum', $bill['express_num']);
-        $this->_view->assign('expressStatus', [0=>'无数据', 1=>'', 2=>'在途中', 3=>'已签收', 4=>'问题件']);
+        $this->_view->assign('expressStatus', [0=>'无数据', 1=>'已揽收', 2=>'在途中', 201=>'到达派件城市', 202=>'派件中', 211=>'已放入快递柜或驿站', 3=>'已签收', 311=>'已取出快递柜或驿站', 4=>'问题件', 401=>'发货无信息', 402=>'超时未签收', 403=>'超时未更新', 404=>'拒收（退件）', 412=>'快递柜或驿站超时未取']);
         $this->_view->assign('expressDetail', $bill['express_detail'] ? json_decode($bill['express_detail'], true) : []);
         return true;
     }

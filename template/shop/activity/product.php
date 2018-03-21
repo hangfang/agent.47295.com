@@ -23,7 +23,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 $_productData = str_replace('\'', '###', json_encode($_product));
                 $_extra =  '';
                 if(BaseModel::isAdmin()){
-                    $_extra .= '<span class="weui_desc_extra">Vip价:￥'. $_product['product_vip_price'] .'</span>';
+                    $_extra .= '<span class="weui_desc_extra">成本:'. $_product['product_vip_price'] .'</span>';
                 }
                 
                 echo <<<EOF
@@ -96,7 +96,7 @@ EOF;
 
                             <?php
                                 if(BaseModel::isAdmin()){
-                                    echo 'var extra = \'<span class="weui_desc_extra">Vip价:￥\'+ product[\'product_vip_price\'] +\'</span>\';';
+                                    echo 'var extra = \'<span class="weui_desc_extra">成本:\'+ product[\'product_vip_price\'] +\'</span>\';';
                                 }
                             ?>
                             var imgSrc = product['product_image'] ? product['product_image'].replace('<?php echo CDN_URL_PLACEHOLDER;?>', '<?php echo IMG_CDN_URL;?>') : '';

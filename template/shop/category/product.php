@@ -23,7 +23,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 $_productData = str_replace('\'', '###', json_encode($_product));
                 $_extra = '';
                 if(BaseModel::isAdmin()){
-                    $_extra .= '<span class="weui_desc_extra">会员价:￥'. $_product['product_vip_price'] .'</span>';
+                    $_extra .= '<span class="weui_desc_extra">成本:'. $_product['product_vip_price'] .'</span>';
                 }else{
                     $_extra .= '<span class="weui_desc_extra">浏览量:'. $_product['product_views'] .'</span>';
                 }
@@ -99,7 +99,7 @@ EOF;
 
                             <?php
                                 if(BaseModel::isAdmin()){
-                                    echo 'var extra = \'<span class="weui_desc_extra">Vip价:￥\'+ product[\'product_vip_price\'] +\'</span>\';';
+                                    echo 'var extra = \'<span class="weui_desc_extra">成本:\'+ product[\'product_vip_price\'] +\'</span>\';';
                                 }else{
                                     echo 'var extra = \'<span class="weui_desc_extra">浏览量:\'+ product[\'product_views\'] +\'</span>\';';
                                 }

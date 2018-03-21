@@ -77,9 +77,9 @@ include BASE_PATH.'/template/common/weui/header.php';
 <div class="weui_cell panel5">
     <div class="bd">
         <div class="weui_cells weui_cells_access">
-            <a class="weui_cell" href="javascript:;">
+            <a class="weui_cell" href="/shop/account/address">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>猜你喜欢</p>
+                    <p>收货地址</p>
                 </div>
                 <div class="weui_cell_ft">
                 </div>
