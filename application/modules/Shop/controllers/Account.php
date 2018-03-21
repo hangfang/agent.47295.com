@@ -228,7 +228,7 @@ class AccountController extends BasicController{
             if($userId && !$user = Agent_UserModel::getRow(['id'=>$userId])){
                 lExit('用户不存在');
             }
-            $userId = $_SESSION['user']['id'];
+            $userId = $userId ? $userId : $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
         }
@@ -304,7 +304,7 @@ class AccountController extends BasicController{
             if($userId && !$user = Agent_UserModel::getRow(['id'=>$userId])){
                 lExit('用户不存在');
             }
-            $userId = $_SESSION['user']['id'];
+            $userId = $userId ? $userId : $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
         }
@@ -346,7 +346,7 @@ class AccountController extends BasicController{
             if($userId && !$user = Agent_UserModel::getRow(['id'=>$userId])){
                 lExit('用户不存在');
             }
-            $userId = $_SESSION['user']['id'];
+            $userId = $userId ? $userId : $_SESSION['user']['id'];
         }else{
             $userId = $_SESSION['user']['id'];
         }
