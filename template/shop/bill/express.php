@@ -21,7 +21,7 @@ EOF;
             $time = date('Y-m-d H:i:s');
             echo <<<EOF
 <div class="weui_media_box weui_media_text">
-    <p class="weui_media_desc">暂无物流信息</p>
+    <p class="weui_media_desc">暂无物流信息,请稍后查询</p>
     <ul class="weui_media_info">
         <li class="weui_media_info_meta">{$time}</li>
     </ul>
