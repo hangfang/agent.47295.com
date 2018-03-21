@@ -5,6 +5,38 @@ include BASE_PATH.'/template/common/weui/header.php';
 <style>
     .weui_media_desc .add_to_cart {float:right;}
 </style>
+<div class="weui_cells">
+    <form method="post" action="/shop/bill/index" target="_blank">
+        <div class="weui_cell weui_cell_select weui_select_after" style="float:left;">
+            <div class="weui_cell_hd">
+            </div>
+            <div class="weui_cell_bd weui_cell_primary" style="-webkit-box-flex: 2;-webkit-flex: 2;-ms-flex: 2;flex: 2;">
+                <select class="weui_select" name="user_id" id='bill_user'>
+                    <option <?php $userId ? '' : 'selected'?> value="">用户</option>
+                    <?php
+                        foreach($userList as $_user){
+                            echo '<option '. ($userId==$_user['id'] ? 'selected' : '') .' value='. $_user['id'] .'>'. $_user['user_name'] .'</option>';
+                        }
+                    ?>
+                </select>
+            </div>
+        </div>
+        <div class="weui_cell weui_cell_select weui_select_after">
+            <div class="weui_cell_hd">
+            </div>
+            <div class="weui_cell_bd weui_cell_primary" style="-webkit-box-flex: 2;-webkit-flex: 2;-ms-flex: 2;flex: 2;">
+                <select class="weui_select" name="bill_status" id='bill_status' style="padding-left:0px">
+                    <option <?php $billStatus ? '' : 'selected'?> value="">订单状态</option>
+                    <?php
+                        foreach(BILL_STATUS_HINT as $_status=>$_hint){
+                            echo '<option '. ($billStatus==$_status ? 'selected' : '') .' value='. $_status .'>'. $_hint .'</option>';
+                        }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="weui_panel weui_panel_access">
     <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
     <div class="weui_panel_bd">
@@ -44,18 +76,30 @@ EOF;
         var offset = 10;
         $(function(){
             var xhrIng = false;
+            $('#bill_user,#bill_status').change(function(){
+                $(this).closest('form').submit();
+            });
+            
             $('.weui_panel_ft').click(function(){
                 var _this = this;
                 if(offset>=total){
                     $(_this).remove();
                     return false;
                 }
-
+                
+                var param = {'offset':offset, 'length':10};
+                var userId = $('#bill_user').val();
+                if(userId){
+                    param.user_id = userId;
+                }
+                
+                param.bill_status = $('#bill_status').val();
+                
                 $.ajax({
                     url:'/shop/bill/index',
                     type:'get',
                     dataType:'json',
-                    data:{'offset':offset, 'length':10},
+                    data:param,
                     beforeSend:function(xhr){
                         if(xhrIng){
                             xhr.abort();

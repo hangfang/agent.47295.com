@@ -6,7 +6,12 @@ class BillController extends BasicController{
      */
     public function indexAction(){
         $where = [];
-        if(!BaseModel::isAdmin()){
+        $userId = $this->_request->getPost('user_id');
+        $userList = [];
+        if(BaseModel::isAdmin()){
+            $userList = Agent_UserModel::getList([], 'id,user_name');
+            $userId && $where['user_id'] = $userId;
+        }else{
             $where['user_id'] = $_SESSION['user']['id'];
         }
         
@@ -20,8 +25,8 @@ class BillController extends BasicController{
             $where['create_time<='] = strtotime($billEtime.' 23:59:59');
         }
         
-        $billStatus = $this->_request->getPost('bill_status');
-        if(!empty($billStatus)){
+        $billStatus = $this->_request->getPost('bill_status', null);
+        if(!is_null($billStatus)){
             $where['bill_status'] = $billStatus;
         }
         
@@ -43,6 +48,9 @@ class BillController extends BasicController{
         }
         
         $this->_view->assign('title', '订单中心');
+        $this->_view->assign('userId', $userId);
+        $this->_view->assign('billStatus', $billStatus);
+        $this->_view->assign('userList', $userList);
         $this->_view->assign('data', $result);
         return true;
     }
