@@ -651,7 +651,7 @@ class BillController extends BasicController{
     }
     
     public function expressAction(){
-        $billCode = $this->_request->getPost('bill_code');
+        $billCode = $this->_request->getQuery('bill_code');
         if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'express_com,express_num,express_detail,express_status')){
             header('location: /shop/index/succ?title=错误&msg=订单不存在&detail=/shop/bill/index');exit;
         }
