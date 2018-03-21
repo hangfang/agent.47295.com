@@ -114,8 +114,6 @@ include BASE_PATH.'/template/common/weui/header.php';
                 $_billStatus .= '<option value="'. $_status .'" '. ($bill['bill_status']===$_status ? 'selected' : '') .'>'. $_hint .'</option>';
             }
 
-EOF;
-
             $_billExpress = '';
             $_expressConf = get_var_from_conf('kdniao');
             foreach($_expressConf as $_zhName=>$_com){
