@@ -850,7 +850,14 @@ $(function(){
     });
     
     $('.express_detail').on('click', function(){
-       layer.error('敬请期待'); 
+        var billCode = $(this).attr('bill_code');
+        if(!billCode){
+            layer.error('订单id非法');
+            return false;
+        }
+        
+        location.href = '/shop/bill/express?bill_code='+billCode;
+        return false;
     });
     
     $('.bill_product').on('click', '.weui_media_hd', function(){

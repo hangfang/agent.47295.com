@@ -649,4 +649,19 @@ class BillController extends BasicController{
         
         lExit(['bill_code'=>$billCode]);
     }
+    
+    public function expressAction(){
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'express_com,express_num,express_detail,express_status')){
+            header('location: /shop/index/succ?title=错误&msg=订单不存在&detail=/shop/bill/index');exit;
+        }
+        
+        $kdniao = array_flip(get_var_from_conf('kdniao'));
+        $this->_view->assign('title', '物流信息');
+        $this->_view->assign('expressCom', $kdniao[$bill['express_com']]);
+        $this->_view->assign('expressNum', $bill['express_num']);
+        $this->_view->assign('expressStatus', [0=>'无数据', 1=>'', 2=>'在途中', 3=>'已签收', 4=>'问题件']);
+        $this->_view->assign('expressDetail', $bill['express_detail'] ? json_decode($bill['express_detail'], true) : []);
+        return true;
+    }
 }

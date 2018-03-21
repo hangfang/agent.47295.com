@@ -3,10 +3,10 @@ defined('BASE_PATH') OR exit('No direct script access allowed');
 
 class KuaidiModel extends BaseModel{
     
-    public function kdniao($com, $nu, $msgXml=array()){
+    public static function kdniao($com, $number){
         $queryData = array();
         $queryData['ShipperCode'] = $com;
-        $queryData['LogisticCode'] = $nu;
+        $queryData['LogisticCode'] = $number;
         
         $param = array();
         $param['RequestData'] = json_encode($queryData);
@@ -21,36 +21,6 @@ class KuaidiModel extends BaseModel{
         $data['url'] = KD_NIAO_API_URL;
         $data['method'] = 'POST';
         
-        $rt = http($data);
-        
-        if(empty($msgXml)){
-            return $rt;
-        }
-        
-        $kdniao = get_var_from_conf('kdniao');
-        $kdniao = array_flip($kdniao);
-        
-        $msgformat = get_var_from_conf('msgformat');
-        if($rt['Success'] === false){
-                        
-            $data = $_send_format['text'];
-            $data['touser'] = $msgXml['FromUserName'];
-            $data['fromuser'] = $msgXml['ToUserName'];
-            
-            $data['text']['content'] = sprintf($msgformat['msg_kuaidi'], $kdniao[$rt['ShipperCode']], $rt['LogisticCode'], $rt['Reason']);
-            return $data;
-        }
-        $data = $msgformat['send_format']['text'];
-        $data['touser'] = $msgXml['FromUserName'];
-        $data['fromuser'] = $msgXml['ToUserName'];
-
-        $_trace = "\n";
-        foreach($rt['Traces'] as $_v){
-
-            $_trace .= '    时间:'. date('m月d日 H:i:s', strtotime($_v['AcceptTime'])) ."\n";
-            $_trace .= '    信息:'. $_v['AcceptStation'] ."\n";
-        }
-        $data['text']['content'] = sprintf($msgformat['msg_kuaidi'], $kdniao[$rt['ShipperCode']], $rt['LogisticCode'], strlen($_trace)>10 ? $_trace : $rt['Reason']);
-        return $data;
+        return http($data);
     }
 }
