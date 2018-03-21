@@ -9,23 +9,24 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
         <div class="weui_cell_ft"><?php echo $user['user_mobile'];?></div>
     </div>
-    <div class="weui_cell">
+</div>
+<div class="weui_cells weui_cells_access">
+    <a class="weui_cell" href="/shop/account/address">
+        <div class="weui_cell_hd" style="display:none;"><img src="" alt="" style="width:20px;margin-right:5px;display:block"></div>
         <div class="weui_cell_bd weui_cell_primary">
-            <p>收货地址</p>
+            <p style="margin:0;">收货地址</p>
         </div>
-        <a href='/shop/account/address'>
-            <div class="weui_cell_ft">
-                <?php 
-                    $addressDetail = '去管理收货地址';
-                    if(!empty($address['address_detail'])){
-                        $addressDetail = $address['address_detail'];
-                    }
+        <div class="weui_cell_ft">
+            <?php 
+                $addressDetail = '去管理收货地址';
+                if(!empty($address['address_detail'])){
+                    $addressDetail = $address['address_detail'];
+                }
 
-                    echo $addressDetail;
-                ?>
-            </div>
-        </a>
-    </div>
+                echo $addressDetail;
+            ?>
+        </div>
+    </a>
 </div>
 <div class="weui_cells weui_cells_access" id="bill_list">
     <?php
