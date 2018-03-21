@@ -191,12 +191,12 @@ EOF;
             echo <<<EOF
 <div class="weui_cell weui_cell_select weui_select_after">
     <div class="weui_cell_hd">
-        <select class="weui_select express_com" name="express_com" readonly>
+        <select class="weui_select express_com" name="express_com" disabled>
             {$_billExpress}
         </select>
     </div>
     <div class="weui_cell_bd weui_cell_primary">
-        <input class="weui_input express_detail" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" readonly>
+        <input class="weui_input express_detail" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" disabled>
     </div>
 </div>
 <div class="weui_media_box weui_media_appmsg">
