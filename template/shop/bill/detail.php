@@ -26,7 +26,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             
             $_extra = '';
             
-            if(BaseModel::isAdmin()){
+            if(BaseModel::isAdmin()){//管理员可随时修改价格、数量
                 $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;left:0px;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">市价</label>
@@ -44,26 +44,24 @@ include BASE_PATH.'/template/common/weui/header.php';
                     </div>
                 </div>';
             
-                $_extra .= <<<EOF
-<div class="weui_cell" style="padding:0;position:absolute;top:3.9rem;">
-    <div class="weui_cell_hd">
-        <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
-    </div>
-    <div class="weui_cell_bd weui_cell_primary">
-        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="{$_product['product_cost_money']}" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="{$bill['bill_code']}" product_id="{$_product['product_id']}">
-    </div>
-</div>
-EOF;
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;top:3.9rem;">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label" style="font-weight:400;width:auto;">成本</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input product_cost_money" type="number" placeholder="请输入成本" value="'. $_product['product_cost_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                    </div>
+                </div>';
             
-            $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
-                <div class="weui_cell_hd">
-                    <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
-                </div>
-            </div>';
-            }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
+                    </div>
+                </div>';
+            }else if(in_array($bill['bill_status'], ['CHECKED', 'PAID', 'POST'])){//客户,已确认单据,客户不可修改数量和售价
                 $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;top:20px;">
                     <div class="weui_cell_hd">
                         <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
@@ -78,73 +76,50 @@ EOF;
                         <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
+                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                    </div>
+                </div>';
+            }else{//客户,未确认单据,可修改数量
+                $_extra .= '<div class="weui_cell" style="padding:0;position:absolute;right:4rem;top:20px;">
+                    <div class="weui_cell_hd">
+                        <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
                         <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'">
                     </div>
                 </div>';
             }
             
-            $_readOnly = '';
-            if($_product['product_id']!=0){
-                $_readOnly =   'disabled';
-            }
-            
-            echo <<<EOF
-<div class="weui_media_box weui_media_appmsg bill_product">
-    <div class="weui_media_hd">
-        <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" onerror="this.src='{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg'">
-    </div>
-    <div class="weui_media_bd" style="height:auto;line-height:0;">
-        <h4 class="weui_media_title" style="margin: 0px;">
-            <input class="weui_input product_name" type="text" placeholder="请输入名称" value="{$_product['product_name']}" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="{$bill['bill_code']}" product_id="{$_product['product_id']}" {$_readOnly}/>
-        </h4>
-        <div class="weui_media_desc" style="height: 60px;width: 100%;margin: 0;position:relative;">
-            {$_extra}
-        </div>
-    </div>
-</div>
-EOF;
+            echo '<div class="weui_media_box weui_media_appmsg bill_product">
+                <div class="weui_media_hd">
+                    <img class="lazy weui_media_appmsg_thumb" data-original="'. $_imgSrc .'" onerror="this.src=\''. $STATIC_CDN_URL.$staticDir .'images/qrcode_for_gh_a103c9f558fa_258.jpg\'">
+                </div>
+                <div class="weui_media_bd" style="height:auto;line-height:0;">
+                    <h4 class="weui_media_title" style="margin: 0px;">
+                        <input class="weui_input product_name" type="text" placeholder="请输入名称" value="'. $_product['product_name'] .'" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" '. ($_product['product_id']==0 && BaseModel::isAdmin() ? '' : 'disabled') .'/>
+                    </h4>
+                    <div class="weui_media_desc" style="height: 60px;width: 100%;margin: 0;position:relative;">
+                        '.$_extra.'
+                    </div>
+                </div>
+            </div>';
         }
         
         if(BaseModel::isAdmin()){
             $bill['bill_discount_money'] = $bill['bill_discount_money'] ? $bill['bill_discount_money'] : '0';
             $_payMoney = bcsub($productRealMoney, $bill['bill_discount_money'], 2);
             
-            $_billStatus = <<<EOF
-<div class="weui_cell weui_cell_select weui_select_after">
-    <div class="weui_cell_hd">
-        国家/地区
-    </div>
-    <div class="weui_cell_bd weui_cell_primary">
-        <select class="weui_select bill_status" name="bill_status" bill_code="{$bill['bill_code']}">
-EOF;
+            $_billStatus = '';
             foreach(BILL_STATUS_HINT as $_status=>$_hint){
-                $_selected = '';
-                if($bill['bill_status']===$_status){
-                    $_selected = 'selected';
-                }
-                
-                $_billStatus .= <<<EOF
-<option value="{$_status}" {$_selected}>{$_hint}</option>
-EOF;
+                $_billStatus .= '<option value="'. $_status .'" '. ($bill['bill_status']===$_status ? 'selected' : '') .'>'. $_hint .'</option>';
             }
-            
-            $_billStatus .= <<<EOF
-        </select>
-    </div>
-</div>
+
 EOF;
 
             $_billExpress = '';
             $_expressConf = get_var_from_conf('kdniao');
             foreach($_expressConf as $_zhName=>$_com){
-                $_selected = '';
-                if($bill['express_com']===$_com){
-                    $_selected = 'selected';
-                }
-                
-                $_billExpress .= <<<EOF
-<option value="{$_com}" {$_selected}>{$_zhName}</option>
-EOF;
+                $_billExpress .= '<option value="'. $_com .'" '. ($bill['express_com']===$_com ? 'selected' : '') .'>'. $_zhName .'</option>';
             }
             
             echo <<<EOF
@@ -173,9 +148,18 @@ EOF;
         <h1 class="page_title">Radio</h1>
     </div>
     <div class="bd">
-        <div class="weui_cells_title">订单状态</div>
+        <div class="weui_cells_title" style="display:none;">订单状态</div>
         <div class="weui_cells weui_cells_radio">
-            {$_billStatus}
+            <div class="weui_cell weui_cell_select weui_select_after">
+                <div class="weui_cell_hd">
+                    订单状态
+                </div>
+                <div class="weui_cell_bd weui_cell_primary">
+                    <select class="weui_select bill_status" name="bill_status" bill_code="{$bill['bill_code']}">
+                        {$_billStatus}
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 </div>
