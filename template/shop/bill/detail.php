@@ -196,7 +196,7 @@ EOF;
         </select>
     </div>
     <div class="weui_cell_bd weui_cell_primary">
-        <input class="weui_input express_detail" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" disabled>
+        <input class="weui_input express_num" type="tel" placeholder="请输入单号" value="{$bill['express_num']}" name="express_num" bill_code="{$bill['bill_code']}" disabled>
     </div>
 </div>
 <div class="weui_media_box weui_media_appmsg">
@@ -241,6 +241,10 @@ EOF;
                     <?php
                     if(BaseModel::isAdmin()){
                         echo '<span class="weui_btn weui_btn_mini weui_btn_primary add_bak" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">+替补</span>';
+                    }
+                    
+                    if($bill['express_com'] && $bill['express_num']){
+                        echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_detail" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">查物流</span>';
                     }
                     ?>
                 </p>
