@@ -852,7 +852,6 @@ $(function(){
     $('.bill_product').on('click', '.weui_media_hd', function(){
         var productId = $(this).attr('product_id');
         if(!productId){
-            layer.error('商品id非法');
             return false;
         }
         
