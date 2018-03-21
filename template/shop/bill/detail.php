@@ -67,7 +67,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                         <label class="weui_label" style="font-weight:400;width:auto;">售价</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                        <input class="weui_input product_real_money" type="number" placeholder="请输入售价" value="'. $_product['product_real_money'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" disabled>
                     </div>
                 </div>';
             
@@ -76,7 +76,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                         <label class="weui_label" style="font-weight:400;width:auto;">数量</label>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" readonly>
+                        <input class="weui_input product_num" type="number" placeholder="请输入数量" value="'. $_product['product_num'] .'" style="width:5rem;vertical-align: top;position: absolute;top: -2px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" disabled>
                     </div>
                 </div>';
             }else{//客户,未确认单据,可修改数量
@@ -91,7 +91,7 @@ include BASE_PATH.'/template/common/weui/header.php';
             }
             
             echo '<div class="weui_media_box weui_media_appmsg bill_product">
-                <div class="weui_media_hd">
+                <div class="weui_media_hd" product_id="'. $_product['product_id'] .'">
                     <img class="lazy weui_media_appmsg_thumb" data-original="'. $_imgSrc .'" onerror="this.src=\''. $STATIC_CDN_URL.$staticDir .'images/qrcode_for_gh_a103c9f558fa_258.jpg\'">
                 </div>
                 <div class="weui_media_bd" style="height:auto;line-height:0;">
@@ -847,6 +847,17 @@ $(function(){
     
     $('.express_detail').on('click', function(){
        layer.error('敬请期待'); 
+    });
+    
+    $('.bill_product').on('click', '.weui_media_hd', function(){
+        var productId = $(this).attr('product_id');
+        if(!productId){
+            layer.error('商品id非法');
+            return false;
+        }
+        
+        location.href = '/shop/product/detail?product_id='+productId;
+        return false;
     });
 });
 </script>
