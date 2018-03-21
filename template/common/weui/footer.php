@@ -82,7 +82,7 @@
                         </div>
                         <p class="weui_tabbar_label">订单</p>
                     </a>
-                    <a href="/shop/account/index" class="weui_tabbar_item <?php if($controllerName==='manage_account'){echo 'weui_bar_item_on';}?>">
+                    <a href="/shop/account/index" class="weui_tabbar_item <?php if($controllerName==='account'){echo 'weui_bar_item_on';}?>">
                         <div class="weui_tabbar_icon">
                             <img src="<?php echo STATIC_CDN_URL;?>static/weui/images/icon_nav_panel.png" alt="">
                         </div>

@@ -6,7 +6,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     .weui_media_desc .add_to_cart {float:right;}
 </style>
 <div class="weui_cells">
-    <form method="post" action="/shop/bill/index" target="self">
+    <form method="post" action="/shop/bill/index">
         <div class="weui_cell weui_cell_select weui_select_after" style="float:left;">
             <div class="weui_cell_hd">
             </div>

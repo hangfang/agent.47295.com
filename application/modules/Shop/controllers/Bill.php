@@ -26,7 +26,7 @@ class BillController extends BasicController{
         }
         
         $billStatus = $this->_request->getPost('bill_status', null);
-        if(!is_null($billStatus)){
+        if(in_array($billStatus, ['0', 0, -1, '-1'], true)){
             $where['bill_status'] = $billStatus;
         }
         

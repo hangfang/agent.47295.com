@@ -90,7 +90,7 @@ class LoginController extends BasicController{
         lExit(0, '登录成功');
     }
     
-    public function logoutAction(){
+    public function outAction(){
         session_destroy();
         header('location: /');exit;;
     }

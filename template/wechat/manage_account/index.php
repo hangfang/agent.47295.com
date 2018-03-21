@@ -93,4 +93,5 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
+<a href="/shop/login/out" class="weui_btn weui_btn_warn" style="margin-top:5px;">退&nbsp;&nbsp;出</a>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>
