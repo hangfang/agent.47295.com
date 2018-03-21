@@ -129,7 +129,7 @@ class AccountController extends BasicController{
         $this->_view->assign('title', '用户资料-'.$user['user_name']);
         $this->_view->assign('user', $user);
         $this->_view->assign('billList', Kissbaby_BillModel::getList(['user_id'=>$userId], '*', '', 'id desc'));
-        $this->_view->assign('addressList', Agent_AddressModel::getList(['user_id'=>$userId, 'address_status'=>0]));
+        $this->_view->assign('address', Agent_AddressModel::getRow(['user_id'=>$userId, 'address_status'=>0], '*', '', 'address_default desc'));
         return true;
     }
     

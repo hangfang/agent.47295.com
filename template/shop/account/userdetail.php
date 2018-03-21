@@ -9,35 +9,23 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
         <div class="weui_cell_ft"><?php echo $user['user_mobile'];?></div>
     </div>
-    <?php
-        $options = '<option value="">请选择</option><option value="-1">新增收货地址</option>';
-        foreach($addressList as $_address){
-            $options .= '<option value="'. $_address['id'] .'" '. ($bill['address_id']===$_address['id'] ? 'selected' : '') .'>'. $_address['detail'] .'</option>';
-        }
-            
-        echo <<<EOF
-<div style="border-top: solid 1px #eee;">
-    <div class="hd" style="display:none;">
-        <h1 class="page_title">Radio</h1>
-    </div>
-    <div class="bd">
-        <div class="weui_cells_title" style="display:none;">收货地址</div>
-        <div class="weui_cells weui_cells_radio">
-            <div class="weui_cell weui_cell_select weui_select_after">
-                <div class="weui_cell_hd">
-                    收货地址
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <select class="weui_select address_id" name="address_id" user_id="{$user['id']}">
-                        {$options}
-                    </select>
-                </div>
-            </div>
+    <div class="weui_cell">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>收货地址</p>
         </div>
+        <a href='/shop/account/address'>
+            <div class="weui_cell_ft">
+                <?php 
+                    $addressDetail = '去管理收货地址';
+                    if(!empty($address['address_detail'])){
+                        $addressDetail = $address['address_detail'];
+                    }
+
+                    echo $addressDetail;
+                ?>
+            </div>
+        </a>
     </div>
-</div>
-EOF;
-    ?>
 </div>
 <div class="weui_cells weui_cells_access" id="bill_list">
     <?php
