@@ -83,10 +83,13 @@ include BASE_PATH.'/template/common/weui/header.php';
                 }
                 
                 if($address){
-                    echo '<input type="hidden" name="id" class="id" value="'. (empty($address['id']) ? '' : $address['id']) .'">';
+                    echo '<input type="hidden" name="address_id" class="address_id" value="'. (empty($address['id']) ? '' : $address['id']) .'">';
                 }
             ?>
             <a href="javascript:;" class="weui_btn weui_btn_primary add-btn">确定</a>
+            <?php if($address){ ?>
+            <a href="javascript:;" class="weui_btn weui_btn_warn del-btn">删除</a>
+            <?php } ?>
         </form>
     </div>
 </div>
@@ -95,9 +98,9 @@ include BASE_PATH.'/template/common/weui/header.php';
        $('#address .add-btn').click(function(){
             var params = {};
            
-            var tmp = $('#address .id').length ? $('#address .id').val() : '';
-            if(!tmp){
-                params['id'] = tmp;
+            var tmp = $('#address .address_id').length ? $('#address .address_id').val() : '';
+            if(tmp){
+                params['address_id'] = tmp;
             }
            
             var tmp = $('#address .user_id').length ? $('#address .user_id').val() : '';
@@ -167,23 +170,63 @@ include BASE_PATH.'/template/common/weui/header.php';
             var tmp = $('#address .address_default').prop('checked');
             params['address_default'] = tmp ? 1 : 0;
 
+            layer.loading(true);
             $.ajax({
                url:'/shop/account/updateaddress',
                data:params,
                type:'POST',
                dataType: 'json',
                success:function(data, xhr){
-                   if(!data){
-                       layer.error('服务器内部错误，请稍后再试...');
-                       return false;
-                   }
+                    layer.loading(false);
+                    if(!data){
+                        layer.error('服务器内部错误，请稍后再试...');
+                        return false;
+                    }
+
+                    if(data.rtn!=0){
+                        layer.error(data.error_msg);
+                        return false;
+                    }
                    
-                   if(data.rtn!=0){
-                       layer.error(data.error_msg);
-                       return false;
-                   }
+                    layer.toast('操作成功', function(){location.href='/shop/account/address';});
+               }
+            });
+       });
+       
+       $('#address .del-btn').click(function(){
+            var params = {};
+           
+            var tmp = $('#address .address_id').length ? $('#address .address_id').val() : '';
+            if(!tmp){
+                layer.error('收货地址id非法!');
+                return false;
+            }
+            params['address_id'] = tmp;
+           
+            var tmp = $('#address .user_id').length ? $('#address .user_id').val() : '';
+            if(tmp){
+                params['user_id'] = tmp;
+            }
+            layer.loading(true);
+
+            $.ajax({
+               url:'/shop/account/deladdress',
+               data:params,
+               type:'POST',
+               dataType: 'json',
+               success:function(data, xhr){
+                    layer.loading(false);
+                    if(!data){
+                        layer.error('服务器内部错误，请稍后再试...');
+                        return false;
+                    }
+
+                    if(data.rtn!=0){
+                        layer.error(data.error_msg);
+                        return false;
+                    }
                    
-                   layer.toast('操作成功', function(){location.href='/shop/account/address';});
+                    layer.toast('操作成功', function(){location.href='/shop/account/address';});
                }
             });
        });

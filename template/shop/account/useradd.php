@@ -78,6 +78,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 layer.error('密码输入不一致!');
                 return false;
             }
+            layer.loading(true);
 
             $.ajax({
                url:'/shop/account/adduser',
@@ -85,15 +86,16 @@ include BASE_PATH.'/template/common/weui/header.php';
                type:'POST',
                dataType: 'json',
                success:function(data, xhr){
-                   if(!data){
-                       layer.error('服务器内部错误，请稍后再试...');
-                       return false;
-                   }
-                   
-                   if(data.rtn!=0){
-                       layer.error(data.error_msg);
-                       return false;
-                   }
+                    layer.loading(false);
+                    if(!data){
+                        layer.error('服务器内部错误，请稍后再试...');
+                        return false;
+                    }
+
+                    if(data.rtn!=0){
+                        layer.error(data.error_msg);
+                        return false;
+                    }
                    
                    layer.toast('操作成功', function(){location.href = '/shop/account/userdetail?id='+data.data.id;});
                }

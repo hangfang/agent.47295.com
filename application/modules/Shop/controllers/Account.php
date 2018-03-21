@@ -137,7 +137,7 @@ class AccountController extends BasicController{
      * @return boolean
      */
     public function addressAction(){
-        $where = [];
+        $where = ['address_status'=>0];
         if(!BaseModel::isAdmin()){
             $where['user_id'] = $_SESSION['user']['id'];
         }
@@ -149,13 +149,13 @@ class AccountController extends BasicController{
     
     /**
      * @todo 新增或编辑收货地址
-     * @param int id 收货地址id
+     * @param int address_id 收货地址id
      * @param int user_id 用户id
      * @return boolean
      */
     public function addressUpdateAction(){
         $address = [];
-        $id = $this->_request->getQuery('id');
+        $id = $this->_request->getQuery('address_id');
         $userId = $this->_request->getQuery('user_id');
         if($id){
             $where = ['id'=>$id];
@@ -222,7 +222,7 @@ class AccountController extends BasicController{
         $addressDefault = $this->_request->getPost('address_default');
         
         $address = [];
-        $id = $this->_request->getPost('id');
+        $id = $this->_request->getPost('address_id');
         if($id && !$address = Agent_AddressModel::getRow(['id'=>$id])){
             lExit('收货地址不存在');
         }
@@ -324,6 +324,39 @@ class AccountController extends BasicController{
         }
         
         $db->commit();
+        lExit();
+    }
+    
+    /**
+     * @todo 删除收货地址
+     * @param int address_id 收货地址id
+     * @param int user_id 用户id
+     * @return boolean
+     */
+    public function delAddressAction(){
+        $id = $this->_request->getPost('address_id');
+        if(!$id){
+            lExit(502, '收货地址id非法');
+        }
+        
+        $userId = $this->_request->getPost('user_id');
+        if(BaseModel::isAdmin()){
+            if($userId && !$user = Agent_UserModel::getRow(['id'=>$userId])){
+                lExit('用户不存在');
+            }
+            $userId = $_SESSION['user']['id'];
+        }else{
+            $userId = $_SESSION['user']['id'];
+        }
+        
+        if(!$address = Agent_AddressModel::getRow(['id'=>$id, 'user_id'=>$userId])){
+            lExit('收货地址不存在');
+        }
+        
+        if(false===Agent_AddressModel::update(['address_status'=>'-1'], ['id'=>$id, 'user_id'=>$userId])){
+            lExit('删除收货地址失败');
+        }
+        
         lExit();
     }
 }
