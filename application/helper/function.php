@@ -468,6 +468,7 @@ if(!function_exists('http')){
         curl_close($ch);
 
         if($args['withheader']){
+            $result = preg_replace('/^HTTP\/1\.1 100\s+/', '', $result);
             $header_body = preg_split("#\r\n\r\n#" ,$result ,2);//$header_body[0]是返回头的字符串形式，$header_body[1]是返回数据的字符串形式
             $headers = preg_split("#\r\n#", $header_body[0] ,2);//$headers是返回头的数组
             $status = preg_split("# #" ,$headers[0] ,3);//返回头第一行，用空格分隔，形成数组：协议、状态码、状态码对应的英文字符
