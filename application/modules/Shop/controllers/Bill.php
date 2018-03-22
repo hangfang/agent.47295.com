@@ -129,19 +129,22 @@ class BillController extends BasicController{
             }
         }
         
+        $address = Agent_AddressModel::getRow(['user_id'=>$userId, 'address_status'=>0, 'address_default'=>1], 'id');
         $db = Database::getInstance('kissbaby');
         $db->startTransaction();
         
         if(empty($bill)){
             $bill = [
-                'bill_code'            =>  $billCode=Kissbaby_BillModel::getBillCode(),
-                'bill_cost_money'      =>  '0.00',
-                'bill_discount_money'  =>  '0.00',
-                'bill_image'           =>  '',
-                'bill_origin_money'    =>  '0.00',
-                'bill_product_num'     =>  0,
-                'bill_sale_money'      =>  '0.00',
-                'bill_status'          =>  'INIT',
+                'express_com'           =>  'ZTO',
+                'bill_code'             =>  $billCode=Kissbaby_BillModel::getBillCode(),
+                'bill_cost_money'       =>  '0.00',
+                'bill_discount_money'   =>  '0.00',
+                'bill_image'            =>  '',
+                'bill_origin_money'     =>  '0.00',
+                'bill_product_num'      =>  0,
+                'bill_sale_money'       =>  '0.00',
+                'bill_status'           =>  'INIT',
+                'address_id'            =>  empty($address['id']) ? '' : $address['id'],
                 'user_id'               =>  $userId,
                 'create_time'           =>  time(),
                 'ts'                    =>  date('Y-m-d H:i:s')

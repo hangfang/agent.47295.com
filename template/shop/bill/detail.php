@@ -194,7 +194,7 @@ include BASE_PATH.'/template/common/weui/header.php';
 </div>
 <div class="weui_cell weui_cell_select weui_select_before">
     <div class="weui_cell_hd">
-        <select class="weui_select express_com" name="express_com">
+        <select class="weui_select express_com" name="express_com" bill_code="{$bill['bill_code']}">
             {$_billExpress}
         </select>
     </div>
