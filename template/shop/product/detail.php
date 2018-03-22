@@ -68,7 +68,7 @@ EOF;
                 <li class="weui_media_info_meta">浏览量：<span><?php echo $product['product_views'];?>次</span></li>
                 <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="weui_media_info_meta">Kissbaby原价：<span>￥'.$product['product_sale_price'].'</span></li>' : '';?>
                 <?php echo !empty($_SESSION['user']['user_type']) && $_SESSION['user']['user_type']==='admin' ? '<li class="weui_media_info_meta">Kissbaby会员价：<span>￥'.$product['product_vip_price'].'</span></li>' : '';?>
-                <li class="weui_media_info_meta" style='position: relative;height: 2rem;width: 100%;height: 2.23rem;padding:0px;'><a href="javascript:void(0);" data='<?php echo str_replace('\'', '###', json_encode($product));?>' class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" style='width: 7rem;height: 2.23rem;display:block;margin:0 auto;'>+购物车</a></li>
+                <li class="weui_media_info_meta" style='position: relative;height: 2rem;width: 100%;height: 2.23rem;padding:0px;'><a href="javascript:void(0);" data='<?php echo str_replace('\'', '###', json_encode($product));?>' class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" style='width: 8rem;height: 2.23rem;display:block;margin:0 auto;'>+购物车</a></li>
             </ul>
         </div>
     </div>
