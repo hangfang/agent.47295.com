@@ -133,7 +133,11 @@ $(function(){
         url:'/shop/bill/index',
         type:'post',
         dataType:'json',
-        data:{"offset":0},
+        <?php if(BaseModel::isAdmin()){?>
+        data:{"offset":0, 'bill_status':'INIT,CHECKED,PAID,POST'},
+        <?php }elseif(BaseModel::isAdmin()){?>
+        data:{"offset":0, 'bill_status':'INIT'},
+        <?php } ?>
         beforeSend:function(xhr){
             if(xhrIng){
                 xhr.abort();

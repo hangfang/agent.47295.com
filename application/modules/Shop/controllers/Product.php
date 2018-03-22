@@ -41,23 +41,21 @@ class ProductController extends BasicController{
         $subCategoryId = $this->_request->getQuery('sub_category_id');
         
         $subCategoryList = [];
-        if($categoryId){
-            if(!in_array($categoryId, array_column($categoryList, 'category_id'))){
-                if($this->_request->isXmlHttpRequest()){
-                    lExit(502, '商品一级分类不存在');
-                }
-                header('location: /shop/index/succ?title=错误&msg=商品一级分类不存在...&detail=/shop/category/index');exit;
+        if($categoryId && !in_array($categoryId, array_column($categoryList, 'category_id'))){
+            if($this->_request->isXmlHttpRequest()){
+                lExit(502, '商品一级分类不存在');
             }
+            header('location: /shop/index/succ?title=错误&msg=商品一级分类不存在...&detail=/shop/category/index');exit;
         }
         
         $where = [];
         $categoryId && $where['parent_id'] = $categoryId;
         $subCategoryList = Kissbaby_CategoryModel::getList($where);
-        if(!$subCategoryList || ($subCategoryId && !in_array($subCategoryId, array_column($subCategoryList, 'category_id')))){
+        if($subCategoryId && !in_array($subCategoryId, array_column($subCategoryList, 'category_id'))){
             if($this->_request->isXmlHttpRequest()){
                 lExit(502, '商品二级分类不存在');
             }
-            header('location: /shop/index/succ?title=错误&msg=商品二级分类不存在...&detail=/shop/category/subcategory?category_id='.$categoryId);exit;
+            header('location: /shop/index/succ?title=错误&msg=商品二级分类不存在...&detail=/shop/category/subcategory?category_id='.intval($categoryId));exit;
         }
         
         $where = [];

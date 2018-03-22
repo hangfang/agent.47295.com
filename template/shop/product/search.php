@@ -12,10 +12,10 @@ include BASE_PATH.'/template/common/weui/header.php';
     <div class="bd">
         <!--<a href="javascript:;" class="weui_btn weui_btn_primary">点击展现searchBar</a>-->
         <div class="weui_search_bar" id="search_bar">
-            <form class="weui_search_outer">
+            <form class="weui_search_outer" method="get" action="/shop/product/search">
                 <div class="weui_search_inner">
                     <i class="weui_icon_search"></i>
-                    <input type="search" class="weui_search_input" id="search_input" placeholder="搜索" required="">
+                    <input type="text" class="weui_search_input" id="search_input" name="search" placeholder="搜索" required="">
                     <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
                 </div>
                 <label for="search_input" class="weui_search_text" id="search_text" style="margin-bottom: 0px;">
@@ -104,91 +104,97 @@ EOF;
         var total = <?php echo $data['total'];?>;
         var offset = 10;
         var xhrIng = false;
-        $('#search_input').on('keyup', function(){
-           $('#search_cancel').show();
+        $('#search_input').on('keyup', function(e){
+            $('#search_cancel').show();
             $('#product_list').empty();
-           var keyword = $(this).val();
-           if(keyword.length>0){
-               layer.loading(true);
-                $.ajax({
-                    url:'/shop/product/search',
-                    type:'get',
-                    dataType:'json',
-                    data:{"search":keyword},
-                    beforeSend:function(xhr){
-                        if(xhrIng){
-                            xhr.abort();
-                            return false;
-                        }
+            var keyword = $(this).val();
+            if(keyword.length>0){
+                
+                if(e.keyCode==13){
+                    $(this).closest('form').submit();
+                    return false;
+                }
+                
+                layer.loading(true);
+                 $.ajax({
+                     url:'/shop/product/search',
+                     type:'get',
+                     dataType:'json',
+                     data:{"search":keyword},
+                     beforeSend:function(xhr){
+                         if(xhrIng){
+                             xhr.abort();
+                             return false;
+                         }
 
-                        xhrIng = true;
-                    },
-                    complete:function(){
-                        xhrIng = false;
-                    },
-                    success:function(data, xhr){
-                        layer.loading(false);
-                        if(!data){
-                            layer.error('请求失败,请稍后再试...');
-                            return false;
-                        }
+                         xhrIng = true;
+                     },
+                     complete:function(){
+                         xhrIng = false;
+                     },
+                     success:function(data, xhr){
+                         layer.loading(false);
+                         if(!data){
+                             layer.error('请求失败,请稍后再试...');
+                             return false;
+                         }
 
-                        if(data.rtn!=0){
-                            layer.error(data.error_msg);
-                            return false;
-                        }
+                         if(data.rtn!=0){
+                             layer.error(data.error_msg);
+                             return false;
+                         }
 
-                        if(typeof localStorage.search==='undefined'){
-                            var tmp = {};
-                        }else{
-                            var json = localStorage.search;
-                            var tmp = JSON.parse(json);
-                        }
-                        
-                        tmp[keyword] = keyword;
-                        localStorage.search = JSON.stringify(tmp);
-                        
-                        var html = '';
-                        for(var i in data.data.list){
-                            var product = data.data.list[i];
-                            productName = product['product_name'].replace(search, '<span style="color:red;">'+ search +'</span>');
-                            html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
-                                        <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
-                                            <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ productName +'</a></p>\
-                                        </div>\
-                                    </div>';
-                        }
-                        
-                        if(data.data.total>10){
-                            html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
-                                        <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
-                                            <a class="weui_btn weui_btn_primary" href="/shop/product/search?search='+ keyword +'" style="color:#777">查看全部</a>\
-                                        </div>\
-                                    </div>';
-                        }
-                        
-                        $('#history_hot').hide();
-                        $('#search_show').html(html).show();
-                        return true;
-                    }
-                });
-           }
-       });
+                         if(typeof localStorage.search==='undefined'){
+                             var tmp = {};
+                         }else{
+                             var json = localStorage.search;
+                             var tmp = JSON.parse(json);
+                         }
+
+                         tmp[keyword] = keyword;
+                         localStorage.search = JSON.stringify(tmp);
+
+                         var html = '';
+                         for(var i in data.data.list){
+                             var product = data.data.list[i];
+                             productName = product['product_name'].replace(search, '<span style="color:red;">'+ search +'</span>');
+                             html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
+                                         <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
+                                             <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ productName +'</a></p>\
+                                         </div>\
+                                     </div>';
+                         }
+
+                         if(data.data.total>10){
+                             html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
+                                         <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
+                                             <a class="weui_btn weui_btn_primary" href="/shop/product/search?search='+ keyword +'" style="color:#777">查看全部</a>\
+                                         </div>\
+                                     </div>';
+                         }
+
+                         $('#history_hot').hide();
+                         $('#search_show').html(html).show();
+                         return true;
+                     }
+                 });
+            }
+        });
+
+        $('#search_text').on('click', function(){
+            $(this).remove();
+            $('#search_input').focus();
+            $('#search_cancel').show();
+        });
+
+        $('#search_cancel,#search_clear').on('click', function(){
+            $('#search_text').show();
+            $('#search_input').val('');
+            $('#search_show').hide();
+             $('#history_hot').show();
+        });
        
-       $('#search_text').on('click', function(){
-           $(this).remove();
-           $('#search_input').focus();
-           $('#search_cancel').show();
-       });
-       
-       $('#search_cancel,#search_clear').on('click', function(){
-           $('#search_text').show();
-           $('#search_input').val('');
-           $('#search_show').hide();
-            $('#history_hot').show();
-       });
-       
-       $('.weui_panel_ft').click(function(){
+        $('.weui_panel_ft').click(function(){
             var _this = this;
             if(offset>=total){
                 $(_this).remove();

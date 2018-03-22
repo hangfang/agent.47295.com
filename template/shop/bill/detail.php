@@ -302,7 +302,14 @@ EOF;
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="<?php echo $bill['bill_code'];?>"><?php echo $bill['bill_memo'];?></textarea>
+                    <?php
+                    if(BaseModel::isAdmin() || $bill['bill_status']==='INIT'){
+                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'">'. $bill['bill_memo'] .'</textarea>';
+                    }else{
+                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'" disabled>'. $bill['bill_memo'] .'</textarea>';
+                    }
+                    ?>
+                    
                 </div>
             </div>
         </div>
@@ -811,10 +818,6 @@ $(function(){
 
     $('#bill_memo').on('blur', function(){
         var billMemo = $(this).val();
-        if(!billMemo){
-            layer.error('订单备注不能为空');
-            return false;
-        }
         
         var param = {"bill_memo":billMemo};
         var tmp = $(this).attr('bill_code');

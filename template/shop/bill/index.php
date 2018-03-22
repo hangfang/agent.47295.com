@@ -26,10 +26,10 @@ include BASE_PATH.'/template/common/weui/header.php';
             </div>
             <div class="weui_cell_bd weui_cell_primary" style="-webkit-box-flex: 2;-webkit-flex: 2;-ms-flex: 2;flex: 2;">
                 <select class="weui_select" name="bill_status" id='bill_status' style="padding-left:0px">
-                    <option <?php $billStatus ? '' : 'selected'?> value="">订单状态</option>
+                    <option <?php empty($billStatus[0]) ? 'selected' : ''?> value="">订单状态</option>
                     <?php
                         foreach(BILL_STATUS_HINT as $_status=>$_hint){
-                            echo '<option '. ($billStatus==$_status ? 'selected' : '') .' value='. $_status .'>'. $_hint .'</option>';
+                            echo '<option '. (!empty($billStatus[0]) && $billStatus[0]==$_status ? 'selected' : '') .' value='. $_status .'>'. $_hint .'</option>';
                         }
                     ?>
                 </select>

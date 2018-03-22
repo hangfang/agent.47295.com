@@ -25,8 +25,9 @@ class BillController extends BasicController{
             $where['create_time<='] = strtotime($billEtime.' 23:59:59');
         }
         
-        $billStatus = $this->_request->getPost('bill_status', null);
-        if(in_array($billStatus, ['0', 0, -1, '-1'], true)){
+        $billStatus = $this->_request->getPost('bill_status');
+        $billStatus = $billStatus ? explode(',', $billStatus) : [];
+        if($billStatus){
             $where['bill_status'] = $billStatus;
         }
         
@@ -44,7 +45,7 @@ class BillController extends BasicController{
         }
         
         if(!$result['list']){
-            header('location: /shop/index/succ?title=异常&msg=没有找到您的订单记录...&btn=立即下单&detail=/shop/index/index');exit;
+            //header('location: /shop/index/succ?title=异常&msg=没有找到您的订单记录...&btn=立即下单&detail=/shop/index/index');exit;
         }
         
         $this->_view->assign('title', '订单中心');
@@ -72,7 +73,7 @@ class BillController extends BasicController{
         if(!BaseModel::isAdmin()){
             $where['user_id'] = $_SESSION['user']['id'];
         }
-        $billProduct = Kissbaby_BillProductModel::getList();
+        $billProduct = Kissbaby_BillProductModel::getList($where);
         
         $this->_view->assign('title', '订单详情');
         $this->_view->assign('bill', $bill);
@@ -123,7 +124,7 @@ class BillController extends BasicController{
         }
         
         foreach($productList as $_key=>$_prd){
-            if($_prd['product_num']<=0){
+            if($_prd['product_num']<0){
                 lExit(502, '商品【'.$id2product[$_prd['product_id']]['product_name'].'】购买数量错误');
             }
         }
@@ -156,10 +157,10 @@ class BillController extends BasicController{
         }
         
         $billUpdate = [
-            'bill_cost_money'      =>  '0.00',
-            'bill_origin_money'    =>  '0.00',
-            'bill_product_num'     =>  '0.00',
-            'bill_sale_money'      =>  '0.00',
+            'bill_cost_money'      =>  $bill['bill_cost_money'],
+            'bill_origin_money'    =>  $bill['bill_origin_money'],
+            'bill_product_num'     =>  $bill['bill_product_num'],
+            'bill_sale_money'      =>  $bill['bill_sale_money'],
         ];
         
         foreach($productList as $_prd){
@@ -260,7 +261,7 @@ class BillController extends BasicController{
         }
         
         $productNum = $this->_request->getPost('product_num');
-        if(empty($productNum) || $productNum<0){
+        if(!is_numeric($productNum) || $productNum<0){
             lExit(502, '购买数量错误');
         }
         
@@ -470,8 +471,8 @@ class BillController extends BasicController{
         }
         
         $update = [
-            'express_com'  =>  $expressCom,
-            'express_num'  =>  $expressNum
+            'express_com'  =>  htmlentities($expressCom),
+            'express_num'  =>  htmlentities($expressNum)
         ];
         if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】物流信息失败');
@@ -567,7 +568,7 @@ class BillController extends BasicController{
         }
         
         $update = [
-            'bill_memo'  =>  $billMemo
+            'bill_memo'  => htmlentities($billMemo)
         ];
         if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】备注失败');
