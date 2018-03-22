@@ -43,11 +43,11 @@ class KuaidiModel{
         $queryData['PayType'] = 1;//邮费支付方式:1-现付，2-到付，3-月结，4-第三方支付
         $queryData['ExpType'] = 1;//快递类型：1-标准快件
         $queryData['Receiver'] = [
-            'Name'  =>  $address['address_name'],//收件人
+            'Name'  =>  mb_convert_encoding($address['address_name'], 'UTF-8', mb_detect_encoding($address['address_name'])),//收件人
             'Mobile'  =>  $address['address_tel'],
-            'ProvinceName'  =>  trim($address['address_province'], '省').'省',//收件省（如广东省，不要缺少“省”）
-            'CityName'  =>  trim($address['address_city'], '市').'市',//收件市（如深圳市，不要缺少“市”）
-            'Address'  =>  $address['address_detail'],//收件人详细地址
+            'ProvinceName'  =>  trim(mb_convert_encoding($address['address_province'], 'UTF-8', mb_detect_encoding($address['address_province'])), '省').'省',//收件省（如广东省，不要缺少“省”）
+            'CityName'  =>  trim(mb_convert_encoding($address['address_city'], 'UTF-8', mb_detect_encoding($address['address_city'])), '市').'市',//收件市（如深圳市，不要缺少“市”）
+            'Address'  =>  mb_convert_encoding($address['address_detail'], 'UTF-8', mb_detect_encoding($address['address_detail'])),//收件人详细地址
         ];
         
         $queryData['Sender'] = EXPRESS_SENDER;
@@ -66,6 +66,7 @@ class KuaidiModel{
         
         $data = array();
         $data['data'] = $param;
+        $data['header'] = PHP_ENV==='product' ? ['Content-Type: application/x-www-form-urlencoded'] : [];
         $data['url'] = KD_NIAO_API_ORDER_URL;
         $data['method'] = 'POST';
         
