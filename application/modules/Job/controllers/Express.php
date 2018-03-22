@@ -7,7 +7,7 @@ class ExpressController extends BasicController{
     public function updateAction(){
         $billList = Kissbaby_BillModel::getList(['express_com!='=>'', 'express_num!='=>'', 'express_status!='=>3], 'id,express_com,express_num,express_detail,express_status');
         foreach($billList as $_bill){
-            $_detail = KuaidiModel::kdniao($_bill['express_com'], $_bill['express_num']);
+            $_detail = KuaidiModel::query($_bill['express_com'], $_bill['express_num']);
             if(!$_detail){
                 echo '查询订单['. $_bill['id'] .']物流信息, FAILED'."\n";
                 continue;

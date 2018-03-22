@@ -92,9 +92,17 @@ define('SERVICE_TEL', '+86 15914186940');
 define('SINA_IP_LOOKUP_API_URL', 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=%s');
 
 /*快递鸟*/
-define('KD_NIAO_APP_ID', '1256662');
-define('KD_NIAO_APP_KEY', '998e72f8-d8f2-4b56-9b55-4c3510d23275');
-define('KD_NIAO_API_URL', 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx');
+if(PHP_ENV==='product'){
+    define('KD_NIAO_APP_ID', '1256662');
+    define('KD_NIAO_APP_KEY', '998e72f8-d8f2-4b56-9b55-4c3510d23275');
+    define('KD_NIAO_API_QUERY_URL', 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx');
+    define('KD_NIAO_API_ORDER_URL', 'http://api.kdniao.cc/api/OOrderService');
+}else{
+    define('KD_NIAO_APP_ID', 'test1256662');
+    define('KD_NIAO_APP_KEY', '45607c49-926d-476f-ae2c-0b4631afd2be');
+    define('KD_NIAO_API_QUERY_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
+    define('KD_NIAO_API_ORDER_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
+}
 
 /*腾讯地图*/
 define('TENCENT_MAP_APP_KEY', 'J7CBZ-YV43X-PVS4E-ZGYVP-KF2T3-A3BQZ');
