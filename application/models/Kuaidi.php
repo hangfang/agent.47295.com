@@ -71,7 +71,7 @@ class KuaidiModel{
         
         $data = array();
         $data['data'] = $param;
-        $data['header'] = PHP_ENV==='product' ? ['Content-Type: application/x-www-form-urlencoded'] : [];
+        $data['header'] = PHP_ENV==='product' ? ['Content-Type: application/json;charset=UTF-8'] : [];
         $data['url'] = KD_NIAO_API_ORDER_URL;
         $data['method'] = 'POST';
         
