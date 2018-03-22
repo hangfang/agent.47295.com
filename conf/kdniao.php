@@ -1,7 +1,7 @@
 <?php
 $kdniao = array (
-  'EMS' => 'EMS',
-  '申通' => 'STO',
+//  'EMS' => 'EMS',
+//  '申通' => 'STO',
   '韵达' => 'YD',
   '顺丰' => 'SF',
   '圆通' => 'YTO',

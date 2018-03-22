@@ -55,9 +55,9 @@ class KuaidiModel{
         $queryData['Commodity'] = [
             ['GoodsName' =>  '生活用品']
         ];
-        
+
         $param = array();
-        $param['RequestData'] = json_encode($queryData);
+        $param['RequestData'] = json_encode($queryData, JSON_UNESCAPED_UNICODE);
         $param['EBusinessID'] = KD_NIAO_APP_ID;
         $param['RequestType'] = 1001;
         $param['DataSign'] = base64_encode(md5($param['RequestData'].KD_NIAO_APP_KEY));

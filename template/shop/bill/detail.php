@@ -665,13 +665,59 @@ $(function(){
     });
 
     $('.express_num').on('blur', function(){
+        var expressCom = $('.express_com').val();
+        if(expressCom.length<2){
+            layer.error('物流公司错误');
+            return false;
+        }
+        
         var expressNum = $(this).val();
-        if(expressNum.length<5){
+        if(expressNum && expressNum.length<5){
             layer.error('物流单号长度错误');
             return false;
         }
         
-        var param = {"express_num":expressNum, "express_com":$('.express_com').val()};
+        var param = {"express_num":expressNum, "express_com":expressCom};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        
+        layer.loading(true);
+
+        $.ajax({
+            url:'/shop/bill/updateexpress',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                layer.toast('成功');
+            }
+        });
+        return false;
+    });
+
+    $('.express_com').on('blur', function(){
+        var expressCom = $('.express_com').val();
+        if(expressCom.length<2){
+            layer.error('物流公司错误');
+            return false;
+        }
+        
+        var param = {"express_com":expressCom};
         var tmp = $(this).attr('bill_code');
         if(!tmp){
             layer.error('订单号非法');
@@ -1024,7 +1070,7 @@ $(function(){
                     return false;
                 }
 
-                refreshBill();
+                layer.toast('成功', function(){location.reload();});
             }
         });
         return false;

@@ -454,15 +454,21 @@ class BillController extends BasicController{
             lExit(502, '操作未授权');
         }
         
+        $update = [];
         $expressConf = get_var_from_conf('kdniao');
         $expressCom = $this->_request->getPost('express_com');
-        if(!in_array($expressCom, array_values($expressConf))){
-            lExit(502, '快递公司不存在');
+        if($expressCom){
+            !in_array($expressCom, array_values($expressConf)) && lExit(502, '快递公司不存在');
+            $update['express_com'] = htmlentities($expressCom);
+        }else{
+            $update['express_com'] = '';
         }
         
         $expressNum = $this->_request->getPost('express_num');
-        if(strlen($expressNum)<5){
-            lExit(502, '物流单号太短');
+        $update['express_num'] = $expressNum ? htmlentities($expressNum) : '';
+        
+        if(!$update){
+            lExit(502, '数据无更新');
         }
         
         $billCode = $this->_request->getPost('bill_code');
@@ -470,10 +476,6 @@ class BillController extends BasicController{
             lExit(502, '订单不存在');
         }
         
-        $update = [
-            'express_com'  =>  htmlentities($expressCom),
-            'express_num'  =>  htmlentities($expressNum)
-        ];
         if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(500, '更新订单【'.$billCode.'】物流信息失败');
         }
@@ -721,6 +723,38 @@ class BillController extends BasicController{
         $update = ['express_num'=>$result['Order']['LogisticCode']];
         if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
             lExit(502, '更新快递单号失败');
+        }
+        
+        lExit();
+    }
+    
+    /**
+     * 更新订单收货地址
+     */
+    public function updateAddressAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+        
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode])){
+            lExit(502, '订单不存在');
+        }
+
+        if(!BaseModel::isAdmin() && $bill['bill_status']!=='INIT'){
+            lExit(502, '操作未授权');
+        }
+        
+        $addressId = intval($this->_request->getPost('address_id'));
+        if(!$addressId || !$address=Agent_AddressModel::getRow(['id'=>$addressId, 'user_id'=>$bill['user_id']])){
+            lExit(502, '收货地址不存在');
+        }
+        
+        $update = [
+            'address_id'  => $addressId
+        ];
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            lExit(500, '更新订单【'.$billCode.'】收货地址失败');
         }
         
         lExit();
