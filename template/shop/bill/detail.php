@@ -172,7 +172,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
-<div style="border-top: solid 1px #eee;">
+<div style="border-top: solid 1px #eee;" style="display:none;">
     <div class="hd" style="display:none;">
         <h1 class="page_title">Radio</h1>
     </div>
@@ -231,7 +231,7 @@ EOF;
         <input class="weui_input" type="tel" value="{$bill['express_num']}" disabled>
     </div>
 </div>
-<div class="weui_cell weui_cell_select weui_select_after">
+<div class="weui_cell weui_cell_select weui_select_after" style="display:none;">
     <div class="weui_cell_hd">
         <select class="weui_select" disabled>
             <option value="">收货地址</option>
@@ -274,7 +274,7 @@ EOF;
             }
             
             echo <<<EOF
-<div style="border-top: solid 1px #eee;">
+<div style="border-top: solid 1px #eee;" style="display:none;">
     <div class="hd" style="display:none;">
         <h1 class="page_title">Radio</h1>
     </div>
@@ -330,7 +330,7 @@ EOF;
                     if($bill['express_com'] && $bill['express_num']){
                         echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_detail" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">查物流</span>';
                     }else if(BaseModel::isAdmin()){
-                        echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_order" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">寄件</span>';
+                        //echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_order" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">寄件</span>';
                     }
                     ?>
                 </p>
