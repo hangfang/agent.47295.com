@@ -317,7 +317,7 @@ EOF;
             <div class="weui_media_bd">
                 <p class="weui_media_desc" style="height: 40px;width: 100%;margin: 0;position:relative;display: block;">
                     <?php
-                    if(BaseModel::isAdmin() || $bill['bill_status']==='INIT'){
+                    if((BaseModel::isAdmin() && $bill['bill_status']!=='CANCEL') || $bill['bill_status']==='INIT'){
                         echo '<span class="weui_btn weui_btn_mini weui_btn_warn cancel_bill" style="float: left;display: block;" bill_code="'. $bill['bill_code'] .'">取消订单</span>';
                     }
                     ?>
