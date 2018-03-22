@@ -46,14 +46,6 @@ include BASE_PATH.'/template/common/weui/header.php';
             </div>
             <div class="weui_cell">
                 <div class="weui_cell_hd">
-                    <label class="weui_label">地区</label>
-                </div>
-                <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input user_pwd_repeat address_district" type="text" name="address_district" placeholder="请输入地区" value="<?php echo empty($address['address_district']) ? '' : $address['address_district'];?>">
-                </div>
-            </div>
-            <div class="weui_cell">
-                <div class="weui_cell_hd">
                     <label class="weui_label">详细地址</label>
                 </div>
                 <div class="weui_cell_bd weui_cell_primary">
@@ -149,13 +141,6 @@ include BASE_PATH.'/template/common/weui/header.php';
                 return false;
             }
             params['address_city'] = tmp;
-           
-            var tmp = $('#address .address_district').val();
-            if(tmp.length<1){
-                layer.error('地区不能为空!');
-                return false;
-            }
-            params['address_district'] = tmp;
            
             var tmp = $('#address .address_detail').val();
             if(tmp.length<5){

@@ -678,4 +678,19 @@ class BillController extends BasicController{
         $this->_view->assign('expressDetail', $bill['express_detail'] ? json_decode($bill['express_detail'], true) : []);
         return true;
     }
+    
+    /**
+     * 快递下单
+     */
+    public function expressOrderAction(){
+        if(!$this->_request->isXmlHttpRequest()){
+            lExit(502, '请求非法');
+        }
+
+        if(!BaseModel::isAdmin()){
+            lExit(502, '操作未授权');
+        }
+        
+        lExit(502, '敬请期待');
+    }
 }

@@ -28,4 +28,8 @@ class ExpressController extends BasicController{
         
         exit(date('Y-m-d H:i:s').' '.'更新物流信息成功'."\n");
     }
+    
+    public function orderAction(){
+        log_message('error', print_r(KuaidiModel::order('YD', '123432434234', ['address_name'=>'搜索','address_tel'=>'搜索','address_province'=>'搜索','address_city'=>'搜索','address_detail'=>'搜索',])));
+    }
 }

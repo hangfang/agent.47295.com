@@ -216,7 +216,7 @@ EOF;
             if($bill['address_id']){
                 foreach($billAddressList as $_address){
                     if($bill['address_id']==$_address['id']){
-                        $_billAddress = $_address['address_province'].' '.$_address['address_city'] .' '. $_address['address_district'].' '. $_address['address_detail'];
+                        $_billAddress = $_address['address_province'].' '.$_address['address_city'] .' '. $_address['address_detail'];
                     }
                 }
             }
@@ -329,6 +329,8 @@ EOF;
                     
                     if($bill['express_com'] && $bill['express_num']){
                         echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_detail" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">查物流</span>';
+                    }else if(BaseModel::isAdmin()){
+                        echo '<span class="weui_btn weui_btn_mini weui_btn_primary express_order" style="float: right;display: block;margin:0 5px 0 0;" bill_code="'. $bill['bill_code'] .'">寄件</span>';
                     }
                     ?>
                 </p>
@@ -989,6 +991,40 @@ $(function(){
                 }
 
                 layer.toast('成功');
+            }
+        });
+        return false;
+    });
+    
+    $('.express_order').on('click', function(){
+        var _this = this;
+        var param = {};
+        var tmp = $(this).attr('bill_code');
+        if(!tmp){
+            layer.error('订单号非法');
+            return false;
+        }
+        param.bill_code = tmp;
+        layer.loading(true);
+
+        $.ajax({
+            url:'/shop/bill/expressorder',
+            dataType:'json',
+            data:param,
+            type:'post',
+            success:function(data, xhr){
+                layer.loading(false);
+                if(!data){
+                    layer.error('请求失败,请稍后再试...');
+                    return false;
+                }
+
+                if(data.rtn!=0){
+                    layer.error(data.error_msg);
+                    return false;
+                }
+
+                refreshBill();
             }
         });
         return false;

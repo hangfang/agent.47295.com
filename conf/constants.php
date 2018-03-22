@@ -104,6 +104,9 @@ if(PHP_ENV==='product'){
     define('KD_NIAO_API_ORDER_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
 }
 
+//快递发件人
+define('EXPRESS_SENDER', ['Name'  =>  '王琳玲', 'Mobile'  =>  '15914186940', 'ProvinceName'  =>  '广东省', 'CityName'  =>  '深圳市',  'Address'  =>  '南山区西丽珠光村东区91栋806室']);
+
 /*腾讯地图*/
 define('TENCENT_MAP_APP_KEY', 'J7CBZ-YV43X-PVS4E-ZGYVP-KF2T3-A3BQZ');
 define('TENCENT_MAP_APP_URL', 'http://apis.map.qq.com/ws');

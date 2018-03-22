@@ -181,7 +181,6 @@ class AccountController extends BasicController{
      * @param string address_tel 手机号码
      * @param string address_province 省份 (广东)
      * @param string address_city 城市
-     * @param string address_district 地区
      * @param string address_status 是否启用
      * @param string address_default 是否默认地址
      * @param int id 地址id
@@ -207,11 +206,6 @@ class AccountController extends BasicController{
         $addressCity = $this->_request->getPost('address_city');
         if(!strlen($addressCity)){
             lExit('城市不能为空');
-        }
-        
-        $addressDistrict = $this->_request->getPost('address_district');
-        if(!strlen($addressDistrict)){
-            lExit('地区不能为空');
         }
         
         $addressDetail = $this->_request->getPost('address_detail');
@@ -254,7 +248,6 @@ class AccountController extends BasicController{
                 'address_tel'=>$addressTel,
                 'address_province'=>$addressProvince,
                 'address_city'=>$addressCity,
-                'address_district'=>$addressDistrict,
                 'address_detail'=>$addressDetail,
                 'address_status'=>$addressStatus,
                 'address_default'=>$addressDefault
@@ -269,7 +262,6 @@ class AccountController extends BasicController{
                 'address_tel'=>$addressTel,
                 'address_province'=>$addressProvince,
                 'address_city'=>$addressCity,
-                'address_district'=>$addressDistrict,
                 'address_detail'=>$addressDetail,
                 'address_status'=>$addressStatus,
                 'address_default'=>$addressDefault,
