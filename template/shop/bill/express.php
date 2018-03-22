@@ -11,7 +11,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 echo <<<EOF
 <div class="weui_media_box weui_media_text">
     <p class="weui_media_desc">{$_detail['AcceptStation']}</p>
-    <ul class="weui_media_info">
+    <ul class="weui_media_info" style="padding-bottom:0;margin-bottom:0;">
         <li class="weui_media_info_meta">{$_detail['AcceptTime']}</li>
     </ul>
 </div>
@@ -22,7 +22,7 @@ EOF;
             echo <<<EOF
 <div class="weui_media_box weui_media_text">
     <p class="weui_media_desc">暂无物流信息,请稍后查询</p>
-    <ul class="weui_media_info">
+    <ul class="weui_media_info" style="padding-bottom:0;margin-bottom:0;">
         <li class="weui_media_info_meta">{$time}</li>
     </ul>
 </div>
