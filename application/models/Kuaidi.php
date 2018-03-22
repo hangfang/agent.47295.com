@@ -38,6 +38,7 @@ class KuaidiModel{
     public static function order($com, $billCode, $address){
         $queryData = array();
         $queryData['ShipperCode'] = $com;//快递公司编码
+        $queryData['CallBack'] = '琳玲港货';//商户标识
         $queryData['OrderCode'] = $billCode;//订单编号
         $queryData['PayType'] = 1;//邮费支付方式:1-现付，2-到付，3-月结，4-第三方支付
         $queryData['ExpType'] = 1;//快递类型：1-标准快件

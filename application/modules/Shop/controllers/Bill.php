@@ -691,6 +691,38 @@ class BillController extends BasicController{
             lExit(502, '操作未授权');
         }
         
-        lExit(502, '敬请期待');
+        $billCode = $this->_request->getPost('bill_code');
+        if(empty($billCode) || !$bill=Kissbaby_BillModel::getRow(['bill_code'=>$billCode], 'id,express_com,address_id,user_id')){
+            lExit(502, '订单不存在');
+        }
+        
+        if(!$bill['express_com']){
+            lExit(502, '请先选择物流公司');
+        }
+        
+        if(!$bill['address_id']){
+            lExit(502, '请先选择收货地址');
+        }
+        
+        $address = Agent_AddressModel::getRow(['id'=>$bill['address_id'], 'user_id'=>$bill['user_id']]);
+        if(!$address){
+            lExit(502, '收货地址不存在');
+        }
+        
+        $result = KuaidiModel::order($bill['express_com'], $billCode, $address);
+        if(empty($result['Success'])){
+            lExit(502, empty($result['Reason']) ? '快递下单失败' : $result['Reason']);
+        }
+        
+        if(empty($result['Order']['LogisticCode'])){
+            lExit(502, '未获取到快递单号');
+        }
+        
+        $update = ['express_num'=>$result['Order']['LogisticCode']];
+        if(false===Kissbaby_BillModel::update($update, ['bill_code'=>$billCode])){
+            lExit(502, '更新快递单号失败');
+        }
+        
+        lExit();
     }
 }
