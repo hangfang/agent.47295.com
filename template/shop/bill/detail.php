@@ -96,7 +96,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 </div>
                 <div class="weui_media_bd" style="height:auto;line-height:0;">
                     <h4 class="weui_media_title" style="margin: 0px;">
-                        <input class="weui_input product_name" type="text" placeholder="请输入名称" value="'. $_product['product_name'] .'" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" '. ($_product['product_id']==0 && BaseModel::isAdmin() ? '' : 'disabled') .'/>
+                        <input class="weui_input product_name" type="text" placeholder="请输入名称" value="'. $_product['product_name'] .'" style="width:100%;vertical-align: top;position: absolute;top: 11px;color:#000;font-size:14px;" bill_code="'. $bill['bill_code'] .'" product_id="'. $_product['product_id'] .'" '. ($_product['product_id']==0 && BaseModel::isAdmin() ? '' : 'disabled') .'/>
                     </h4>
                     <div class="weui_media_desc" style="height: 60px;width: 100%;margin: 0;position:relative;">
                         '.$_extra.'
@@ -160,10 +160,10 @@ include BASE_PATH.'/template/common/weui/header.php';
         <div class="weui_cells_title" style="display:none;">订单状态</div>
         <div class="weui_cells weui_cells_radio">
             <div class="weui_cell weui_cell_select weui_select_after">
-                <div class="weui_cell_hd">
+                <div class="weui_cell_hd" style="font-size:14px;">
                     订单状态
                 </div>
-                <div class="weui_cell_bd weui_cell_primary">
+                <div class="weui_cell_bd weui_cell_primary" style="font-size:14px;">
                     <select class="weui_select bill_status" name="bill_status" bill_code="{$bill['bill_code']}">
                         {$_billStatus}
                     </select>
@@ -172,7 +172,7 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
-<div style="border-top: solid 1px #eee;" style="display:none;">
+<div style="border-top: solid 1px #eee;display:none;">
     <div class="hd" style="display:none;">
         <h1 class="page_title">Radio</h1>
     </div>
@@ -274,7 +274,7 @@ EOF;
             }
             
             echo <<<EOF
-<div style="border-top: solid 1px #eee;" style="display:none;">
+<div style="border-top: solid 1px #eee;display:none;">
     <div class="hd" style="display:none;">
         <h1 class="page_title">Radio</h1>
     </div>
@@ -304,9 +304,9 @@ EOF;
                 <div class="weui_cell_bd weui_cell_primary">
                     <?php
                     if(BaseModel::isAdmin() || $bill['bill_status']==='INIT'){
-                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'">'. $bill['bill_memo'] .'</textarea>';
+                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'"  style="font-size:14px;">'. $bill['bill_memo'] .'</textarea>';
                     }else{
-                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'" disabled>'. $bill['bill_memo'] .'</textarea>';
+                        echo '<textarea class="weui_textarea" placeholder="请输入订单备注" rows="3" name="bill_memo" id="bill_memo" bill_code="'. $bill['bill_code'] .'" disabled  style="font-size:14px;">'. $bill['bill_memo'] .'</textarea>';
                     }
                     ?>
                     
