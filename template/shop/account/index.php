@@ -84,9 +84,23 @@ include BASE_PATH.'/template/common/weui/header.php';
                 <div class="weui_cell_ft">
                 </div>
             </a>
-            <a class="weui_cell" href="<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_430.jpg'?>">
+            <a class="weui_cell" href="<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_430.jpg';?>">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>关注我们</p>
+                    <p>关注琳玲港货(自助下单)</p>
+                </div>
+                <div class="weui_cell_ft">
+                </div>
+            </a>
+            <a class="weui_cell" href="<?php echo STATIC_CDN_URL.'static/shop/images/WangLin-ling.jpg';?>">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>客服微信</p>
+                </div>
+                <div class="weui_cell_ft">
+                </div>
+            </a>
+            <a class="weui_cell" href="<?php echo SERVICE_TEL;?>">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>联系电话</p>
                 </div>
                 <div class="weui_cell_ft">
                 </div>
