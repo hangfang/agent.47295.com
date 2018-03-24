@@ -343,35 +343,82 @@ EOF;
 $(function(){
     var openInWechat = navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger" ? true : false;
     if(openInWechat){
-        wx.onMenuShareTimeline({
-            title: '<?php echo '我在[琳玲港货]购买了['.$billProduct[0]['product_name'].']等'.$bill['bill_product_num'].'件港货,购物体验极好的呢.';?>', // 分享标题
-            link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
-            success: function () {
-            // 用户确认分享后执行的回调函数
-                layer.toast('分享成功');
-            },
-            cancel: function () {
-            // 用户取消分享后执行的回调函数
-                layer.toast('取消分享');
-            }
-        });
-        
-        wx.onMenuShareAppMessage({
-            title: '<?php echo '我在[琳玲港货]购买了['.$billProduct[0]['product_name'].']等'.$bill['bill_product_num'].'件港货,购物体验极好的呢.';?>', // 分享标题
-            desc: '<?php echo KISSBABY_DESCRIPTION;?>', // 分享描述
-            link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: '', // 分享图标
-            type: 'link', // 分享类型,music、video或link，不填默认为link
-            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-            success: function () {
-            // 用户确认分享后执行的回调函数
-                layer.toast('分享成功');
-            },
-            cancel: function () {
-            // 用户取消分享后执行的回调函数
-                layer.toast('取消分享');
-            }
+        wx.ready(function(){
+            wx.onMenuShareTimeline({
+                title: '<?php echo '【琳玲港货】代购了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
+                success: function () {
+                // 用户确认分享后执行的回调函数
+                    layer.toast('分享成功');
+                },
+                cancel: function () {
+                // 用户取消分享后执行的回调函数
+                    layer.toast('取消分享');
+                }
+            });
+
+            wx.onMenuShareAppMessage({
+                title: '<?php echo '【琳玲港货】'.KISSBABY_DESCRIPTION;?>', // 分享描述
+                desc: '<?php echo '我购买了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
+                type: 'link', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () {
+                // 用户确认分享后执行的回调函数
+                    layer.toast('分享成功');
+                },
+                cancel: function () {
+                // 用户取消分享后执行的回调函数
+                    layer.toast('取消分享');
+                }
+            });
+            
+            wx.onMenuShareQQ({
+                title: '<?php echo '【琳玲港货】'.KISSBABY_DESCRIPTION;?>', // 分享描述
+                desc: '<?php echo '我购买了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    layer.toast('分享成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                    layer.toast('取消分享');
+                }
+            });
+            
+            wx.onMenuShareWeibo({
+                title: '<?php echo '【琳玲港货】'.KISSBABY_DESCRIPTION;?>', // 分享描述
+                desc: '<?php echo '我购买了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    layer.toast('分享成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                    layer.toast('取消分享');
+                }
+            });
+            
+            wx.onMenuShareQZone({
+                title: '<?php echo '【琳玲港货】'.KISSBABY_DESCRIPTION;?>', // 分享描述
+                desc: '<?php echo '我购买了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
+                success: function () {
+                    // 用户确认分享后执行的回调函数
+                    layer.toast('分享成功');
+                },
+                cancel: function () {
+                    // 用户取消分享后执行的回调函数
+                    layer.toast('取消分享');
+                }
+            });
         });
     }
     
