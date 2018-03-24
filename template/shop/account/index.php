@@ -84,7 +84,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 <div class="weui_cell_ft">
                 </div>
             </a>
-            <a class="weui_cell" href="<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_258.jpg'?>">
+            <a class="weui_cell" href="<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_430.jpg'?>">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>关注我们</p>
                 </div>
