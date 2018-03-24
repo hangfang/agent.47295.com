@@ -402,7 +402,7 @@
                 {'url':'/shop/index/index','text':'精选推荐'},
                 {'url':'/shop/activity/index','text':'限时活动'},
                 {'url':'/shop/product/search','text':'热搜排行'},
-                {'url':'<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_430.jpg'?>','text':'关注我们'},
+                {'url':'<?php echo STATIC_CDN_URL.'static/shop/images/qrcode_for_gh_a103c9f558fa_430.jpg'?>','text':'关注琳玲港货！'},
             ];
             layer.actionSheet(menu);
         });
