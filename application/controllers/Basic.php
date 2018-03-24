@@ -37,6 +37,7 @@ class BasicController extends Yaf_Controller_Abstract {
             $this->_view->assign('controllerName', $controllerName);
             $this->_view->assign('actionName', $actionName);
             $this->_view->assign('staticDir', '/static/'.$moduleName .'/');
+            $this->_view->assign('jsapi', Wechat_MsgModel::getJsApiSigObj());
 
             if($moduleName==='index'){
                 return true;

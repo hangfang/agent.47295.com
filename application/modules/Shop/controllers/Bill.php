@@ -53,7 +53,6 @@ class BillController extends BasicController{
         $this->_view->assign('billStatus', $billStatus);
         $this->_view->assign('userList', $userList);
         $this->_view->assign('data', $result);
-        $this->_view->assign('jsapi', Wechat_MsgModel::getJsApiSigObj());
         return true;
     }
     

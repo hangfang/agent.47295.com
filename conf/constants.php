@@ -115,5 +115,5 @@ define('TENCENT_MAP_APP_URL', 'http://apis.map.qq.com/ws');
 
 //kissbaby
 define('KISSBABY_KEYWORD', '港货 母婴 药品 奶粉 辅食 奶瓶 化妆品 美颜 保养 包包');
-define('KISSBABY_DESCRIPTION', '归功化妆品、母婴等产品香港代购服务');
+define('KISSBABY_DESCRIPTION', '提供化妆品、母婴等产品香港代购服务');
 define('BILL_STATUS_HINT', ['INIT'=>'订单待确认', 'CHECKED'=>'订单采购中', 'PAID'=>'订单已付款', 'POST'=>'订单已发货', 'CANCEL'=>'订单已取消']);
