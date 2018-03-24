@@ -460,7 +460,7 @@ class BillController extends BasicController{
         
         $update = [];
         $expressNum = $this->_request->getPost('express_num');
-        $update['express_num'] = $expressNum ? htmlentities($expressNum) : '';
+        $update['express_num'] = $expressNum ? preg_replace('/\s+/', '', htmlentities($expressNum)) : '';
         if(empty($update['express_num'])){
             lExit(502, '快递单号不能为空');
         }
@@ -471,7 +471,6 @@ class BillController extends BasicController{
             !in_array($expressCom, array_values($expressConf)) && lExit(502, '快递公司不存在');
             $update['express_com'] = htmlentities($expressCom);
         }else{
-            
             $res = KuaidiModel::recognize($update['express_num']);
             if(empty($res['Shippers'])){
                 lExit(502, '快递单号识别失败');
