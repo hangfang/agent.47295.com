@@ -64,7 +64,13 @@ class Wechat_MsgModel extends BaseModel{
         $data2gen['jsapi_ticket'] = $access_token['jsapi_ticket'];
         $data2gen['noncestr'] = $data['nonceStr'];
         $data2gen['timestamp'] = $data['timestamp'];
-        $data2gen['url'] = (empty($_SERVER['HTTPS']) ? 'http':'https') .'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['QUERY_STRING'];
+        $data2gen['url'] = (empty($_SERVER['HTTPS']) ? 'http':'https') .'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        if($_SERVER['QUERY_STRING']){
+            $_SERVER['QUERY_STRING'] = preg_replace('/s\=[^&]+/', '', $_SERVER['QUERY_STRING']);
+            if($_SERVER['QUERY_STRING']){
+                $data2gen['url'] .= '?'.$_SERVER['QUERY_STRING'];
+            }
+        }
         
         $string1 = '';
         foreach($data2gen as $_k=>$_v){
@@ -73,7 +79,7 @@ class Wechat_MsgModel extends BaseModel{
         unset($data2gen, $_k, $_v);
         
         $string1 = trim($string1, '&');
-        
+
         $data['signature'] = sha1($string1);
         
         return $data;

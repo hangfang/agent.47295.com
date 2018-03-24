@@ -53,6 +53,7 @@ class BillController extends BasicController{
         $this->_view->assign('billStatus', $billStatus);
         $this->_view->assign('userList', $userList);
         $this->_view->assign('data', $result);
+        $this->_view->assign('jsapi', Wechat_MsgModel::getJsApiSigObj());
         return true;
     }
     
@@ -458,17 +459,31 @@ class BillController extends BasicController{
         }
         
         $update = [];
+        $expressNum = $this->_request->getPost('express_num');
+        $update['express_num'] = $expressNum ? htmlentities($expressNum) : '';
+        if(empty($update['express_num'])){
+            lExit(502, '快递单号不能为空');
+        }
+        
         $expressConf = get_var_from_conf('kdniao');
         $expressCom = $this->_request->getPost('express_com');
         if($expressCom){
             !in_array($expressCom, array_values($expressConf)) && lExit(502, '快递公司不存在');
             $update['express_com'] = htmlentities($expressCom);
         }else{
-            $update['express_com'] = '';
+            
+            $res = KuaidiModel::recognize($update['express_num']);
+            if(empty($res['Shippers'])){
+                lExit(502, '快递单号识别失败');
+            }
+            
+            foreach($res['Shippers'] as $_shipper){
+                if(in_array($_shipper['ShipperCode'], array_values($expressConf))){
+                    $update['express_com'] = $_shipper['ShipperCode'];
+                }
+            }
         }
         
-        $expressNum = $this->_request->getPost('express_num');
-        $update['express_num'] = $expressNum ? htmlentities($expressNum) : '';
         
         if(!$update){
             lExit(502, '数据无更新');

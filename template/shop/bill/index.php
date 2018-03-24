@@ -52,6 +52,10 @@ include BASE_PATH.'/template/common/weui/header.php';
                     $_extra = '<span class="weui_desc_extra">售价:'. $_bill['bill_sale_money'] .'</span>'.$_extra;
                 }
                 
+                if(BaseModel::isAdmin()){
+                    $_extra .= '<span class="weui_btn weui_btn_mini weui_btn_primary express_num" style="float:right;" bill_code="'.$_bill['bill_code'].'">扫码</span>';
+                }
+                
                 $_time = date('Y-m-d', $_bill['create_time']);
                 $_bill['bill_status'] = BILL_STATUS_HINT[$_bill['bill_status']];
                 echo <<<EOF
@@ -61,7 +65,7 @@ include BASE_PATH.'/template/common/weui/header.php';
     </div>
     <div class="weui_media_bd">
         <h4 class="weui_media_title" style="display:inline;">{$_SESSION['user']['user_name']}:{$_time}</h4><span style="float: right;color:#E64340">{$_bill['bill_status']}</span>
-        <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary" onclick="location.href='/shop/bill/detail?bill_code={$_bill['bill_code']}';" style="float:right;">详情</span></p>
+        <p class="weui_media_desc">{$_extra}</p>
     </div>
 </a>
 EOF;
@@ -70,6 +74,73 @@ EOF;
     </div>
     <?php if($data['total']>10){ echo '<a class="weui_panel_ft" href="javascript:void(0);">查看更多</a>';}?>
 </div>
+<script src="<?php echo STATIC_CDN_URL;?>static/weui/js/jweixin-1.2.0.js?v=2016-04-07"></script>
+<script>
+    var openInWechat = navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger" ? true : false;
+    if(openInWechat){
+        wx.config({
+            debug: <?php echo $jsapi['debug']; ?>, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '<?php echo $jsapi['appId']; ?>', // 必填，公众号的唯一标识
+            timestamp: <?php echo $jsapi['timestamp']; ?>, // 必填，生成签名的时间戳
+            nonceStr: '<?php echo $jsapi['nonceStr']; ?>', // 必填，生成签名的随机串
+            signature: '<?php echo $jsapi['signature']; ?>', // 必填，签名，见附录1
+            jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+         $('#container').on('click', '.express_num', function(e){
+            var _this = this;
+            wx.scanQRCode({
+                needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    var expressNum = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    if(expressNum && expressNum.length<5){
+                        layer.error('物流单号长度错误');
+                        return false;
+                    }
+                    var tmp = expressNum.split(',');
+                    if(tmp.length==2){
+                        expressNum = tmp[1];
+                    }    
+
+                    var param = {"express_num":expressNum};
+                    var tmp = $(_this).attr('bill_code');
+                    if(!tmp){
+                        layer.error('订单号非法');
+                        return false;
+                    }
+                    param.bill_code = tmp;
+
+                    layer.loading(true);
+
+                    $.ajax({
+                        url:'/shop/bill/updateexpress',
+                        dataType:'json',
+                        data:param,
+                        type:'post',
+                        success:function(data, xhr){
+                            layer.loading(false);
+                            if(!data){
+                                layer.error('请求失败,请稍后再试...');
+                                return false;
+                            }
+
+                            if(data.rtn!=0){
+                                layer.error(data.error_msg);
+                                return false;
+                            }
+
+                            layer.toast('成功');
+                        }
+                    });
+                    return false;
+                }
+            });
+            
+            return false;
+        });
+    }
+</script>
 <script>
     (function(){
         var total = <?php echo $data['total'];?>;

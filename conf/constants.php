@@ -97,11 +97,13 @@ if(PHP_ENV==='product'){
     define('KD_NIAO_APP_KEY', '998e72f8-d8f2-4b56-9b55-4c3510d23275');
     define('KD_NIAO_API_QUERY_URL', 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx');
     define('KD_NIAO_API_ORDER_URL', 'http://api.kdniao.cc/api/OOrderService');
+    define('KD_NIAO_API_RECOGNIZE_URL', 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx');
 }else{
     define('KD_NIAO_APP_ID', 'test1256662');
     define('KD_NIAO_APP_KEY', '45607c49-926d-476f-ae2c-0b4631afd2be');
     define('KD_NIAO_API_QUERY_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
     define('KD_NIAO_API_ORDER_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
+    define('KD_NIAO_API_RECOGNIZE_URL', 'http://sandboxapi.kdniao.cc:8080/kdniaosandbox/gateway/exterfaceInvoke.json');
 }
 
 //快递发件人
