@@ -52,7 +52,7 @@ define('WECHAT_OPEN_HOST', 'https://open.weixin.qq.com');
 define('WECHAT_API_HOST', 'https://api.weixin.qq.com');
 
 if(PHP_ENV==='product'){
-    define('WECHAT_WEB_JS_DEBUG', false);//web JavaScript调试模式
+    define('WECHAT_WEB_JS_DEBUG', 'false');//web JavaScript调试模式
     define('WECHAT_ENCPRYPT_TYPE', false);//消息加密方式
     define('WECHAT_APP_ID', 'wx3779049492b4a7ad');
     define('WECHAT_APP_SECRET', 'b500556d6ff2af79022c373b6384b988');
@@ -62,7 +62,7 @@ if(PHP_ENV==='product'){
     define('WECHAT_OPENID', 'gh_a103c9f558fa');//公众号的openid
     define('WECHAT_ADMIN_OPENID', ['o1pON0QK-CT6zS0ikg_Ks6GGxpPo']);//管理员的openid
 }else{
-    define('WECHAT_WEB_JS_DEBUG', true);//web JavaScript调试模式
+    define('WECHAT_WEB_JS_DEBUG', 'true');//web JavaScript调试模式
     define('WECHAT_ENCPRYPT_TYPE', false);//消息加密方式
     define('WECHAT_APP_ID', 'wxda5cc06be9c200f6');
     define('WECHAT_APP_SECRET', '8d3f59778c0c214088c886845d57d8ce');
