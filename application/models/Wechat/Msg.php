@@ -65,12 +65,6 @@ class Wechat_MsgModel extends BaseModel{
         $data2gen['noncestr'] = $data['nonceStr'];
         $data2gen['timestamp'] = $data['timestamp'];
         $data2gen['url'] = (empty($_SERVER['HTTPS']) ? 'http':'https') .'://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-        if($_SERVER['QUERY_STRING']){
-            $_SERVER['QUERY_STRING'] = preg_replace('/s\=[^&]+/', '', $_SERVER['QUERY_STRING']);
-            if($_SERVER['QUERY_STRING']){
-                $data2gen['url'] .= '?'.$_SERVER['QUERY_STRING'];
-            }
-        }
         
         $string1 = '';
         foreach($data2gen as $_k=>$_v){
