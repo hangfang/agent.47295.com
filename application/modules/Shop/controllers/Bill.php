@@ -654,11 +654,11 @@ class BillController extends BasicController{
             lExit(502, '订单不存在');
         }
         
-        if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>0])){//订单里已存在的商品
+        if(Kissbaby_BillProductModel::count(['bill_id'=>$bill['id'], 'product_id'=>-1])){//订单里已存在的商品
             lExit(500, '商品已被加入订单,请勿重复购买');
         }
         
-        $product = Kissbaby_ProductModel::getRow(['product_id'=>0]);
+        $product = Kissbaby_ProductModel::getRow(['product_id'=>-1]);
         if(!$product){
             lExit(502, '替补商品不存在');
         }
@@ -671,7 +671,7 @@ class BillController extends BasicController{
             'product_real_money'    =>  0,
             'product_sale_money'    =>  0,
             'bill_id'               =>  $bill['id'],
-            'product_id'            =>  0,
+            'product_id'            =>  -1,
             'create_time'           =>  time()
         ];
         if(!Kissbaby_BillProductModel::insert($_insert)){
