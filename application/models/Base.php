@@ -391,28 +391,23 @@ class BaseModel
     public static function whiteList($uri)
     {
         $white = [
-            'api_auth_in',//登录
-            'api_auth_token',//运维登录app，获取短信验证码
-            'api_auth_out',//退出登录
-            'api_auth_weblogintoken',//员工登录web端，获取短信验证码
-            'base_base_fetch',//查询基础数据
-            'system_user_getregtoken',//员工注册，获取短信验证码
-            'system_user_getfindtoken',//员工找回登录密码，获取短信验证码
-            'system_user_getchangetoken',//员工更换登录手机号，获取短信验证码
-            'api_user_register',//用户注册
-            'api_user_domain',//查询企业号
-            'api_user_createcompany',//创建企业
-            'api_user_joincompany',//加入企业
-            'api_user_domainshops',//企业的分销分店
-            'api_user_forgetpwd',//忘记密码
-            'system_data_departmentgroup',//企业规模列表
-            'system_data_materialcls',//经营品类列表
-            'api_user_checkcompanyname',  //检测企业名称是否重名
-            'system_user_checkmobile',  //检测手机号是否存在
-            'sell_seller_querywarrantysheet',  //质保单
-            'sell_seller_query',  //商品详情
-            'permission_menu_webmenus', //web端菜单列表
-            'permission_menu_webpms'  //web端操作列表
+            'shop_activity_index',
+            'shop_activity_product',
+            'shop_login_index',
+            'shop_login_register',
+            'shop_login_dologin',
+            'shop_index_succ',
+            'shop_index_index',
+            'shop_product_detail',
+            'shop_product_index',
+            'shop_product_search',
+            'wechat_auth_index',
+            'wechat_auth_bind',
+            'wechat_auth_code',
+            'wechat_auth_doregister',
+            'wechat_auth_index',
+            'wechat_auth_login',
+            'wechat_auth_register',
         ];
 
         return in_array($uri, $white);

@@ -345,7 +345,7 @@ $(function(){
     if(openInWechat){
         wx.ready(function(){
             wx.onMenuShareTimeline({
-                title: '<?php echo '【琳玲港货】代购了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
+                title: '<?php echo '【琳玲港货】为我代购了['.$billProduct[0]['product_name'].']共'.$bill['bill_product_num'].'件港货，省心省事！';?>', // 分享标题
                 link: '<?php echo BASE_URL.'/shop/product/detail?product_id='.$billProduct[0]['product_id'];?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: '<?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $bill['bill_image']);?>', // 分享图标
                 success: function () {

@@ -41,7 +41,7 @@ class BasicController extends Yaf_Controller_Abstract {
 
             if($moduleName==='index'){
                 return true;
-            }else if(in_array($controllerName, ['login', 'auth']) || in_array($actionName, ['notfound'])){
+            }else if(BaseModel::whiteList($moduleName.'_'.$controllerName.'_'.$actionName)){
                 return true;
             }else if(empty($_SESSION['user'])){
                 if(!empty($_SERVER['HTTP_USER_AGENT']) && stripos(strtolower($_SERVER['HTTP_USER_AGENT']), 'micromessenger')!==false){
