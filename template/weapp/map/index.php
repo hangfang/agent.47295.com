@@ -31,7 +31,7 @@ include BASE_PATH.'/application/views/common/weui/header.php';
     var openInWechat = navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger" ? true : false;
     if(openInWechat){
         wx.config({
-            debug: '<?php echo $data['debug'] ? 'true' : 'false'; ?>', // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            debug: '<?php echo $data['debug']; ?>', // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
             appId: '<?php echo $data['appid']; ?>', // 必填，公众号的唯一标识
             timestamp: <?php echo $data['timestamp']; ?>, // 必填，生成签名的时间戳
             nonceStr: '<?php echo $data['nonceStr']; ?>', // 必填，生成签名的随机串
