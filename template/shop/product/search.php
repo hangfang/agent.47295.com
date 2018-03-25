@@ -271,6 +271,7 @@ EOF;
             });
         });
        
+       delete localStorage.search;
        if(typeof localStorage.search==='undefined'){
             var tmp = [];
             var keyword = search.join(' ');
@@ -295,7 +296,7 @@ EOF;
                         flag = true;
                     }
                 }
-                !flag && tmp.unshift(keyword);
+                !flag && tmp.length<=30 && tmp.unshift(keyword);
             }
             var html = '';
             for(var i in tmp){
