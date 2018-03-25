@@ -58,7 +58,7 @@ include BASE_PATH.'/template/common/weui/header.php';
                 if(BaseModel::isAdmin()){
                     $_extra .= '<span class="weui_desc_extra">成本:'. $_product['product_vip_price'] .'</span>';
                 }else{
-                    $_extra .= '<span class="weui_desc_extra">浏览量:'. $_product['product_views'] .'</span>';
+                    //$_extra .= '<span class="weui_desc_extra">浏览量:'. $_product['product_views'] .'</span>';
                 }
                 $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
                 
