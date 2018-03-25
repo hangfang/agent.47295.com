@@ -271,7 +271,6 @@ EOF;
             });
         });
        
-       delete localStorage.search;
        if(typeof localStorage.search==='undefined'){
             var tmp = [];
             var keyword = search.join(' ');
