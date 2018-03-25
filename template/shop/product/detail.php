@@ -78,7 +78,11 @@ EOF;
         <article class="weui_article" style="padding:0;">
             <section>
                 <section>
-                    <?php echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);?>
+                    <?php 
+                        $product['product_description'] = str_replace('width', 'width_bak', $product['product_description']);
+                        $product['product_description'] = str_replace('height', 'height_bak', $product['product_description']);
+                        echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);
+                    ?>
                 </section>
             </section>
         </article>
