@@ -35,13 +35,14 @@ include BASE_PATH.'/template/common/weui/header.php';
         <?php 
             $STATIC_CDN_URL = STATIC_CDN_URL;
             if(empty($data['list'])){
+                $search = implode(' ', $data['search']);
                 echo <<<EOF
 <a href="javascript:void(0)" class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd">
         <img class="weui_media_appmsg_thumb" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
     <div class="weui_media_bd">
-        <h4 class="weui_media_title"><span style="color:red;">{$data['search']}</span>未搜索到结果</h4>
+        <h4 class="weui_media_title"><span style="color:red;">{$search}</span>未搜索到结果</h4>
         <p class="weui_media_desc"></p>
     </div>
 </a>
@@ -66,14 +67,17 @@ EOF;
                 }
                 $_extra .= '<span class="weui_desc_extra">销量:'. $_product['product_purchased'] .'</span>';
                 
-                $_productName = str_replace($data['search'], '<span style="color:red;">'.$data['search'].'</span>', $_product['product_name']);
+                foreach($data['search'] as $_search){
+                    $_product['product_name'] = str_replace($_search, '<span style="color:red;">'.$_search.'</span>', $_product['product_name']);
+                }
+                
                 echo <<<EOF
 <a href="/shop/product/detail?product_id={$_product['product_id']}" class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd">
         <img class="lazy weui_media_appmsg_thumb" data-original="{$_imgSrc}" src="{$STATIC_CDN_URL}{$staticDir}images/qrcode_for_gh_a103c9f558fa_258.jpg" >
     </div>
     <div class="weui_media_bd">
-        <h4 class="weui_media_title">{$_productName}</h4>
+        <h4 class="weui_media_title">{$_product['product_name']}</h4>
         <p class="weui_media_desc">{$_extra}<span class="weui_btn weui_btn_mini weui_btn_primary add_to_cart" data='{$_productData}'>+购物车</span></p>
     </div>
 </a>
@@ -100,7 +104,7 @@ EOF;
 </div>
 <script>
     $(function(){
-        var search = '<?php echo $data['search'];?>';
+        var search = <?php echo is_array($data['search']) ? json_encode($data['search']) : '[]';?>;
         var total = <?php echo $data['total'];?>;
         var offset = 10;
         var xhrIng = false;
@@ -116,66 +120,60 @@ EOF;
                 }
                 
                 layer.loading(true);
-                 $.ajax({
-                     url:'/shop/product/search',
-                     type:'get',
-                     dataType:'json',
-                     data:{"search":keyword},
-                     beforeSend:function(xhr){
-                         if(xhrIng){
-                             xhr.abort();
-                             return false;
-                         }
+                $.ajax({
+                    url:'/shop/product/search',
+                    type:'get',
+                    dataType:'json',
+                    data:{"search":keyword},
+                    beforeSend:function(xhr){
+                        if(xhrIng){
+                            xhr.abort();
+                            return false;
+                        }
 
-                         xhrIng = true;
-                     },
-                     complete:function(){
-                         xhrIng = false;
-                     },
-                     success:function(data, xhr){
-                         layer.loading(false);
-                         if(!data){
-                             layer.error('请求失败,请稍后再试...');
-                             return false;
-                         }
+                        xhrIng = true;
+                    },
+                    complete:function(){
+                        xhrIng = false;
+                    },
+                    success:function(data, xhr){
+                        layer.loading(false);
+                        if(!data){
+                            layer.error('请求失败,请稍后再试...');
+                            return false;
+                        }
 
-                         if(data.rtn!=0){
-                             layer.error(data.error_msg);
-                             return false;
-                         }
+                        if(data.rtn!=0){
+                            layer.error(data.error_msg);
+                            return false;
+                        }
 
-                         if(typeof localStorage.search==='undefined'){
-                             var tmp = {};
-                         }else{
-                             var json = localStorage.search;
-                             var tmp = JSON.parse(json);
-                         }
+                        var html = '';
+                        var searchWord = keyword.indexOf(',')>-1 ? keyword.split(',') : keyword.split(' ');
+                        for(var i in data.data.list){
+                            var product = data.data.list[i];
+                            var productName = product['product_name'];
+                            for(var j in searchWord){
+                                productName = productName.replace(searchWord[j], '<span style="color:red;">'+ searchWord[j] +'</span>');
+                            }
+                            html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
+                                        <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
+                                            <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ productName +'</a></p>\
+                                        </div>\
+                                    </div>';
+                        }
 
-                         tmp[keyword] = keyword;
-                         localStorage.search = JSON.stringify(tmp);
+                        if(data.data.total>10){
+                            html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
+                                        <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
+                                            <a class="weui_btn weui_btn_primary" href="/shop/product/search?search='+ keyword +'" style="color:#777">查看全部</a>\
+                                        </div>\
+                                    </div>';
+                        }
 
-                         var html = '';
-                         for(var i in data.data.list){
-                             var product = data.data.list[i];
-                             productName = product['product_name'].replace(search, '<span style="color:red;">'+ search +'</span>');
-                             html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
-                                         <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
-                                             <p style="height: 2rem;line-height: 2;overflow: hidden;margin: 0;">'+ (i-0+1) +'.<a href="/shop/product/detail?product_id='+ product['product_id'] +'" style="color:#777">'+ productName +'</a></p>\
-                                         </div>\
-                                     </div>';
-                         }
-
-                         if(data.data.total>10){
-                             html += '<div class="weui_cell" style="padding:1px 5px 1px 8px;">\
-                                         <div class="weui_cell_bd weui_cell_primary" style="padding-left:0px;">\
-                                             <a class="weui_btn weui_btn_primary" href="/shop/product/search?search='+ keyword +'" style="color:#777">查看全部</a>\
-                                         </div>\
-                                     </div>';
-                         }
-
-                         $('#history_hot').hide();
-                         $('#search_show').html(html).show();
-                         return true;
+                        $('#history_hot').hide();
+                        $('#search_show').html(html).show();
+                        return true;
                      }
                  });
             }
@@ -274,21 +272,46 @@ EOF;
         });
        
        if(typeof localStorage.search==='undefined'){
+            var tmp = [];
+            var keyword = search.join(' ');
+            if(search.length>0 && keyword.length>0){
+                var flag = false;
+                for(var i in tmp){
+                    if(tmp[i]==keyword){
+                        flag = true;
+                    }
+                }
+                !flag && tmp.unshift(keyword);
+            }
             $('#history_search').append('<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;color: #777;width:100%;text-align:center;">还没有所搜历史</li>');
         }else{
             var json = localStorage.search;
             var tmp = JSON.parse(json);
+            var keyword = search.join(' ');
+            if(search.length>0 && keyword.length>0){
+                var flag = false;
+                for(var i in tmp){
+                    if(tmp[i]==keyword){
+                        flag = true;
+                    }
+                }
+                !flag && tmp.unshift(keyword);
+            }
             var html = '';
-            var index = 0;
             for(var i in tmp){
-                html += '<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;"><a href="/shop/product/search?search='+ i +'" style="color: #777;text-decoration:underline;">'+ i +'</a></li>';
-                if(++index>30){
+                html += '<li class="weui_media_info_meta search_word" style="margin-bottom: 0.5rem;"><a href="/shop/product/search?search='+ tmp[i] +'" style="color: #777;text-decoration:underline;">'+ tmp[i] +'</a></li>';
+                if(i>30){
                     break;
                 }
             }
             
             $('#history_search').append(html);
         }
+        
+        if(tmp.length>30){
+             tmp.pop();
+        }
+        localStorage.search = JSON.stringify(tmp);
     });
 </script>
 <?php include BASE_PATH.'/template/common/weui/footer.php';?>

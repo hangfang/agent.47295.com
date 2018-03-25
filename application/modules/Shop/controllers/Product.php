@@ -125,10 +125,19 @@ class ProductController extends BasicController{
      */
     public function searchAction(){
         $result = ['list'=>[], 'total'=>0, 'search'=>''];
-        $search = $this->_request->getQuery('search');
+        $search = trim($this->_request->getQuery('search'));
         
         if(!empty($search)){
-            $where = ['%product_name%'=>$search];
+            $search = strpos($search, ',')!==false ? explode(',', $search) : explode(' ', $search);
+            $where = [];
+            if(($len=count($search))>1){
+                for($i=0; $i<$len; $i++){
+                    $search[$i] = preg_replace('/\s+/', '', $search[$i]);
+                    strlen($search[$i])>0 && $where[] = ['%product_name%'=>$search[$i]];
+                }
+            }else{
+                $where = ['%product_name%'=>$search[0]];
+            }
             $total = Kissbaby_ProductModel::count($where);
             $productList = [];
             if($total){
@@ -139,7 +148,7 @@ class ProductController extends BasicController{
 
             $result['list'] = $productList;
             $result['total'] = $total;
-            $result['search'] = htmlentities($search);
+            $result['search'] = $search;
         }
 
         if($this->_request->isXmlHttpRequest()){
