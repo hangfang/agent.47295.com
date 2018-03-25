@@ -29,13 +29,13 @@ include BASE_PATH.'/template/common/weui/header.php';
         </div>
     </div>
 </div>
-<div class="weui_panel weui_panel_access" style="<?php if(!$data['search']){echo 'display:none;';}?>" id="product_list">
+<div class="weui_panel weui_panel_access" style="<?php if(empty($data['search'])){echo 'display:none;';}?>" id="product_list">
     <div class="weui_panel_hd" style='display:none;'><?php echo $title;?></div>
     <div class="weui_panel_bd">
         <?php 
             $STATIC_CDN_URL = STATIC_CDN_URL;
             if(empty($data['list'])){
-                $search = implode(' ', $data['search']);
+                $search = empty($data['search']) ? '' : implode(' ', $data['search']);
                 echo <<<EOF
 <a href="javascript:void(0)" class="weui_media_box weui_media_appmsg">
     <div class="weui_media_hd">
