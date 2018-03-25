@@ -79,8 +79,7 @@ EOF;
             <section>
                 <section>
                     <?php 
-                        $product['product_description'] = str_replace('width', 'width_bak', $product['product_description']);
-                        $product['product_description'] = str_replace('height', 'height_bak', $product['product_description']);
+                        $product['product_description'] = str_replace('style', 'style_bak', $product['product_description']);
                         echo str_replace(CDN_URL_PLACEHOLDER, IMG_CDN_URL, $product['product_description']);
                     ?>
                 </section>
