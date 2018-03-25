@@ -407,4 +407,12 @@
             layer.actionSheet(menu);
         });
     });
+    
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?eb932971a3374ca003a8cbf8424d01ea";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
 </script>
